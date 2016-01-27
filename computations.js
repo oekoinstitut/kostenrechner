@@ -193,6 +193,18 @@ var reperaturkosten = {
 	}
 }
 
+// CO2 emission variables in kg per L or kg per kWh
+var co2_emissions = {
+	"strom_mix": {
+		"2012": 0.623,
+		"2020": 0.395,
+		"2030": 0.248
+	},
+	"strom_erneubar": 0.012,
+	"benzin": 2.80,
+	"diesel": 3.15
+}
+
 // Corrects amounts for inflation
 function getCurrentPrice(amount, originalYear, wishedYear){
 	return amount * Math.pow(1+inflationsrate, wishedYear - originalYear)
@@ -338,7 +350,7 @@ function getLubricantCosts(energy_type, car_type, mileage) {
 	return getLubricantConsumption(energy_type, car_type) * mileage;
 }
 
-// Returns a consumption in l/100km
+// Returns a consumption in l/100km or kWh/100km
 function getConsumption(energy_type, car_type, year) {
 	var consumption = verbrauch[energy_type][car_type];
 	var improvement_first_decade = verbrauchsentwicklung[energy_type]["2010"];
@@ -354,6 +366,8 @@ function getConsumption(energy_type, car_type, year) {
 		consumption *= Math.pow(1+yearly_improvement_first_decade, year - 2014);
 	}
 
+	// Because the information for electric cars is in kWh per km
+	if (energy_type == "BEV") { consumption *= 100 }
 	return consumption;
 }
 
@@ -440,6 +454,28 @@ function getEnergyCosts(energy_type, car_type, mileage, year, acquisition_year, 
 	return (mileage / 100) * getConsumption(energy_type, car_type, acquisition_year) * getEnergyPrice(energy_type, 2014, year, scenario);
 }
 
+// Returns the estimated kg of CO2 per kWh based on the data points we have
+function getCO2FromElectricityMix(estimation_year) {
+	var estimates = {}
+	for (var year in co2_emissions["strom_mix"]){
+		estimates[year] = co2_emissions["strom_mix"][year];
+	}
+	if (estimation_year in co2_emissions["strom_mix"]){
+		return estimates[estimation_year]
+	} else {
+		for (var year = 2012; year<=2050; year++){
+			 if (year < 2020) {
+			    estimates[year] = estimates["2012"] + ((estimates["2020"] - estimates["2012"]) / 8) * (estimation_year - 2012)
+			} else {
+				var decade_start = Math.floor(year / 10) * 10
+				var decade_end = Math.ceil(year / 10) * 10
+				estimates[year] = estimates[decade_start] + ((estimates[decade_end] - estimates[decade_start]) / 10) * (year - decade_start)
+			}
+		}
+		return estimates[estimation_year]
+	}
+}
+
 function getTCOByHoldingTime(energy_type, car_type, acquisition_year, mileage, charging_option) {
 	var TCO = {};
 	var scenarios = ["contra", "mittel", "pro"];
@@ -478,7 +514,7 @@ function getTCOByMileage(energy_type, car_type, acquisition_year, year, charging
 		TCO[scenario] = {};
 		var acquisition_costs = getAcquisitionPrice(energy_type, car_type, acquisition_year, charging_option, scenario);
 		TCO[scenario]["acquisition_costs"] = acquisition_costs;
-		for (var mileage=1000; mileage <= 100000; mileage+=1000) {
+		for (var mileage=0; mileage <= 100000; mileage+=10000) {
 			TCO[scenario][mileage] = {}
 			fixed_costs = getFixedCosts(energy_type, car_type);
 			if (charging_option != undefined) { fixed_costs += getChargingOptionMaintenancePrice(charging_option) }
@@ -494,6 +530,38 @@ function getTCOByMileage(energy_type, car_type, acquisition_year, year, charging
 	return TCO;
 }
 
+function getCO2byMileage(car_type, acquisition_year, year) {
+	var CO2 = {};
+	for (var mileage=0; mileage <= 100000; mileage+=10000) {
+		CO2[mileage] = {};
+		CO2[mileage]["strom_mix"] = (mileage / 100) * getConsumption("BEV", car_type, acquisition_year) * getCO2FromElectricityMix(year)
+		CO2[mileage]["strom_erneubar"] = (mileage / 100) * getConsumption("BEV", car_type, acquisition_year) * co2_emissions["strom_erneubar"]
+		CO2[mileage]["benzin"] = (mileage / 100) * getConsumption("benzin", car_type, acquisition_year) * co2_emissions["benzin"]
+		CO2[mileage]["diesel"] = (mileage / 100) * getConsumption("diesel", car_type, acquisition_year) * co2_emissions["diesel"]
+	}
+	return CO2;
+}
+
+// Returns the total amount of CO2 emitted
+function getTCO2byHoldingTime(car_type, acquisition_year, mileage) {
+	var CO2 = {};
+	for (var year=acquisition_year; year <= 2025; year++) {
+		CO2[year] = {};
+		CO2[year]["strom_mix"] = (mileage / 100) * getConsumption("BEV", car_type, acquisition_year) * getCO2FromElectricityMix(year)
+		CO2[year]["strom_erneubar"] = (mileage / 100) * getConsumption("BEV", car_type, acquisition_year) * co2_emissions["strom_erneubar"]
+		CO2[year]["benzin"] = (mileage / 100) * getConsumption("benzin", car_type, acquisition_year) * co2_emissions["benzin"]
+		CO2[year]["diesel"] = (mileage / 100) * getConsumption("diesel", car_type, acquisition_year) * co2_emissions["diesel"]
+
+		if (year > acquisition_year) {
+			CO2[year]["strom_mix"] += CO2[year - 1]["strom_mix"]
+			CO2[year]["strom_erneubar"] += CO2[year - 1]["strom_erneubar"]
+			CO2[year]["benzin"] += CO2[year - 1]["benzin"]
+			CO2[year]["diesel"] += CO2[year - 1]["diesel"]
+		}
+	}
+	return CO2;
+}
+
 console.log(getCurrentPrice(0.5924050633, 2011, 2014) + " --- Should be 0.6231342472")
 console.log(getEnergyPrice("benzin", 2045) + " --- Should NOT be 1.46")	
 console.log(getEnergyPrice("benzin", 2050) + " --- Should be 1.46")				
@@ -501,7 +569,7 @@ console.log(getEnergyPrice("benzin", 2014) + " --- Should be 1.30")
 console.log(getEnergyPrice("BEV", 2032, "contra") + " --- Should be 27.54")			
 console.log(getEnergyPrice("BEV", 2032, "pro") + " --- Should be 22.53")		
 console.log(getConsumption("benzin", "klein", 2014) + " --- Should be 6.94")
-console.log(getConsumption("BEV", "klein", 2020) + " --- Should be .13")			
+console.log(getConsumption("BEV", "klein", 2020) + " --- Should be 13")			
 console.log(getLubricantConsumption("benzin", "klein") + " --- Should be 0.0023")			
 console.log(getFixedCosts("benzin", "mittel") + " --- Should be 1039")					
 console.log(getMaintenanceCosts("benzin", "mittel", 15000) + " --- Should be 603")		
@@ -514,4 +582,7 @@ console.log(getBatteryPricePerKWh("2019", "contra") + " --- Should be 313.5")
 console.log(getRawAcquisitionPrice("diesel", "LNF1", "2016") + " --- Price of a LNF1 diesel in 2016: 20,366€")
 console.log(getAcquisitionPrice("BEV", "mittel", "2014") + " --- New electric mittel costs in 2014: 29,682€")
 console.log(getChargingOptionPrice("Wallbox bis 22kW", 2022) + " --- Should be 531")
-console.log(getTCOByMileage("benzin", "mittel", "2015", "2017"))
+console.log(getCO2FromElectricityMix("2021") + " --- Should be .380")
+//console.log(getTCOByMileage("benzin", "mittel", "2015", "2017"))
+//console.log(getCO2byMileage("mittel", 2014, 2018))
+console.log(getTCO2byHoldingTime("mittel", 2018, 15000))
