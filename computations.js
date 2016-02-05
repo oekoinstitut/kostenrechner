@@ -3,6 +3,11 @@
 var inflationsrate   = 0.017;	// That's 1.7% per year
 var exchange_rate    = 1.25; 	// How many $ for 1 €
 
+// Variables to compute the amortization costs
+var abschreibungszeitraum = 6;  // amortization period
+var unternehmenssteuersatz = .3; // corporate tax
+var sonder_afa = true;			// special accounting rule to increase amortization for electro vehicles in the first year
+
 // Vehicle acquisition price
 var nettolistenpreise = {
 	"benzin":{
@@ -283,7 +288,7 @@ function getBatteryPrice(car_type, year, scenario) {
 
 // Returns the needed battery size
 function getNeededBatterySize(car_type, year) {
-	var capacity = reichweite * getConsumption("BEV", car_type, year) / entladetiefe;
+	var capacity = reichweite * (getConsumption("BEV", car_type, year) / 100) / entladetiefe;
 	var actual_capacity = capacity * entladetiefe;
 	return actual_capacity;
 }
@@ -444,14 +449,15 @@ function getEnergyPrice(energy_type, estimation_year, scenario) {
 		        }
 	        }
 
-	        return estimates[estimation_year]
+	        // divides by 100 as we were in cents till then
+	        return estimates[estimation_year] / 100
 
 	    	break;
 	}
 }
 
 function getEnergyCosts(energy_type, car_type, mileage, year, acquisition_year, scenario){
-	return (mileage / 100) * getConsumption(energy_type, car_type, acquisition_year) * getEnergyPrice(energy_type, 2014, year, scenario);
+	return (mileage / 100) * getConsumption(energy_type, car_type, acquisition_year) * getEnergyPrice(energy_type, year, scenario);
 }
 
 // Returns the estimated kg of CO2 per kWh based on the data points we have
@@ -483,7 +489,8 @@ function getTCOByHoldingTime(energy_type, car_type, acquisition_year, mileage, c
 		var scenario = scenarios[scen_num];
 		TCO[scenario] = {};
 		var acquisition_costs = getAcquisitionPrice(energy_type, car_type, acquisition_year, charging_option, scenario);
-		TCO[scenario]["acquisition_costs"] = acquisition_costs;
+		var amortization = (1 / abschreibungszeitraum) * unternehmenssteuersatz * acquisition_costs;
+
 		for (var year=acquisition_year; year <= 2025; year++) {
 			TCO[scenario][year] = {}
 			fixed_costs = getFixedCosts(energy_type, car_type);
@@ -496,10 +503,18 @@ function getTCOByHoldingTime(energy_type, car_type, acquisition_year, mileage, c
 				TCO[scenario][year]["fixed_costs"] = fixed_costs
 				TCO[scenario][year]["energy_costs"] = energy_costs
 				TCO[scenario][year]["variable_costs"] = variable_costs
+				//takes into account amortization, including special case of sonder afa
+				if (sonder_afa == true && energy_type=="BEV") { amortization = acquisition_costs * .5 * unternehmenssteuersatz; }
+				TCO[scenario][year]["vehicle_value"] = acquisition_costs - amortization;
 			} else { 
 				TCO[scenario][year]["fixed_costs"] = TCO[scenario][year - 1]["fixed_costs"] + fixed_costs
 				TCO[scenario][year]["energy_costs"] = TCO[scenario][year - 1]["energy_costs"] + energy_costs
 				TCO[scenario][year]["variable_costs"] = TCO[scenario][year - 1]["variable_costs"] + variable_costs
+				// if sonder_afa is true, then only half the vehicle value is amortized
+				if (sonder_afa == true && energy_type=="BEV") { amortization = (1 / abschreibungszeitraum) * unternehmenssteuersatz * acquisition_costs * .5 }
+				// amortization stops when amortization period ends
+				if ((year - acquisition_year) > abschreibungszeitraum) {amortization = 0;}
+				TCO[scenario][year]["vehicle_value"] = TCO[scenario][year - 1]["vehicle_value"] - amortization;
 			}
 		}
 	}
@@ -513,7 +528,12 @@ function getTCOByMileage(energy_type, car_type, acquisition_year, year, charging
 		var scenario = scenarios[scen_num];
 		TCO[scenario] = {};
 		var acquisition_costs = getAcquisitionPrice(energy_type, car_type, acquisition_year, charging_option, scenario);
-		TCO[scenario]["acquisition_costs"] = acquisition_costs;
+		var amortization = ((year - acquisition_year + 1) / abschreibungszeitraum) * unternehmenssteuersatz * acquisition_costs;
+		if (sonder_afa == true && energy_type=="BEV") {
+			if (year == acquisition_year) { amortization = acquisition_costs * .5 * unternehmenssteuersatz;}
+			else { amortization = (1 / abschreibungszeitraum) * unternehmenssteuersatz * acquisition_costs * .5 }
+		}
+		if ((year - acquisition_year) > abschreibungszeitraum) {amortization = acquisition_costs;}
 		for (var mileage=0; mileage <= 100000; mileage+=10000) {
 			TCO[scenario][mileage] = {}
 			fixed_costs = getFixedCosts(energy_type, car_type);
@@ -525,6 +545,7 @@ function getTCOByMileage(energy_type, car_type, acquisition_year, year, charging
 			TCO[scenario][mileage]["fixed_costs"] = fixed_costs
 			TCO[scenario][mileage]["energy_costs"] = energy_costs
 			TCO[scenario][mileage]["variable_costs"] = variable_costs
+			TCO[scenario][mileage]["vehicle_value"] = acquisition_costs - amortization;
 		}
 	}
 	return TCO;
@@ -562,27 +583,28 @@ function getTCO2byHoldingTime(car_type, acquisition_year, mileage) {
 	return CO2;
 }
 
-console.log(getCurrentPrice(0.5924050633, 2011, 2014) + " --- Should be 0.6231342472")
-console.log(getEnergyPrice("benzin", 2045) + " --- Should NOT be 1.46")	
-console.log(getEnergyPrice("benzin", 2050) + " --- Should be 1.46")				
-console.log(getEnergyPrice("benzin", 2014) + " --- Should be 1.30")
-console.log(getEnergyPrice("BEV", 2032, "contra") + " --- Should be 27.54")			
-console.log(getEnergyPrice("BEV", 2032, "pro") + " --- Should be 22.53")		
-console.log(getConsumption("benzin", "klein", 2014) + " --- Should be 6.94")
-console.log(getConsumption("BEV", "klein", 2020) + " --- Should be 13")			
-console.log(getLubricantConsumption("benzin", "klein") + " --- Should be 0.0023")			
-console.log(getFixedCosts("benzin", "mittel") + " --- Should be 1039")					
-console.log(getMaintenanceCosts("benzin", "mittel", 15000) + " --- Should be 603")		
-console.log(getLubricantCosts("benzin", "mittel", 15000) + " --- Should be 41.3")		
-console.log(getEnergyCosts("benzin", "mittel", 15000, 2014, 2014) + " --- Should be 1574.61")	
+// console.log(getCurrentPrice(0.5924050633, 2011, 2014) + " --- Should be 0.6231342472")
+// console.log(getEnergyPrice("benzin", 2045) + " --- Should NOT be 1.46")	
+// console.log(getEnergyPrice("benzin", 2050) + " --- Should be 1.46")				
+// console.log(getEnergyPrice("benzin", 2014) + " --- Should be 1.30")
+// console.log(getEnergyPrice("BEV", 2032, "contra") + " --- Should be 27.54")			
+// console.log(getEnergyPrice("BEV", 2032, "pro") + " --- Should be 22.53")		
+// console.log(getConsumption("benzin", "klein", 2014) + " --- Should be 6.94")
+// console.log(getConsumption("BEV", "klein", 2020) + " --- Should be 13")			
+// console.log(getLubricantConsumption("benzin", "klein") + " --- Should be 0.0023")			
+// console.log(getFixedCosts("benzin", "mittel") + " --- Should be 1039")					
+// console.log(getMaintenanceCosts("benzin", "mittel", 15000) + " --- Should be 603")		
+// console.log(getLubricantCosts("benzin", "mittel", 15000) + " --- Should be 41.3")		
+// console.log(getEnergyCosts("benzin", "mittel", 15000, 2014, 2014) + " --- Should be 1574.61")	
 console.log(getEnergyCosts("BEV", "mittel", 15000, 2014, 2014) + " --- Should be 697")	
-console.log(getPriceSurcharge("BEV", "klein", "2021") + " --- Should be 750")
-console.log(getPriceSurcharge("BEV", "mittel", "2014") + " --- Should be 2000")						
-console.log(getBatteryPricePerKWh("2019", "contra") + " --- Should be 313.5")	
-console.log(getRawAcquisitionPrice("diesel", "LNF1", "2016") + " --- Price of a LNF1 diesel in 2016: 20,366€")
-console.log(getAcquisitionPrice("BEV", "mittel", "2014") + " --- New electric mittel costs in 2014: 29,682€")
-console.log(getChargingOptionPrice("Wallbox bis 22kW", 2022) + " --- Should be 531")
-console.log(getCO2FromElectricityMix("2021") + " --- Should be .380")
-//console.log(getTCOByMileage("benzin", "mittel", "2015", "2017"))
+// console.log(getPriceSurcharge("BEV", "klein", "2021") + " --- Should be 750")
+// console.log(getPriceSurcharge("BEV", "mittel", "2014") + " --- Should be 2000")						
+// console.log(getBatteryPricePerKWh("2019", "contra") + " --- Should be 313.5")	
+// console.log(getRawAcquisitionPrice("diesel", "LNF1", "2016") + " --- Price of a LNF1 diesel in 2016: 20,366€")
+// console.log(getAcquisitionPrice("BEV", "mittel", "2014") + " --- New electric mittel costs in 2014: 29,682€")
+// console.log(getChargingOptionPrice("Wallbox bis 22kW", 2022) + " --- Should be 531")
+// console.log(getCO2FromElectricityMix("2021") + " --- Should be .380")
+console.log(getTCOByMileage("BEV", "mittel", "2015", "2017"))
+//console.log(getTCOByHoldingTime("benzin", "mittel", 2015, "15000"))
 //console.log(getCO2byMileage("mittel", 2014, 2018))
-console.log(getTCO2byHoldingTime("mittel", 2018, 15000))
+//console.log(getTCO2byHoldingTime("mittel", 2018, 15000))

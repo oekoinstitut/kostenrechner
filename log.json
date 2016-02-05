@@ -1,0 +1,204 @@
+{ pro: 
+   { '2014': 
+      { '0': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 0,
+           variable_costs: { lubricant_costs: 0, maintenance_costs: 0 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 16506.9 },
+        '10000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 1154.6931092436976,
+           variable_costs: { lubricant_costs: 27.5, maintenance_costs: 402 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 18091.0931092437 },
+        '20000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 2309.386218487395,
+           variable_costs: { lubricant_costs: 55, maintenance_costs: 804 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 19675.286218487396 },
+        '30000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 3464.079327731093,
+           variable_costs: { lubricant_costs: 82.5, maintenance_costs: 1206 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 21259.479327731096 },
+        '40000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 4618.77243697479,
+           variable_costs: { lubricant_costs: 110, maintenance_costs: 1608 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 22843.67243697479 },
+        '50000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 5773.465546218488,
+           variable_costs: { lubricant_costs: 137.5, maintenance_costs: 2010 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 24427.86554621849 },
+        '60000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 6928.158655462186,
+           variable_costs: { lubricant_costs: 165, maintenance_costs: 2412 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 26012.058655462188 },
+        '70000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 8082.851764705883,
+           variable_costs: { lubricant_costs: 192.5, maintenance_costs: 2814 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 27596.251764705885 },
+        '80000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 9237.54487394958,
+           variable_costs: { lubricant_costs: 220, maintenance_costs: 3216 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 29180.444873949582 },
+        '90000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 10392.23798319328,
+           variable_costs: { lubricant_costs: 247.49999999999997, maintenance_costs: 3618 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 30764.63798319328 },
+        '100000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 11546.931092436977,
+           variable_costs: { lubricant_costs: 275, maintenance_costs: 4020 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 32348.83109243698 } } },
+  mittel: 
+   { '2014': 
+      { '0': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 0,
+           variable_costs: { lubricant_costs: 0, maintenance_costs: 0 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 16506.9 },
+        '10000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 1049.7210084033613,
+           variable_costs: { lubricant_costs: 27.5, maintenance_costs: 402 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 17986.121008403363 },
+        '20000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 2099.4420168067227,
+           variable_costs: { lubricant_costs: 55, maintenance_costs: 804 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 19465.342016806724 },
+        '30000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 3149.163025210084,
+           variable_costs: { lubricant_costs: 82.5, maintenance_costs: 1206 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 20944.563025210085 },
+        '40000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 4198.884033613445,
+           variable_costs: { lubricant_costs: 110, maintenance_costs: 1608 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 22423.784033613447 },
+        '50000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 5248.605042016807,
+           variable_costs: { lubricant_costs: 137.5, maintenance_costs: 2010 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 23903.005042016808 },
+        '60000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 6298.326050420168,
+           variable_costs: { lubricant_costs: 165, maintenance_costs: 2412 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 25382.22605042017 },
+        '70000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 7348.047058823529,
+           variable_costs: { lubricant_costs: 192.5, maintenance_costs: 2814 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 26861.44705882353 },
+        '80000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 8397.76806722689,
+           variable_costs: { lubricant_costs: 220, maintenance_costs: 3216 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 28340.668067226892 },
+        '90000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 9447.489075630252,
+           variable_costs: { lubricant_costs: 247.49999999999997, maintenance_costs: 3618 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 29819.889075630254 },
+        '100000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 10497.210084033613,
+           variable_costs: { lubricant_costs: 275, maintenance_costs: 4020 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 31299.110084033615 } } },
+  contra: 
+   { '2014': 
+      { '0': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 0,
+           variable_costs: { lubricant_costs: 0, maintenance_costs: 0 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 16506.9 },
+        '10000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 944.7489075630253,
+           variable_costs: { lubricant_costs: 27.5, maintenance_costs: 402 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 17881.148907563027 },
+        '20000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 1889.4978151260507,
+           variable_costs: { lubricant_costs: 55, maintenance_costs: 804 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 19255.397815126053 },
+        '30000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 2834.246722689076,
+           variable_costs: { lubricant_costs: 82.5, maintenance_costs: 1206 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 20629.646722689078 },
+        '40000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 3778.9956302521014,
+           variable_costs: { lubricant_costs: 110, maintenance_costs: 1608 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 22003.895630252104 },
+        '50000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 4723.744537815127,
+           variable_costs: { lubricant_costs: 137.5, maintenance_costs: 2010 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 23378.14453781513 },
+        '60000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 5668.493445378152,
+           variable_costs: { lubricant_costs: 165, maintenance_costs: 2412 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 24752.393445378155 },
+        '70000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 6613.242352941177,
+           variable_costs: { lubricant_costs: 192.5, maintenance_costs: 2814 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 26126.642352941177 },
+        '80000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 7557.991260504203,
+           variable_costs: { lubricant_costs: 220, maintenance_costs: 3216 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 27500.891260504206 },
+        '90000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 8502.740168067228,
+           variable_costs: { lubricant_costs: 247.49999999999997, maintenance_costs: 3618 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 28875.140168067228 },
+        '100000': 
+         { fixed_costs: { car_tax: 108.5, check_up: 94.5, insurance: 836, total: 1039 },
+           energy_costs: 9447.489075630254,
+           variable_costs: { lubricant_costs: 275, maintenance_costs: 4020 },
+           residual_vehicle_value: 15467.9,
+           total_cost: 30249.389075630257 } } } }
