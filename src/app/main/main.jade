@@ -1,0 +1,5 @@
+.container.main
+    .main__steps
+        .main__steps__step(ng-repeat='step in main.getSteps() | filter:main.isStepActive', ng-click="main.nextStep()")
+          h2.main__steps__step__name {{ step.name }}
+          p.main__steps__step__description.lead {{ step.description }} 
