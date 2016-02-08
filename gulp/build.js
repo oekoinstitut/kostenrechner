@@ -99,7 +99,7 @@ gulp.task('gss', function (cb) {
   let GSSID = '1-BxTbzc5z-04-0-3Q4KJTJtLKmmjAOE5s8X8bzEdv5Q';
   let BOOL_FIELDS = ['hasslider', 'canbeonxaxis', 'shownonthelist', 'preliminary', 'editable'];
   let UNWANTED_FIELDS = ['_xml', '_links'];
-  
+
   let gss = new Gss(GSSID);
 
   gss.getRows(1, function(err, rows){
@@ -112,7 +112,7 @@ gulp.task('gss', function (cb) {
     });
     var file = JSON.stringify(data, null, 2);
     // And override the existinng JSON file
-    fs.writeFile(path.join(__dirname, '../processor/conf.json'), file, cb);
+    fs.writeFile(path.join(__dirname, '../src/assets/settings.json'), file, cb);
   });
 });
 
