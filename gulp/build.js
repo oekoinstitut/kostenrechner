@@ -1,8 +1,11 @@
 'use strict';
 
 var path = require('path');
+var fs   = require('fs');
+var _    = require('lodash');
 var gulp = require('gulp');
 var conf = require('./conf');
+var Gss  = require('google-spreadsheet');
 
 var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del']
@@ -89,6 +92,28 @@ gulp.task('other', function () {
   ])
     .pipe(fileFilter)
     .pipe(gulp.dest(path.join(conf.paths.dist, '/')));
+});
+
+gulp.task('gss', function (cb) {
+
+  let GSSID = '1-BxTbzc5z-04-0-3Q4KJTJtLKmmjAOE5s8X8bzEdv5Q';
+  let BOOL_FIELDS = ['hasslider', 'canbeonxaxis', 'shownonthelist', 'preliminary', 'editable'];
+  let UNWANTED_FIELDS = ['_xml', '_links'];
+  
+  let gss = new Gss(GSSID);
+
+  gss.getRows(1, function(err, rows){
+    var data = _.map(rows, function(row) {
+      // Remove unwanted properties
+      for(let k of UNWANTED_FIELDS) delete row[k];
+      // Convert values to boolean
+      for(let k of BOOL_FIELDS) row[k] = row[k].toLowerCase()[0] === 't';
+      return row;
+    });
+    var file = JSON.stringify(data, null, 2);
+    // And override the existinng JSON file
+    fs.writeFile(path.join(__dirname, '../processor/conf.json'), file, cb);
+  });
 });
 
 gulp.task('clean', function () {
