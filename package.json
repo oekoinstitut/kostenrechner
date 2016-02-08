@@ -1,7 +1,9 @@
 {
   "name": "oekoKostenrechner",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "google-spreadsheet": "^1.1.4"
+  },
   "scripts": {
     "test": "gulp test"
   },
