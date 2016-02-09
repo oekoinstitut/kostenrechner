@@ -1,4 +1,4 @@
 angular.module 'oekoKostenrechner'
-  .run ($log) ->
+  .run ($rootScope) ->
     'ngInject'
-    $log.debug 'runBlock end'
+    $rootScope.lorem = 'Dantooine mon calrissian fisto solo. Gonk calamari kessel watto calrissian darth fett. Skywalker gamorrean dagobah darth. Kashyyyk palpatine sidious kessel hutt. Organa darth antilles sidious kamino. Naboo hutt skywalker palpatine.'

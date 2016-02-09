@@ -4,16 +4,33 @@
  */
 // bower:less
 // endbower
+@import url(https://fonts.googleapis.com/css?family=Dosis:400,700,300|Open+Sans:400,700,300);
 
 /**
  *  If you want to override some bootstrap variables, you have to change values here.
  *  The list of variables are listed here bower_components/bootstrap/less/variables.less
  */
+@brand-primary: #A4CA65;
+@brand-secondary: #00ACDA;
+
 @body-bg: #E5E9EB;
-@brand-primary: #E5E9EB;
+@text-color: mix(@body-bg, #000, 40%);
+@link-color: darken(@brand-primary, 20%);
+
+@font-family-sans-serif: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+@headings-font-family: 'Dosis', @font-family-sans-serif;
 
 @navbar-inverse-link-color: #A4CA65;
 @icon-font-path: '../../bower_components/bootstrap/fonts/';
+@navbar-height: 60px;
+
+@navbar-default-border: darken(@body-bg, 10%);
+@navbar-default-link-active-bg: @navbar-default-border;
+@navbar-default-link-color: @brand-primary;
+
+@border-radius-small:       1px;
+@border-radius-base:        2px;
+@border-radius-large:       3px;
 
 .browsehappy {
   margin: 0.2em 0;

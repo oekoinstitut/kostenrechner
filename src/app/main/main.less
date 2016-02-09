@@ -1,0 +1,107 @@
+.main {
+
+  padding-top:@navbar-height;
+
+  &__vehicles {
+    position: fixed;
+    left:0;
+    top:@navbar-height;
+    bottom:0;
+    width:220px;
+    padding:20px;
+    background:darken(@body-bg, 5);
+  }
+
+  &__welcome-screen {
+
+    margin-top:20px;
+
+    &__body, &__heading {
+      background:lighten(@body-bg, 5%);
+      padding:15px 20px;
+      margin:0;
+    }
+
+    &__footer {
+      background:darken(@body-bg, 10%);
+      padding:15px 20px;
+    }
+  }
+
+  &__steps {
+
+    margin-top:20px;
+
+    &__step {
+
+      &__heading, &__description {
+        padding:15px 20px;
+        margin:0;
+      }
+
+      &__heading {
+        text-align: center;
+      }
+
+      &__body {
+        margin:40px auto;
+        padding:0;
+        max-width: 450px;
+
+        &--field-enum {
+          border:1px solid @navbar-default-border;
+          border-bottom-width:2px;
+        }
+
+        &--field-enum &__radio {
+          padding:20px;
+          padding-left:30px;
+          margin:0;
+          border-bottom:1px solid @navbar-default-border;
+          cursor:pointer;
+
+          &:hover {
+            background:mix(white, @brand-primary);
+          }
+          &:last-child {
+            border:0;
+          }
+        }
+      }
+
+      &__description {
+        text-align: center;
+        background:lighten(@body-bg, 5%);
+        max-width:450px;
+        margin:20px auto;
+        border-radius: 20px;
+        position:relative;
+
+        &:before {
+          content:"";
+          position: absolute;
+          bottom:100%;
+          left:50%;
+          border:20px solid transparent;
+          border-bottom-color:lighten(@body-bg, 5%);
+          .translate(-50%, 0);
+        }
+      }
+
+      &__position {
+        text-align: center;
+        text-transform: uppercase;
+        color:@brand-secondary;
+        font-weight:800;
+        font-size:0.9em;
+        margin:0 15px;
+        position: relative;
+      }
+
+      &__nav {
+        margin-top:20px;
+        text-align: center;
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 [
   {
     "id": "1",
-    "name": "Acquisition year",
+    "label": "Acquisition year",
     "description": "When the car is bought",
     "unit": "date",
     "values": "2014..2020",
@@ -15,11 +15,12 @@
     "parentid": "",
     "editable": true,
     "use": "both",
-    "nameofvarincomputations.js": "Vehicle.acquisition_year"
+    "context": "Vehicle",
+    "name": "acquisition_year"
   },
   {
     "id": "2",
-    "name": "Holding time",
+    "label": "Holding time",
     "description": "Number of years the car is used by the owner",
     "unit": "years",
     "values": "aquisition_year..2025",
@@ -33,11 +34,12 @@
     "parentid": "",
     "editable": false,
     "use": "both",
-    "nameofvarincomputations.js": ""
+    "context": "",
+    "name": ""
   },
   {
     "id": "3",
-    "name": "Mileage",
+    "label": "Mileage",
     "description": "Average distance driven in a year (in km)",
     "unit": "km",
     "values": "0..100000",
@@ -51,11 +53,12 @@
     "parentid": "",
     "editable": true,
     "use": "both",
-    "nameofvarincomputations.js": "Vehicle.mileage"
+    "context": "Vehicle",
+    "name": "mileage"
   },
   {
     "id": "4",
-    "name": "Energy type",
+    "label": "Energy type",
     "description": "Type of engine",
     "unit": "",
     "values": "\"benzin\", \"diesel\", \"hybrid\", \"BEV\"",
@@ -63,17 +66,18 @@
     "hasslider": false,
     "canbeonxaxis": false,
     "shownonthelist": true,
-    "importancerank": "1",
+    "importancerank": "100",
     "specifictocartype": "",
     "preliminary": true,
     "parentid": "",
     "editable": true,
     "use": "both",
-    "nameofvarincomputations.js": "Vehicle.energy_type"
+    "context": "Vehicle",
+    "name": "energy_type"
   },
   {
     "id": "5",
-    "name": "Car type",
+    "label": "Car type",
     "description": "Type of car. Can be small, medium, large, or small or large utility vehicle.",
     "unit": "",
     "values": "\"klein\", \"mittel\", \"groß\", \"LNF1\", \"LNF2\"",
@@ -81,17 +85,18 @@
     "hasslider": false,
     "canbeonxaxis": false,
     "shownonthelist": true,
-    "importancerank": "2",
+    "importancerank": "20",
     "specifictocartype": "",
     "preliminary": true,
     "parentid": "",
     "editable": true,
     "use": "both",
-    "nameofvarincomputations.js": "Vehicle.car_type"
+    "context": "Vehicle",
+    "name": "car_type"
   },
   {
     "id": "6",
-    "name": "Charging option",
+    "label": "Charging option",
     "description": "How is the electric car charged?",
     "unit": "",
     "values": "\"Wallbox 3,7kW\",\"Wallbox bis 22kW\",\"Ladesäule 22kW\",\"Ladesäule 43,6kW\",\"Ladesäule 100 kW DC\"",
@@ -105,11 +110,12 @@
     "parentid": "",
     "editable": true,
     "use": "TCO",
-    "nameofvarincomputations.js": "Vehicle.charging_option"
+    "context": "Vehicle",
+    "name": "charging_option"
   },
   {
     "id": "7",
-    "name": "Energy consumption",
+    "label": "Energy consumption",
     "description": "How much energy the car consumes per 100km.",
     "unit": "L/km or kWh/km",
     "values": "0..30",
@@ -123,11 +129,12 @@
     "parentid": "",
     "editable": false,
     "use": "both",
-    "nameofvarincomputations.js": "Vehicle.fuel_consumption"
+    "context": "Vehicle",
+    "name": "fuel_consumption"
   },
   {
     "id": "8",
-    "name": "Corporate tax",
+    "label": "Corporate tax",
     "description": "The tax rate for corporate gains",
     "unit": "",
     "values": "0..1",
@@ -141,11 +148,12 @@
     "parentid": "",
     "editable": true,
     "use": "TCO",
-    "nameofvarincomputations.js": "presets.unternehmenssteuersatz"
+    "context": "presets",
+    "name": "unternehmenssteuersatz"
   },
   {
     "id": "9",
-    "name": "Amortization period",
+    "label": "Amortization period",
     "description": "On how many years the car can be amortized in the books.",
     "unit": "years",
     "values": "1..10",
@@ -159,11 +167,12 @@
     "parentid": "",
     "editable": true,
     "use": "TCO",
-    "nameofvarincomputations.js": "presets.abschreibungszeitraum"
+    "context": "presets",
+    "name": "abschreibungszeitraum"
   },
   {
     "id": "10",
-    "name": "Special amortization for electric vehicles",
+    "label": "Special amortization for electric vehicles",
     "description": "A German law proposes to change accounting rules for electrical vehicles.",
     "unit": "",
     "values": "boolean",
@@ -177,11 +186,12 @@
     "parentid": "",
     "editable": true,
     "use": "TCO",
-    "nameofvarincomputations.js": "presets.sonder_afa"
+    "context": "presets",
+    "name": "sonder_afa"
   },
   {
     "id": "11",
-    "name": "Maintenance costs",
+    "label": "Maintenance costs",
     "description": "Costs of tires, repairs and yearly inspection",
     "unit": "€",
     "values": "0..100000",
@@ -195,11 +205,12 @@
     "parentid": "",
     "editable": false,
     "use": "TCO",
-    "nameofvarincomputations.js": "Vehicle.maintenance_costs.total_maintenance_costs"
+    "context": "Vehicle",
+    "name": "maintenance_costs"
   },
   {
     "id": "12",
-    "name": "Repair costs",
+    "label": "Repair costs",
     "description": "Cost of repairs",
     "unit": "€",
     "values": "0..100000",
@@ -213,11 +224,12 @@
     "parentid": "11",
     "editable": true,
     "use": "TCO",
-    "nameofvarincomputations.js": "Vehicle.maintenance_costs.repairs"
+    "context": "Vehicle",
+    "name": "maintenance_costs"
   },
   {
     "id": "13",
-    "name": "Inpection costs",
+    "label": "Inpection costs",
     "description": "Cost of yearly inspection",
     "unit": "€",
     "values": "0..100000",
@@ -231,11 +243,12 @@
     "parentid": "11",
     "editable": true,
     "use": "TCO",
-    "nameofvarincomputations.js": "Vehicle.maintenance_costs.inspection"
+    "context": "Vehicle",
+    "name": "maintenance_costs"
   },
   {
     "id": "14",
-    "name": "Tires",
+    "label": "Tires",
     "description": "Cost of tire replacement",
     "unit": "€",
     "values": "0..100000",
@@ -249,6 +262,7 @@
     "parentid": "11",
     "editable": true,
     "use": "TCO",
-    "nameofvarincomputations.js": "Vehicle.maintenance_costs.tires"
+    "context": "Vehicle",
+    "name": "maintenance_costs"
   }
 ]

@@ -16,6 +16,3 @@ angular.module 'oekoKostenrechner'
           processor: (settings, Processor)->
             'ngInject'
             new Processor settings
-          form: (settings, Form)->
-            'ngInject'
-            new Form settings

@@ -1,5 +1,34 @@
-.container.main
-    .main__steps
-        .main__steps__step(ng-repeat='step in main.getSteps() | filter:main.isStepActive', ng-click="main.nextStep()")
-          h2.main__steps__step__name {{ step.name }}
-          p.main__steps__step__description.lead {{ step.description }} 
+.main
+  navbar
+  .main__vehicles(ng-if="main.started")
+    pre {{ main.vehicle | json }}
+  .container
+    .main__welcome-screen(ng-hide="main.started")
+      h2.main__welcome-screen__heading Kostenrechner
+      .main__welcome-screen__body
+        p.lead Wedge skywalker grievous chewbacca fett dantooine jade. Ben windu anakin watto amidala. Binks darth coruscant hutt. Hutt yavin sidious organa solo. Antilles fett darth skywalker moff utapau ponda. Moff lando gamorrean solo leia tatooine windu jango. Darth mon sidious dooku bespin ben jawa moff calrissian. Dooku anakin solo bespin darth baba. Luke skywalker dantooine jabba moff yoda solo hutt baba. Jar r2-d2 darth hutt ahsoka. Sidious zabrak darth jabba hutt moff jango. Yavin binks wedge yavin skywalker jinn. 
+      p.main__welcome-screen__footer
+        a.btn.btn-primary.btn-lg(ng-click="main.start()") Start by adding a car
+        =" or "
+        a look a the defaults visualisation
+        
+    .main__steps(ng-show="main.started")
+      .main__steps__step(ng-repeat='step in main.getSteps() | filter:main.isStepActive')
+        h2.main__steps__step__heading {{ step.label }}
+        .main__steps__step__position Step {{ main.getActiveStepIdx() + 1 }} of {{ main.getStepsCount() }}
+        
+        p.main__steps__step__body.main__steps__step__body--field-enum(ng-if=":: main.isStepType(step, 'FIELD_ENUM')")
+          label.main__steps__step__body__radio.radio(ng-repeat="value in main.getActiveStepValues()")
+            input(type="radio", ng-value="value", ng-model="main.vehicle[step.name]")
+            {{ value }}
+        
+        p.main__steps__step__body.main__steps__step__body--field-enum(ng-if=":: main.isStepType(step, 'FIELD_INTERVAL')")
+          label.main__steps__step__body__radio.radio(ng-repeat="value in main.getActiveStepValues()")
+            input(type="radio", name="{{ step.name }}" ng-value="value" ng-model="main.vehicle[step.name]")
+            {{ value }}
+            
+          
+        p.main__steps__step__description {{ lorem || step.description }}
+        p.main__steps__step__nav
+          a.btn.btn-link.btn-lg(ng-click="main.previousStep()") Go back
+          a.btn.btn-primary.btn-lg(ng-click="main.nextStep()") Next step
