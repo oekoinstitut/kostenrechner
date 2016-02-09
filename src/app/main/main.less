@@ -63,6 +63,11 @@
           &:hover {
             background:mix(white, @brand-primary);
           }
+
+          &.active, &.active:hover {
+            background:lighten(@body-bg, 5%);
+          }
+
           &:last-child {
             border:0;
           }
