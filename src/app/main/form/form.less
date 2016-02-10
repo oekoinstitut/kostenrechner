@@ -19,7 +19,7 @@
       max-width: 450px;
 
       &--select {
-        border:1px solid @navbar-default-border;
+        border:1px solid @panel-default-border;
         border-bottom-width:2px;
       }
 
@@ -35,7 +35,7 @@
         }
 
         &.active, &.active:hover {
-          background:lighten(@body-bg, 5%);
+          background:@panel-bg;
         }
 
         &:last-child {
@@ -46,7 +46,7 @@
 
     &__description {
       text-align: center;
-      background:lighten(@body-bg, 5%);
+      background:@panel-bg;
       max-width:450px;
       margin:20px auto;
       border-radius: 20px;
@@ -58,7 +58,7 @@
         bottom:100%;
         left:50%;
         border:20px solid transparent;
-        border-bottom-color:lighten(@body-bg, 5%);
+        border-bottom-color:@panel-bg;
         .translate(-50%, 0);
       }
     }

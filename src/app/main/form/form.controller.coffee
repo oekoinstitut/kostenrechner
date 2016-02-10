@@ -1,5 +1,5 @@
 angular.module 'oekoKostenrechner'
-  .controller 'MainFormController', ($scope, $timeout, processor, DynamicInput)->
+  .controller 'MainFormController', ($scope, $timeout, $state, processor, DynamicInput)->
     'ngInject'
     new class MainFormController
       constructor: ->
@@ -24,8 +24,8 @@ angular.module 'oekoKostenrechner'
         $scope.$parent.main.vehicles.push @newVehicle
         # Reset the newVehicle var
         @newVehicle = {}
-        # Go to the begining
-        @setActiveStepIdx 0
+        # Go to the chart
+        $state.go 'main.chart'
       # Count steps
       getStepsCount: => @getSteps().length
       # List of steps from Form instance

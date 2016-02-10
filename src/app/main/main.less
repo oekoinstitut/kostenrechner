@@ -10,7 +10,12 @@
     bottom:0;
     width:220px;
     padding:20px;
-    background:darken(@body-bg, 5);
+    background:@panel-default-border;
+    .transition(0.6s translate);
+
+    &.ng-hide {
+      .translate(-110%, 0);
+    }
 
     &__item {
       width:220px - (2px * 20px);
@@ -18,9 +23,13 @@
       margin-right:20px;
     }
 
-    @media (max-width: @screen-sm-max) {
+    @media (max-width: @screen-md-max) {
       width:100%;
       position:static;
+
+      &.ng-hide {
+        .translate(0, -110%);
+      }
     }
   }
 
@@ -29,14 +38,14 @@
     margin-top:20px;
 
     &__body, &__heading {
-      background:lighten(@body-bg, 5%);
+      background:@panel-bg;
       padding:15px 20px;
       margin:0;
     }
 
     &__footer {
       border-top:2px solid darken(@body-bg, 10);
-      background:darken(@body-bg, 5);
+      background:@panel-default-border;
       padding:15px 20px;
     }
   }

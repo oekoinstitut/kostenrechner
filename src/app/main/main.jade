@@ -1,8 +1,10 @@
 .main
   navbar
-  .main__vehicles(ng-if="'main.form' | isState")
+  .main__vehicles(ng-show="( ('main.form' | isState) || ('main.chart' | isState)  ) && main.vehicles.length")
     .main__vehicles__item(ng-repeat="vehicle in main.vehicles")
-      pre {{ vehicle | json }}    
+      .main__vehicles__item__heading Vehicle {{ $index + 1 }}
+      .main__vehicles__item__body
+        pre {{ vehicle | json }}    
   .container(ui-view)
     .main__welcome-screen(ng-hide="'main.form' | isState")
       h2.main__welcome-screen__heading Kostenrechner
