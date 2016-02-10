@@ -21,11 +21,11 @@ angular.module 'oekoKostenrechner'
           "energy_type": "hybrid"
       hasNoParent: (setting)-> setting.parentid is '' or isNaN setting.parentid
       removeVehicle: (index)=> @vehicles.splice index, 1
-      getColor: (n)-> MAIN.COLORS[n % MAIN.COLORS.length]
+      getVehicleColor: (n)-> MAIN.COLORS[n % MAIN.COLORS.length]
       addVehicle: (vehicle)=>
         # Create a uniq id for this vehiclle
         vehicle.id = do _.uniqueId
         # Create a color for this vehiclle
-        vehicle.color = @getColor vehicle.id
+        vehicle.color = @getVehicleColor vehicle.id
         # Add the vehicle to the list
         @vehicles.push vehicle
