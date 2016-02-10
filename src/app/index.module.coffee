@@ -8,4 +8,5 @@ angular.module 'oekoKostenrechner', [
   'ngResource',
   'ui.router',
   'ui.bootstrap',
+  'rzModule',
 ]

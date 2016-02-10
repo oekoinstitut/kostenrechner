@@ -16,15 +16,20 @@ angular.module 'oekoKostenrechner'
         switch do @getType
           # Interval use a specific syntax extract with a regex
           when DYNAMIC_INPUT.FIELD_INTERVAL
-            # Define the tick between value
-            tick = @setting.interval or 1
+            # Define the step between value
+            step = 1*@setting.interval or 1
             # We extract the bounds
-            [all, start, end] = @setting.values.match(FIELD_INTERVAL)
-            # Start and end might be dynamic
-            start = @subset[start] or 0 if isNaN start
-            end   = @subset[end] or 10 if isNaN end
+            [all, floor, ceil] = @setting.values.match(FIELD_INTERVAL)
+            # floor and ceil might be dynamic
+            floor = if isNaN floor then 1 * @subset[floor] or 0 else 1*floor
+            ceil = if isNaN ceil then 1* @subset[ceil] or 10 else 1*ceil
+            # The range use a slider
+            floor: floor
+            ceil: ceil
+            step: step
+            value: (floor + ceil) / 2
             # And create a range
-            _.range start, end, tick
+            range: _.range floor, (ceil + step), step
           # Enumerates literal values
           when DYNAMIC_INPUT.FIELD_ENUM
             # Split using commat and trim space and quotes

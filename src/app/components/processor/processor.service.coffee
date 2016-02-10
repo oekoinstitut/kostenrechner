@@ -3,6 +3,3 @@ angular.module 'oekoKostenrechner'
     class Processor
       constructor: (@settings)->
         # Processor settings
-        @settings = _.each @settings, (setting)->
-          # Add an input field to each step
-          setting.input = new DynamicInput setting

@@ -1,6 +1,8 @@
 .main {
 
-  padding-top:@navbar-height;
+  margin-top:@navbar-height;
+  padding-top:20px;
+
 
   &__vehicles {
     position: fixed;
@@ -23,7 +25,8 @@
     }
 
     &__footer {
-      background:darken(@body-bg, 10%);
+      border-top:2px solid darken(@body-bg, 10);
+      background:darken(@body-bg, 5);
       padding:15px 20px;
     }
   }
@@ -48,12 +51,12 @@
         padding:0;
         max-width: 450px;
 
-        &--field-enum {
+        &--select {
           border:1px solid @navbar-default-border;
           border-bottom-width:2px;
         }
 
-        &--field-enum &__radio {
+        &--select &__radio {
           padding:20px;
           padding-left:30px;
           margin:0;
