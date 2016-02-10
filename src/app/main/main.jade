@@ -1,5 +1,15 @@
 .main
   navbar
+  div(ui-view)
+    .container
+      .main__welcome-screen
+        h2.main__welcome-screen__heading Kostenrechner
+        .main__welcome-screen__body
+          p.lead {{ lorem }}
+        p.main__welcome-screen__footer
+          a.btn.btn-primary.btn-md(ui-sref="main.form") Start by adding a car
+          =" or "
+          a look a the defaults visualisation
   .main__vehicles(ng-show="('main.form.*' | includedByState) && main.vehicles.length || ('main.chart.*' | includedByState)")
     .main__vehicles__item(ng-repeat="vehicle in main.vehicles")
       .main__vehicles__item__heading 
@@ -17,12 +27,3 @@
     a.main__vehicles__add-item(ng-show="('main.chart.*' | includedByState) && main.vehicles.length < 2", ui-sref="main.form")
       i.fa.fa-plus
       div Add a vehicle
-  .container(ui-view)
-    .main__welcome-screen
-      h2.main__welcome-screen__heading Kostenrechner
-      .main__welcome-screen__body
-        p.lead {{ lorem }}
-      p.main__welcome-screen__footer
-        a.btn.btn-primary.btn-md(ui-sref="main.form") Start by adding a car
-        =" or "
-        a look a the defaults visualisation

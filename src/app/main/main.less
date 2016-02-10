@@ -2,7 +2,6 @@
 
   margin-top:@navbar-height;
 
-
   &__vehicles {
     position: fixed;
     left:0;
@@ -91,8 +90,12 @@
     }
 
     @media (max-width: @screen-md-max) {
-      width:100%;
+      padding:20px;
+      width:@screen-sm;
+      max-width:@screen-sm;
+      margin:auto;
       position:static;
+      background:none;
 
       &.ng-hide {
         .translate(0, -110%);

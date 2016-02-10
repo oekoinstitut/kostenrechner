@@ -9,5 +9,7 @@ angular.module 'oekoKostenrechner'
         @xAxisOptions = do processor.getXAxisSettings
         # Get default X-axis value
         @xAxis = @xAxisOptions[0]
+        @yAxis = 'TCO'
+        @type  = 'line'
         # Always redirect to child state
         $state.go 'main.chart.evolution'
