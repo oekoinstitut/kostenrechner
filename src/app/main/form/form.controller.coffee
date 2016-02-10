@@ -4,7 +4,7 @@ angular.module 'oekoKostenrechner'
     new class MainFormController
       constructor: ->
         # Vehicle that the user is creating
-        @newVehicle = id: do _.uniqueId
+        @newVehicle = {}
         # Step' values
         @values = {}
         # Input' inputs
@@ -21,9 +21,9 @@ angular.module 'oekoKostenrechner'
         $timeout (->$scope.$broadcast 'reCalcViewDimensions'), 300
       # Add the new vehicle to the list
       addVehicle: =>
-        $scope.$parent.main.vehicles.push @newVehicle
-        # Reset the newVehicle var
-        @newVehicle = id: do _.uniqueId
+        $scope.$parent.main.addVehicle @newVehicle
+        # Reset newVehicle to be able to create another vehicle
+        @newVehicle = {}
         # Force values related to a step to refresh
         @setActiveStepIdx 0
         # Go to the chart

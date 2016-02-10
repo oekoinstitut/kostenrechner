@@ -12,9 +12,10 @@
           a look a the defaults visualisation
   .main__vehicles(ng-show="('main.form.*' | includedByState) && main.vehicles.length || ('main.chart.*' | includedByState)")
     .main__vehicles__item(ng-repeat="vehicle in main.vehicles")
-      .main__vehicles__item__heading 
+      .main__vehicles__item__heading(ng-style="{ background: vehicle.color }")
+        .main__vehicles__item__heading__color
         .main__vehicles__item__heading__actions
-          button.btn.btn-xs.btn-default(ng-click="main.removeVehicle($index)")
+          button.btn.btn-xs.btn-link(ng-click="main.removeVehicle($index)")
             i.fa.fa-trash
             span.sr-only Remove
         | Vehicle {{ $index + 1 }}      

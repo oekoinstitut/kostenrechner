@@ -47,16 +47,30 @@
         text-align: center;
         font-weight:bold;
         color: @brand-secondary;
+        color: white;
         text-transform: uppercase;
         padding:5px;
         border-bottom:@panel-default-border 1px solid;
         position: relative;
 
-        &__actions {
+        &__color, &__actions {
           position:absolute;
-          right:5px;
           top:50%;
           .translate(0, -50%);
+        }
+
+        &__color {
+          left:5px;
+          width:15px;
+          height:15px;
+        }
+
+        &__actions {
+          right:5px;
+          .btn-link,
+          .btn-link:hover {
+            color:inherit;
+          }
         }
       }
 
