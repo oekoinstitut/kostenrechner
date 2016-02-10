@@ -1,12 +1,24 @@
 .main
   navbar
-  .main__vehicles(ng-show="( ('main.form' | isState) || ('main.chart' | isState)  ) && main.vehicles.length")
+  .main__vehicles(ng-show="('main.form.*' | includedByState)  && main.vehicles.length || ('main.chart.*' | includedByState)")
     .main__vehicles__item(ng-repeat="vehicle in main.vehicles")
-      .main__vehicles__item__heading Vehicle {{ $index + 1 }}
-      .main__vehicles__item__body
-        pre {{ vehicle | json }}    
+      .main__vehicles__item__heading 
+        .main__vehicles__item__heading__actions
+          button.btn.btn-xs.btn-default(ng-click="main.removeVehicle($index)")
+            i.fa.fa-trash
+            span.sr-only Remove
+        | Vehicle {{ $index + 1 }}      
+      table.table.table-condensed.table-striped.main__vehicles__item__body
+        tbody
+          tr(ng-repeat="setting in main.listedSettings | filter:main.hasNoParent")
+            td {{ setting.label }} 
+            td 
+              strong {{ vehicle[setting.name] }}
+    a.main__vehicles__add-item(ng-show="('main.chart.*' | includedByState) && main.vehicles.length < 2", ui-sref="main.form")
+      i.fa.fa-plus
+      div Add a vehicle
   .container(ui-view)
-    .main__welcome-screen(ng-hide="'main.form' | isState")
+    .main__welcome-screen
       h2.main__welcome-screen__heading Kostenrechner
       .main__welcome-screen__body
         p.lead {{ lorem }}

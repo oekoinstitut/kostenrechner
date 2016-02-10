@@ -31,11 +31,12 @@
         cursor:pointer;
 
         &:hover {
-          background:mix(white, @brand-primary);
+          background-color: @nav-link-hover-bg;
         }
 
         &.active, &.active:hover {
-          background:@panel-bg;
+          background:@component-active-bg;
+          color:@component-active-color;
         }
 
         &:last-child {

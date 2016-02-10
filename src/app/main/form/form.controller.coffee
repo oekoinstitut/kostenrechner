@@ -24,6 +24,8 @@ angular.module 'oekoKostenrechner'
         $scope.$parent.main.vehicles.push @newVehicle
         # Reset the newVehicle var
         @newVehicle = {}
+        # Force values related to a step to refresh
+        @setActiveStepIdx 0
         # Go to the chart
         $state.go 'main.chart'
       # Count steps
@@ -32,13 +34,7 @@ angular.module 'oekoKostenrechner'
       getSteps: ->
         return @steps if @steps?
         # Use step from the processor's settings
-        @steps = _.chain processor.settings
-          # Only keeps settings that are explicitely
-          # made for the preliminary steps
-          .filter preliminary: yes
-          # Order the list using the importancerank DESC
-          .orderBy (s)-> - s.importancerank
-          .value()
+        @steps = do processor.getPreliminarySettings
       isStepActive: (step, index)=> index is do @getActiveStepIdx and @values[step.id]?
       getStepType: (step)=> @inputs[step.id].getType()
       getStepValues: (step)=> @values[step.id]

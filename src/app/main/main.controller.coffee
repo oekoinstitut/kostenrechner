@@ -1,8 +1,9 @@
 angular.module 'oekoKostenrechner'
-  .controller 'MainController', ($state)->
+  .controller 'MainController', ($state, processor)->
     'ngInject'
     new class MainController
       constructor: ->
+        @listedSettings = do processor.getListedSettings
         # Vehicles created by the user
         @vehicles = [
           {
@@ -13,3 +14,6 @@ angular.module 'oekoKostenrechner'
           }
         ]
         $state.go 'main.chart'
+
+      hasNoParent: (setting)-> setting.parentid is '' or isNaN setting.parentid
+      removeVehicle: (index)=> @vehicles.splice index, 1

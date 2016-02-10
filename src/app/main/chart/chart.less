@@ -5,11 +5,27 @@
 
   &__nav {
     padding-top:20px;
+    float:right;
+
+    @media (max-width: @screen-md-max) {
+      float:none;
+    }
   }
 
   &__view {
     margin-top:20px;
+    padding:20px;
     border:1px solid @panel-default-border;
     border-bottom-width:2px;
+
+    &__workspace {
+      height:350px;
+      background:@panel-bg;
+      border-bottom: 2px solid @panel-default-border;
+    }
+
+    &__select-x-axis {
+      margin-top:10px;
+    }
   }
 }

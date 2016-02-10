@@ -11,7 +11,9 @@
     width:220px;
     padding:20px;
     background:@panel-default-border;
+    overflow: auto;
     .transition(0.6s translate);
+    &:extend(.clearfix all);
 
     &.ng-hide {
       .translate(-110%, 0);
@@ -20,7 +22,51 @@
     &__item {
       width:220px - (2px * 20px);
       display: inline-block;
-      margin-right:20px;
+      margin-right:10px;
+      margin-bottom: 10px;
+      float:left;
+      background:@panel-bg;
+      border-radius: @border-radius-large;
+      font-size:0.9em;
+
+      &__heading {
+        text-align: center;
+        font-weight:bold;
+        color: @brand-secondary;
+        text-transform: uppercase;
+        padding:5px;
+        border-bottom:@panel-default-border 1px solid;
+        position: relative;
+
+        &__actions {
+          position:absolute;
+          right:5px;
+          top:50%;
+          .translate(0, -50%);
+        }
+      }
+
+      &__body {
+        padding:0;
+        margin:0;
+      }
+    }
+
+    &__add-item {
+      width:220px - (2px * 20px);
+      background: @brand-primary;
+      color: white;
+      display: inline-block;
+      padding:25px 20px;
+      margin-bottom: 10px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: @border-radius-large;
+
+      &:hover {
+        text-decoration: none;
+        color: white;
+      }
     }
 
     @media (max-width: @screen-md-max) {
@@ -29,6 +75,10 @@
 
       &.ng-hide {
         .translate(0, -110%);
+      }
+
+      &__item {
+        margin-bottom: 0;
       }
     }
   }

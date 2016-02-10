@@ -3,11 +3,17 @@
     .col-md-5
       h2.main__chart__heading Total cost of ownership
     .col-md-7
-      ul.main__chart__nav.nav.nav-pills
-        li.active
-          a See the evolution
-        li
-          a See the repartion
-        li
-          a See CO2
-  .main__chart__view(ng-view) YOLO
+      ul.main__chart__nav.nav.nav-pills(role="navigation")
+        li(ui-sref-active="active")
+          a(ui-sref="main.chart.evolution")
+            | See the evolution
+        li(ui-sref-active="active")
+          a(ui-sref="main.chart.repartion")
+            | See the repartion
+        li(ui-sref-active="active")
+          a(ui-sref="main.chart.co2")
+            | See CO2
+  .main__chart__view(ng-view)
+    .main__chart__view__workspace
+    .main__chart__view__select-x-axis
+      select.form-control(ng-options="opt as opt.name for opt in chart.xAxisOptions", ng-model="chart.xAxis")

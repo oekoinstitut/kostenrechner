@@ -28,14 +28,14 @@
     "hasslider": false,
     "canbeonxaxis": true,
     "shownonthelist": true,
-    "importancerank": "5",
+    "importancerank": "0",
     "specifictocartype": "",
     "preliminary": false,
     "parentid": "",
     "editable": false,
     "use": "both",
-    "context": "",
-    "name": ""
+    "context": "Vehicle",
+    "name": "holding_time"
   },
   {
     "id": "3",
