@@ -8,8 +8,16 @@ angular.module 'oekoKostenrechner'
         # Vehicles created by the user
         @vehicles = [
           {
+            "id": do _.uniqueId,
             "acquisition_year": 2014,
             "mileage": 30000,
+            "car_type": "klein",
+            "energy_type": "hybrid"
+          },
+          {
+            "id": do _.uniqueId,
+            "acquisition_year": 2012,
+            "mileage": 20000,
             "car_type": "klein",
             "energy_type": "hybrid"
           }

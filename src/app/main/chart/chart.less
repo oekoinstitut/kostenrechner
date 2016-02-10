@@ -19,9 +19,24 @@
     border-bottom-width:2px;
 
     &__workspace {
-      height:350px;
       background:@panel-bg;
       border-bottom: 2px solid @panel-default-border;
+
+      .c3 svg {
+
+        font-family: @font-family-base;
+        
+        .c3-axis {
+          text {
+            fill: @panel-default-border;
+            color: @panel-default-border;
+          }
+
+          line, path {
+            stroke: @panel-default-border;
+          }
+        }
+      }
     }
 
     &__select-x-axis {

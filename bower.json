@@ -15,7 +15,8 @@
     "angular-bootstrap": "~0.13.4",
     "angular": "~1.5.*",
     "lodash": "~4.3.0",
-    "angularjs-slider": "~2.8.0"
+    "angularjs-slider": "~2.8.0",
+    "c3": "0.4.10"
   },
   "devDependencies": {
     "angular-mocks": "~1.5.*"
@@ -34,6 +35,7 @@
   },
   "resolutions": {
     "jquery": "~2.1.4",
-    "angular": "~1.5.*"
+    "angular": "~1.5.*",
+    "d3": "<=3.5.0"
   }
 }

@@ -5,10 +5,10 @@
     .col-md-7
       ul.main__chart__nav.nav.nav-pills(role="navigation")
         li(ui-sref-active="active")
-          a(ui-sref="main.chart.evolution")
+          a(ui-sref="main.chart.tco({ type: 'spline' })")
             | See the evolution
         li(ui-sref-active="active")
-          a(ui-sref="main.chart.repartion")
+          a(ui-sref="main.chart.tco({ type: 'bar' })")
             | See the repartion
         li(ui-sref-active="active")
           a(ui-sref="main.chart.co2")
