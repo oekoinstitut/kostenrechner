@@ -1,8 +1,11 @@
 .main
   navbar
   .main__vehicles(ng-if="main.started")
-    pre {{ main.vehicle | json }}
-  .container
+    .main__vehicles__item
+      pre {{ main.newVehicle | json }}    
+    .main__vehicles__item(ng-repeat="vehicle in main.vehicles")
+      pre {{ vehicle | json }}    
+  .container(ui-view)
     .main__welcome-screen(ng-hide="main.started")
       h2.main__welcome-screen__heading Kostenrechner
       .main__welcome-screen__body
@@ -10,8 +13,7 @@
       p.main__welcome-screen__footer
         a.btn.btn-primary.btn-md(ng-click="main.start()") Start by adding a car
         =" or "
-        a look a the defaults visualisation
-        
+        a look a the defaults visualisation        
     .main__steps(ng-show="main.started")
       .main__steps__step(ng-repeat='step in main.getSteps() | filter:main.isStepActive track by step.id')
         form(ng-submit="main.nextStep()", name="stepForm", novalidate)
@@ -22,20 +24,20 @@
             div(ng-switch-when="enum")
               p.main__steps__step__body.main__steps__step__body--select
                 label.main__steps__step__body__radio.radio(ng-repeat="value in main.getStepValues(step) track by $index",
-                  ng-class="{ 'active': main.vehicle[step.name] === value }")
-                  input(type="radio", required, name="{{ step.name }}", ng-value="value", ng-model="main.vehicle[step.name]")
+                  ng-class="{ 'active': main.newVehicle[step.name] === value }")
+                  input(type="radio", required, name="{{ step.name }}", ng-value="value", ng-model="main.newVehicle[step.name]")
                   {{ value }}            
             div(ng-switch-when="interval")
               div(ng-if=":: !main.inputs[step.id].setting.hasslider")
                 p.main__steps__step__body.main__steps__step__body--select
                   label.main__steps__step__body__radio.radio(ng-repeat="value in main.getStepValues(step).range track by $index",
-                    ng-class="{ 'active': main.vehicle[step.name] === value }")
-                    input(type="radio", required, name="{{ step.name }}" ng-value="value" ng-model="main.vehicle[step.name]")
+                    ng-class="{ 'active': main.newVehicle[step.name] === value }")
+                    input(type="radio", required, name="{{ step.name }}" ng-value="value" ng-model="main.newVehicle[step.name]")
                     {{ value }}
               div(ng-if=":: main.inputs[step.id].setting.hasslider")  
-                div(ng-init="main.vehicle[step.name] = main.getStepValues(step).value")
+                div(ng-init="main.newVehicle[step.name] = main.getStepValues(step).value")
                   p.main__steps__step__body.main__steps__step__body--slider
-                    rzslider(rz-slider-model="main.vehicle[step.name]",
+                    rzslider(rz-slider-model="main.newVehicle[step.name]",
                              rz-slider-options="main.getStepValues(step)")
               
           

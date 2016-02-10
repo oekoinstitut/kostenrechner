@@ -1,28 +1,40 @@
 angular.module 'oekoKostenrechner'
-  .controller 'MainController', ($scope, $timeout, processor, DynamicInput, DYNAMIC_INPUT)->
+  .controller 'MainController', ($scope, $timeout, processor, DynamicInput)->
     'ngInject'
     new class MainController
       constructor: ->
-        @vehicle = {}
+        # Vehicles created by the user
+        @vehicles = []
+        # Vehicle that the user is creating
+        @newVehicle = {}
+        # Index of the current step
         @activeStepIdx = 0
+        # True when the form is stared
         @started = no
-        @types = DYNAMIC_INPUT
-        # Step values
+        # Step' values
         @values = {}
+        # Input' inputs
         @inputs = {}
       # Start the quiz
       start: =>
         @started = yes
         # Force values related to a step to refresh
-        do @refreshStep
+        @setActiveStepIdx 0
       # We store active step's values to avoid infinite digest
       refreshStep: =>
         # Create a dictionnary of inputs
         @inputs[s.id] = new DynamicInput(s) for s in processor.settings
         # Refresh value list from
-        @values[id] = @inputs[id].getValues @vehicle for id of @inputs
+        @values[id] = @inputs[id].getValues @newVehicle for id of @inputs
         # rzSlider doesn't like to be rendered into an hidden element
         $timeout (->$scope.$broadcast 'reCalcViewDimensions'), 300
+      # Add the new vehicle to the list
+      addVehicle: =>
+        @vehicles.push @newVehicle
+        # Reset the newVehicle var
+        @newVehicle = {}
+        # Go to the begining
+        do @start
       # Count steps
       getStepsCount: => @getSteps().length
       # List of steps from Form instance
@@ -42,20 +54,22 @@ angular.module 'oekoKostenrechner'
       # Shortcuts on the active step
       getActiveStep: => @getSteps()[@activeStepIdx]
       getActiveStepIdx: => @activeStepIdx
+      setActiveStepIdx: (idx)=>
+        @activeStepIdx = idx
+        # Force values related to a step to refresh
+        do @refreshStep
       # Allow or not navigation
       hasNextStep: => @activeStepIdx < @getStepsCount() - 1
       hasPreviousStep: => @activeStepIdx > 0
       # Go to the next step and refresh step's values
       nextStep: =>
         if do @hasNextStep
-          @activeStepIdx++
-          # Force values related to a step to refresh
-          do @refreshStep
+          @setActiveStepIdx @activeStepIdx + 1
+        else
+          do @addVehicle
       # Go to the previous step and refresh step's values
       previousStep: =>
         unless @hasPreviousStep()
           @started = no
         else
-          @activeStepIdx--
-          # Force values related to a step to refresh
-          do @refreshStep
+          @setActiveStepIdx @activeStepIdx - 1

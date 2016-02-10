@@ -1,7 +1,6 @@
 .main {
 
   margin-top:@navbar-height;
-  padding-top:20px;
 
 
   &__vehicles {
@@ -12,6 +11,16 @@
     width:220px;
     padding:20px;
     background:darken(@body-bg, 5);
+
+    &__item {
+      width:220px - (2px * 20px);
+      display: inline-block;
+    }
+
+    @media (max-width: @screen-sm-max) {
+      width:100%;
+      position:static;
+    }
   }
 
   &__welcome-screen {
