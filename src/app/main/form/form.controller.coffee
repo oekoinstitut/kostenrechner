@@ -57,6 +57,7 @@ angular.module 'oekoKostenrechner'
       # Go to the previous step and refresh step's values
       previousStep: =>
         unless @hasPreviousStep()
-          @started = no
+          # Go to the chart
+          $state.go 'main'
         else
           @setActiveStepIdx @activeStepIdx - 1
