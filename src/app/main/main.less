@@ -12,7 +12,7 @@
     padding:20px;
     background:@panel-default-border;
     overflow: auto;
-    .transition(0.6s translate);
+    .transition(0.6s transform);
     &:extend(.clearfix all);
 
     &.ng-hide {
@@ -28,6 +28,21 @@
       background:@panel-bg;
       border-radius: @border-radius-large;
       font-size:0.9em;
+      .transition(0.6s);
+
+      &.ng-leave.ng-leave-active,
+      &.ng-move,
+      &.ng-enter {
+        opacity:0;
+        .scale(0);
+      }
+
+      &.ng-leave,
+      &.ng-move.ng-move-active,
+      &.ng-enter.ng-enter-active {
+        opacity:1;
+        .scale(1);
+      }
 
       &__heading {
         text-align: center;
@@ -62,6 +77,12 @@
       text-align: center;
       cursor: pointer;
       border-radius: @border-radius-large;
+      .transition(0.6s);
+
+      &.ng-hide {
+        opacity:0;
+        .scale(0);
+      }
 
       &:hover {
         text-decoration: none;

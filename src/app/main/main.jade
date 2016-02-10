@@ -1,6 +1,6 @@
 .main
   navbar
-  .main__vehicles(ng-show="('main.form.*' | includedByState)  && main.vehicles.length || ('main.chart.*' | includedByState)")
+  .main__vehicles(ng-show="('main.form.*' | includedByState) && main.vehicles.length || ('main.chart.*' | includedByState)")
     .main__vehicles__item(ng-repeat="vehicle in main.vehicles")
       .main__vehicles__item__heading 
         .main__vehicles__item__heading__actions
@@ -10,7 +10,7 @@
         | Vehicle {{ $index + 1 }}      
       table.table.table-condensed.table-striped.main__vehicles__item__body
         tbody
-          tr(ng-repeat="setting in main.listedSettings | filter:main.hasNoParent")
+          tr(ng-repeat="setting in main.listedSettings | filter:main.hasNoParent | limitTo:4")
             td {{ setting.label }} 
             td 
               strong {{ vehicle[setting.name] }}
