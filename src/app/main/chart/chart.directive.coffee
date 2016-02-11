@@ -32,7 +32,7 @@ angular.module 'oekoKostenrechner'
         generateColumns: ->
           for vehicle in scope.vehicles
             [vehicle.id, 0, Math.random() * 10, Math.random() * 20, Math.random() * 30]
-        generateColors: =>
+        generateColors: ->
           colors = {}
           for vehicle in scope.vehicles
             colors[vehicle.id] = vehicle.color

@@ -137,4 +137,4 @@ gulp.task('deploy', ['build'], function() {
 });
 
 
-gulp.task('build', ['html', 'fonts', 'other']);
+gulp.task('build', ['html', 'fonts', 'other', 'vehicle']);
