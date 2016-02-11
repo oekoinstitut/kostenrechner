@@ -9,16 +9,17 @@ angular.module 'oekoKostenrechner'
         # Vehicles created by the user
         @vehicles = []
         # Dummy vehicles
-        for i in [1..10]
+        for i in [1..3]
           @addVehicle
             "acquisition_year": 2012,
             "mileage": 20000,
             "car_type": "klein",
-            "energy_type": "hybrid"
+            "energy_type": "BEV"
       hasNoParent: (setting)-> setting.parentid is '' or isNaN setting.parentid
       removeVehicle: (index)=> @vehicles.splice index, 1
       getVehicleColor: (n)-> MAIN.COLORS[n % MAIN.COLORS.length]
-      addVehicle: (vehicle)=>
+      addVehicle: (params)=>
+        vehicle = new Vehicle params
         # Create a uniq id for this vehiclle
         vehicle.id = do _.uniqueId
         # Create a color for this vehiclle
