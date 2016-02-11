@@ -457,3 +457,5 @@ var Vehicle = function(params) {
 	this.getCO2byMileage(this.acquisition_year);
 
 }
+
+module.exports = Vehicle

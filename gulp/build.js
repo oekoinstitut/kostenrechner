@@ -116,6 +116,16 @@ gulp.task('gss', function (cb) {
   });
 });
 
+gulp.task('compute', function() {
+    gulp.src('processor/compute.js')
+        .pipe($.browserify({
+          insertGlobals : true,
+          standalone: 'compute'
+        }))
+        .pipe($.rename('processor.vehicle.js'))
+        .pipe(gulp.dest('src/app/components/processor/'))
+});
+
 gulp.task('clean', function () {
   return $.del([path.join(conf.paths.dist, '/'), path.join(conf.paths.tmp, '/')]);
 });
