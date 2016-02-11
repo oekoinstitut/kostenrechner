@@ -14,11 +14,18 @@ angular.module 'oekoKostenrechner'
         FLOOR_YEAR: 2014
         CEIL_YEAR: 2025
         bindWatchers: ->
-          scope.$watch 'type', (type, old)=>
-            if old?
-              @chart.transform type
+          scope.$watch 'x', (x, old)=>
+            return unless old?
+            # Load new data
+            @chart.load
+              columns: do @generateColumns
               # Enhance the chart with d3
-              do @enhanceChart
+              done: @enhanceChart
+          scope.$watch 'type', (type, old)=>
+            return unless old?
+            @chart.transform type
+            # Enhance the chart with d3
+            do @enhanceChart
           scope.$watch 'vehicles', (vehicles, old)=>
             # New data columns
             cols = do @generateColumns
@@ -39,10 +46,16 @@ angular.module 'oekoKostenrechner'
           # Deep watch vehicles
           , yes
         getVehicleDisplay: (vehicle)->
-          display = scope.processor.findDisplay xaxis: scope.x, name: scope.y
+          display = scope.processor.findDisplay xaxis: scope.x, yaxis: scope.y
           # Extract display for this vehicle
           vehicle[display.name] if display?
-        getXValues: => y for y in [@FLOOR_YEAR..@CEIL_YEAR]
+        getXValues: =>
+          if scope.x is 'holding_time'
+            y for y in [@FLOOR_YEAR..@CEIL_YEAR]
+          else
+            setting = scope.processor.getSettingsBy(name: scope.x)[0]
+            input = new DynamicInput setting
+            input.getValues().range
         getVehicleValues: (vehicle, component)=>
           # Use xValues to fill empty tick
           xValues = do @getXValues

@@ -7,7 +7,7 @@
       div(ng-switch, on=":: form.getStepType(step)")
         div(ng-switch-when="enum")
           p.main__form__step__body.main__form__step__body--select
-            label.main__form__step__body__radio.radio(ng-repeat="value in form.getStepValues(step) track by $index",
+            label.main__form__step__body__radio.radio(ng-repeat="value in form.getStepValues(step).range track by $index",
               ng-class="{ 'active': form.newVehicle[step.name] === value }")
               input(type="radio", required, name="{{ step.name }}", ng-value="value", ng-model="form.newVehicle[step.name]")
               {{ value }}            

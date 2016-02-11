@@ -381,7 +381,7 @@ var Vehicle = function(params) {
 			var scenario = scenarios[i];
 			this.TCO_by_mileage[scenario] = {};
 
-			this.TCO_by_mileage[scenario][year] = {}
+			// this.TCO_by_mileage[scenario][year] = {}
 
 			// Saves the initial value
 			var temp_mileage = this.mileage;
@@ -391,7 +391,8 @@ var Vehicle = function(params) {
 				// Updates the energy costs for the new mileage
 				this.mileage = miles;
 				this.computeCosts();
-				this.TCO_by_mileage[scenario][year][miles] = this.TCO[scenario][year]
+				// this.TCO_by_mileage[scenario][year][miles] = this.TCO[scenario][year]
+				this.TCO_by_mileage[scenario][miles] = this.TCO[scenario][year]
 
 			}
 			// Goes back to original position

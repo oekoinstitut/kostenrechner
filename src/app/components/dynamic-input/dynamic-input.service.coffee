@@ -33,9 +33,9 @@ angular.module 'oekoKostenrechner'
           # Enumerates literal values
           when DYNAMIC_INPUT.FIELD_ENUM
             # Split using commat and trim space and quotes
-            _.map @setting.values.split(','), (v) ->_.trim v, ' "'
+            range: _.map @setting.values.split(','), (v) ->_.trim v, ' "'
           # Booleans enumerates only 2 value (obviously)
-          when DYNAMIC_INPUT.FIELD_BOOLEAN then [yes, no]
+          when DYNAMIC_INPUT.FIELD_BOOLEAN then range: [yes, no]
       getType: =>
         # Test the content of the field's value to know its type.
         switch yes
