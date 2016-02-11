@@ -116,11 +116,11 @@ gulp.task('gss', function (cb) {
   });
 });
 
-gulp.task('compute', function() {
-    gulp.src('processor/compute.js')
+gulp.task('vehicle', function() {
+    gulp.src('processor/vehicle.js')
         .pipe($.browserify({
           insertGlobals : true,
-          standalone: 'compute'
+          standalone: 'Vehicle'
         }))
         .pipe($.rename('processor.vehicle.js'))
         .pipe(gulp.dest('src/app/components/processor/'))
