@@ -11,6 +11,7 @@ angular.module 'oekoKostenrechner'
         # Dummy vehicles
         for i in [0..2]
           @addVehicle
+            "acquisition_year": 2014 + Math.round(Math.random()*10)
             "car_type": ["klein", "mittel", "groß"][i]
             "energy_type": ["benzin", "diesel", "BEV"][i]
       hasNoParent: (setting)-> setting.parentid is '' or isNaN setting.parentid

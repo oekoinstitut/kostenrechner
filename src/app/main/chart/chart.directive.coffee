@@ -11,6 +11,8 @@ angular.module 'oekoKostenrechner'
     link: (scope, element, attr)->
       new class Chart
         TRANSITION_DURATION: 600
+        FLOOR_YEAR: 2014
+        CEIL_YEAR: 2025
         bindWatchers: ->
           scope.$watch 'type', (type, old)=>
             if old?
@@ -40,16 +42,23 @@ angular.module 'oekoKostenrechner'
           display = scope.processor.findDisplay xaxis: scope.x, name: scope.y
           # Extract display for this vehicle
           vehicle[display.name] if display?
+        getXValues: => y for y in [@FLOOR_YEAR..@CEIL_YEAR]
+        getVehicleValues: (vehicle, component)=>
+          # Use xValues to fill empty tick
+          xValues = do @getXValues
+          # Find the value for this vehicle
+          display = @getVehicleDisplay vehicle
+          # Iterate over xValues' ticks
+          for tick in xValues
+            display[component][tick]?.total_cost or null
         generateColumns: =>
-          series = []
+          series = [ _.concat(['x'], do @getXValues) ]
+          # For each vehicle...
           for vehicle in scope.vehicles
-            # Find the value for this vehicle
-            display = @getVehicleDisplay vehicle
             # Draw the 3 components of a vehicle
-            for name of display
-              data = [vehicle.id + "-" + name]
-              data.push display[name][tick].total_cost for tick of display[name]
-              series.push data
+            for component in ['contra', 'pro', 'mittel']
+              values = @getVehicleValues vehicle, component
+              series.push(_.concat [vehicle.id + '-' + component], values)
           series
         generateColors: ->
           colors = {}
@@ -71,12 +80,11 @@ angular.module 'oekoKostenrechner'
             legend:
               show: no
             point:
-              show: no
-            spline:
-              zerobased: yes
+                show: no
             transition:
               duration: @TRANSITION_DURATION
             data:
+              x: 'x'
               type: scope.type
               colors: do @generateColors
               columns: do @generateColumns
@@ -108,14 +116,18 @@ angular.module 'oekoKostenrechner'
             .attr 'class', (d)-> 'd3-chart-area d3-chart-area-' + d.id
           # And bind values to the group
           areas.datum (d)=>
+              datum = []
               # Value from chart's data
               pro    = (@chart.data d.id + "-pro")[0].values
               contra = (@chart.data d.id + "-contra")[0].values
               # Merge data into an array
               for i of pro
-                # Each line of the array contains data for both groups
-                # and the value on x
-                pro: pro[i].value, contra: contra[i].value, x: pro[i].x
+                # Without null values
+                if pro[i].value?
+                  # Each spline of the array contains data for both groups
+                  # and the value on x
+                  datum.push pro: pro[i].value, contra: contra[i].value, x: pro[i].x
+              datum
             # Colorize area using the current vehicle's color
             .style 'fill', (d, i)-> vehicles[i].color
           # Update old elements
