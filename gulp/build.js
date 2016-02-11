@@ -1,5 +1,9 @@
 'use strict';
 
+let GSSID = '1-BxTbzc5z-04-0-3Q4KJTJtLKmmjAOE5s8X8bzEdv5Q';
+let BOOL_FIELDS = ['hasslider', 'canbeonxaxis', 'shownonthelist', 'preliminary', 'editable'];
+let UNWANTED_FIELDS = ['_xml', '_links'];
+
 var path = require('path');
 var fs   = require('fs');
 var _    = require('lodash');
@@ -94,11 +98,7 @@ gulp.task('other', function () {
     .pipe(gulp.dest(path.join(conf.paths.dist, '/')));
 });
 
-gulp.task('gss', function (cb) {
-
-  let GSSID = '1-BxTbzc5z-04-0-3Q4KJTJtLKmmjAOE5s8X8bzEdv5Q';
-  let BOOL_FIELDS = ['hasslider', 'canbeonxaxis', 'shownonthelist', 'preliminary', 'editable'];
-  let UNWANTED_FIELDS = ['_xml', '_links'];
+gulp.task('gss:settings', function (cb) {
 
   let gss = new Gss(GSSID);
 
@@ -115,6 +115,26 @@ gulp.task('gss', function (cb) {
     fs.writeFile(path.join(__dirname, '../src/assets/settings.json'), file, cb);
   });
 });
+
+gulp.task('gss:display', function (cb) {
+
+  let gss = new Gss(GSSID);
+
+  gss.getRows(2, function(err, rows){
+    var data = _.map(rows, function(row) {
+      // Remove unwanted properties
+      for(let k of UNWANTED_FIELDS) delete row[k];
+      return row;
+    });
+    var file = JSON.stringify(data, null, 2);
+    // And override the existinng JSON file
+    fs.writeFile(path.join(__dirname, '../src/assets/display.json'), file, cb);
+  });
+});
+
+
+
+gulp.task('gss', ["gss:settings", "gss:display"]);
 
 gulp.task('vehicle', function() {
     gulp.src('processor/vehicle.js')
