@@ -17,4 +17,4 @@
     .main__chart__view__workspace
       chart(x="chart.xAxis", y="chart.yAxis", type="chart.type", vehicles="main.vehicles", processor="main.processor")
     .main__chart__view__select-x-axis
-      select.form-control(ng-options="opt as opt.label for opt in chart.xAxisOptions", ng-model="chart.xAxis")
+      select.form-control(ng-options="opt.name as opt.label for opt in chart.xAxisOptions", ng-model="chart.xAxis")

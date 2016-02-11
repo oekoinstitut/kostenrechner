@@ -1,7 +1,9 @@
 angular.module 'oekoKostenrechner'
   .service 'Processor', (DynamicInput)->
     class Processor
-      constructor: (@settings)-> # Processor settings
+      constructor: (@settings, @display)->
+        # The @settings object define every variables
+        # The @display defines variables combinations that can be calculated
       getSettingsBy: (filter)=>
         _(@settings)
           .filter(filter)
@@ -14,3 +16,5 @@ angular.module 'oekoKostenrechner'
       getListedSettings: => @getSettingsBy shownonthelist: yes
       # Some settings can be used as x axis
       getXAxisSettings: => @getSettingsBy canbeonxaxis: yes
+      # Find the display for the given query
+      findDisplay: (query)=> _.find @display, query

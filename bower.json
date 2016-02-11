@@ -16,7 +16,7 @@
     "angular": "~1.5.*",
     "lodash": "~4.3.0",
     "angularjs-slider": "~2.8.0",
-    "c3": "0.4.10"
+    "c3": "0.4.11-rc4"
   },
   "devDependencies": {
     "angular-mocks": "~1.5.*"

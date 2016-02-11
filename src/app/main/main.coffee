@@ -11,8 +11,10 @@ angular.module 'oekoKostenrechner'
             'ngInject'
             # Get processor settings
             $http.get 'assets/settings.json'
-              # Extract the data subset
-              .then (d)-> d.data
-          processor: (settings, Processor)->
+          display: ($http)->
             'ngInject'
-            new Processor settings
+            # Get processor display
+            $http.get 'assets/display.json'
+          processor: (settings, display, Processor)->
+            'ngInject'
+            new Processor settings.data, display.data
