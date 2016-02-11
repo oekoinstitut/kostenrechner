@@ -1,5 +1,5 @@
 angular.module 'oekoKostenrechner'
-  .directive 'chart', ->
+  .directive 'chart', (DynamicInput)->
     'ngInject'
     restrict: 'EA'
     scope:
@@ -12,6 +12,9 @@ angular.module 'oekoKostenrechner'
       new class Chart
         bindWatchers: ->
           scope.$watch 'type', (type, old)=> @chart.transform type if old?
+          scope.$watch 'x', (x, old)=>
+            input = new DynamicInput x
+            @chart.x input.getValues().range
           scope.$watch 'vehicles', (vehicles, old)=>
             # Are we initializing the data
             if old?
