@@ -24,7 +24,7 @@
           tr(ng-repeat="setting in main.listedSettings | filter:main.hasNoParent | limitTo:4")
             td {{ setting.label }} 
             td 
-              strong {{ vehicle[setting.name] }}
+              strong {{ vehicle[setting.name].total || vehicle[setting.name] }}
     a.main__vehicles__add-item(ng-show="('main.chart.*' | includedByState) && main.vehicles.length < 2", ui-sref="main.form")
       i.fa.fa-plus
       div Add a vehicle
