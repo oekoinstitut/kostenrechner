@@ -217,23 +217,23 @@ var Vehicle = function(params) {
 		this.maintenance_costs.tires = ((this.maintenance_costs.tires * 12) / 20000) * this.mileage
 		this.maintenance_costs.inspection = ((this.maintenance_costs.inspection * 12) / 20000) * this.mileage
 		this.maintenance_costs.repairs = ((this.maintenance_costs.repairs * 12) / 20000) * this.mileage
-		this.maintenance_costs.total_maintenance_costs = this.maintenance_costs.tires + this.maintenance_costs.inspection + this.maintenance_costs.repairs;
+		this.maintenance_costs.total = this.maintenance_costs.tires + this.maintenance_costs.inspection + this.maintenance_costs.repairs;
 
 	}
 
 	this.getAcquisitionPrice = function() {
-		this.price.total_price = {}
+		this.price.total = {}
 		this.price.battery_price = {}
 		for (var i in scenarios) {
 			var scenario = scenarios[i];
 			if (this.energy_type != "BEV") {
 				this.price.basis_price = getRawAcquisitionPrice(this.energy_type, this.car_type, this.acquisition_year);
-				this.price.total_price[scenario] = this.price.basis_price;
+				this.price.total[scenario] = this.price.basis_price;
 			} else {
 				this.price.basis_price = getRawAcquisitionPrice(this.energy_type, this.car_type, this.acquisition_year);
 				this.price.battery_price[scenario] = this.getBatteryPrice(scenario);
 				this.price.charging_option = getChargingOptionPrice(this.charging_option, this.acquisition_year);
-				this.price.total_price[scenario] = this.price.basis_price + this.price.battery_price[scenario];
+				this.price.total[scenario] = this.price.basis_price + this.price.battery_price[scenario];
 			}
 		}
 	}
@@ -241,7 +241,7 @@ var Vehicle = function(params) {
 	this.setAcquisitionPrice = function(price) {
 		for (var i in scenarios) {
 			var scenario = scenarios[i];
-			this.price.total_price[scenario] = price;
+			this.price.total[scenario] = price;
 		}
 	}
 
@@ -325,12 +325,12 @@ var Vehicle = function(params) {
 			for (var year = this.acquisition_year; year <= 2025; year++) {
 				if (year < this.acquisition_year + presets.abschreibungszeitraum){
 					if (year == this.acquisition_year && presets.sonder_afa == true && this.energy_type=="BEV"){
-						this.amortization[scenario][year] = this.price.total_price[scenario] * .5 * presets.unternehmenssteuersatz;
+						this.amortization[scenario][year] = this.price.total[scenario] * .5 * presets.unternehmenssteuersatz;
 					} else if (presets.sonder_afa == true && this.energy_type=="BEV") {
-						this.amortization[scenario][year] = (1 / presets.abschreibungszeitraum) * presets.unternehmenssteuersatz * this.price.total_price[scenario] * .5
+						this.amortization[scenario][year] = (1 / presets.abschreibungszeitraum) * presets.unternehmenssteuersatz * this.price.total[scenario] * .5
 					} else {
 						//Normal amortization
-						this.amortization[scenario][year] = (1 / presets.abschreibungszeitraum) * presets.unternehmenssteuersatz * this.price.total_price[scenario]
+						this.amortization[scenario][year] = (1 / presets.abschreibungszeitraum) * presets.unternehmenssteuersatz * this.price.total[scenario]
 					}
 				} else {
 					this.amortization[scenario][year] = 0;
@@ -353,10 +353,10 @@ var Vehicle = function(params) {
 					this.TCO[scenario][year]["energy_costs"] = this.energy_costs[year][scenario]
 					this.TCO[scenario][year]["variable_costs"] = {
 						"lubricant_costs": this.lubricant_costs,
-						"maintenance_costs": this.maintenance_costs.total_maintenance_costs
+						"maintenance_costs": this.maintenance_costs.total
 					}
-					this.TCO[scenario][year]["residual_vehicle_value"] = this.price.total_price[scenario] - this.amortization[scenario][year];
-					this.TCO[scenario][year]["total_cost"] = this.fixed_costs.total + this.energy_costs[year][scenario] + this.lubricant_costs + this.maintenance_costs.total_maintenance_costs + this.price.total_price[scenario] - this.amortization[scenario][year]
+					this.TCO[scenario][year]["residual_vehicle_value"] = this.price.total[scenario] - this.amortization[scenario][year];
+					this.TCO[scenario][year]["total_cost"] = this.fixed_costs.total + this.energy_costs[year][scenario] + this.lubricant_costs + this.maintenance_costs.total + this.price.total[scenario] - this.amortization[scenario][year]
 
 				} else {
 					this.TCO[scenario][year]["fixed_costs"] = {}
@@ -366,10 +366,10 @@ var Vehicle = function(params) {
 					this.TCO[scenario][year]["fixed_costs"]["insurance"] = this.TCO[scenario][year - 1]["fixed_costs"]["insurance"] + this.fixed_costs.insurance
 					this.TCO[scenario][year]["fixed_costs"]["total"] = this.TCO[scenario][year - 1]["fixed_costs"]["total"] + this.fixed_costs.total
 					this.TCO[scenario][year]["variable_costs"]["lubricant_costs"] = this.TCO[scenario][year - 1]["variable_costs"]["lubricant_costs"] + this.lubricant_costs
-					this.TCO[scenario][year]["variable_costs"]["maintenance_costs"] = this.TCO[scenario][year - 1]["variable_costs"]["maintenance_costs"] + this.maintenance_costs.total_maintenance_costs
+					this.TCO[scenario][year]["variable_costs"]["maintenance_costs"] = this.TCO[scenario][year - 1]["variable_costs"]["maintenance_costs"] + this.maintenance_costs.total
 					this.TCO[scenario][year]["energy_costs"] = this.TCO[scenario][year - 1]["energy_costs"] + this.energy_costs[year][scenario]
 					this.TCO[scenario][year]["residual_vehicle_value"] = this.TCO[scenario][year - 1]["residual_vehicle_value"] - this.amortization[scenario][year];
-					this.TCO[scenario][year]["total_cost"] = this.TCO[scenario][year - 1]["total_cost"] + this.fixed_costs.total + this.energy_costs[year][scenario] + this.lubricant_costs + this.maintenance_costs.total_maintenance_costs - this.amortization[scenario][year]
+					this.TCO[scenario][year]["total_cost"] = this.TCO[scenario][year - 1]["total_cost"] + this.fixed_costs.total + this.energy_costs[year][scenario] + this.lubricant_costs + this.maintenance_costs.total - this.amortization[scenario][year]
 				}
 			}
 		}
