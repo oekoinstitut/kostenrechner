@@ -15,6 +15,7 @@ angular.module 'oekoKostenrechner'
           scope.$watch 'type', (type, old)=>
             if old?
               @chart.transform type
+              # Enhance the chart with d3
               do @enhanceChart
           scope.$watch 'vehicles', (vehicles, old)=>
             # New data columns
@@ -31,10 +32,8 @@ angular.module 'oekoKostenrechner'
               colors: do @generateColors
               # Previous data column (only the one that disapeared)
               unload: toUnload
-              # Enhance the chart again once it has been updated
-              done: =>
-                # Enhance the chart with d3
-                do @enhanceChart
+              # Enhance the chart with d3
+              done: @enhanceChart
           # Deep watch vehicles
           , yes
         getVehicleDisplay: (vehicle)->
@@ -61,6 +60,8 @@ angular.module 'oekoKostenrechner'
           colors
         generateChart: =>
           @chart = c3.generate
+            # Enhance the chart with d3
+            onrendered: => do @enhanceChart if @chart?
             bindto: element[0]
             interaction:
               enabled: no
@@ -134,5 +135,3 @@ angular.module 'oekoKostenrechner'
           do @bindWatchers
           # Generate the chart
           do @generateChart
-          # Enhance the chart with d3
-          do @enhanceChart
