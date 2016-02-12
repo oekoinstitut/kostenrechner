@@ -9,12 +9,17 @@ angular.module 'oekoKostenrechner'
         # Vehicles created by the user
         @vehicles = []
         # Dummy vehicles
-        for i in [0..2]
-          @addVehicle
-            "acquisition_year": 2014 + Math.round(Math.random()*10)
-            "car_type": ["klein", "mittel", "groß"][i]
-            "energy_type": ["benzin", "diesel", "BEV"][i]
-      hasNoParent: (setting)-> setting.parentid is '' or isNaN setting.parentid
+        for k in [0..0]
+          for i in [0..2]
+            @addVehicle
+              "acquisition_year": 2014 + Math.round(Math.random()*10)
+              "car_type": ["klein", "mittel", "groß"][i]
+              "energy_type": ["benzin", "diesel", "BEV"][i]
+      hasNoParent: (setting)->
+        setting.parentid is '' or isNaN setting.parentid
+      filterSetting: (vehicle)=>
+        (setting)=>
+          vehicle[setting.name]? and @hasNoParent setting
       removeVehicle: (index)=> @vehicles.splice index, 1
       getVehicleColor: (n)-> MAIN.COLORS[n % MAIN.COLORS.length]
       addVehicle: (params)=>

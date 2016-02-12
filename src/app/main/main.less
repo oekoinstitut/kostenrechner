@@ -1,34 +1,56 @@
 .main {
 
-  margin-top:@navbar-height;
+  padding-bottom:120px;
 
   &__vehicles {
-    position: fixed;
-    left:0;
-    top:@navbar-height;
+
+    position:fixed;
     bottom:0;
-    width:220px;
-    padding:20px;
-    background:@panel-default-border;
+    left:0;
+    right:0;
+
+    margin-top:20px;
+    padding:0px;
+    padding-top:10px;
     overflow: auto;
+    background:darken(@body-bg, 10);
+
+    .box-shadow(0 0 20px 10px @body-bg);
     .transition(0.6s transform);
-    &:extend(.clearfix all);
+    .translate(0, 100px);
+
+    &:hover {
+      .translate(0, 0);
+    }
+
 
     &.ng-hide {
-      .translate(-110%, 0);
+      .translate(0, 100%);
+    }
+
+    &__add-item, &__item {
+      width:calc(~"50% - 5px");
+      width:300px;
+      margin-left:10px;
+      float:left;
+      &:nth-child(odd) {
+        margin-left:10px;
+      }
     }
 
     &__item {
-      width:100%;
+      position: relative;
       display: inline-block;
-      margin-right:10px;
       margin-bottom: 10px;
-      float:left;
       background:@panel-bg;
       border-radius: @border-radius-large;
       font-size:0.9em;
       overflow: hidden;
-      .transition(0.6s);
+      cursor:pointer;
+
+      &:hover &__overlay {
+        opacity: 0.9;
+      }
 
       &.ng-leave.ng-leave-active,
       &.ng-move,
@@ -43,6 +65,7 @@
         opacity:1;
         .scale(1);
       }
+
 
       &__heading {
         text-align: center;
@@ -75,9 +98,27 @@
         }
       }
 
+      &__overlay {
+        position:absolute;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+        background:inherit;
+        opacity:0.9;
+        text-align: center;
+        color:white;
+        line-height:200px;
+        font-size:40px;
+        pointer-events: none;
+        opacity: 0;
+        .transition(0.6s);
+      }
+
       &__body {
         padding:0;
         margin:0;
+        background:white;
       }
     }
 
@@ -85,13 +126,11 @@
       width:220px - (2px * 20px);
       background: @brand-primary;
       color: white;
-      display: inline-block;
       padding:25px 20px;
       margin-bottom: 10px;
       text-align: center;
       cursor: pointer;
       border-radius: @border-radius-large;
-      .transition(0.6s);
 
       &.ng-hide {
         opacity:0;
@@ -104,27 +143,6 @@
       }
     }
 
-    @media (max-width: @screen-md-max) {
-      padding:20px;
-      width:@screen-sm;
-      max-width:@screen-sm;
-      margin:auto;
-      position:static;
-      background:none;
-
-      &.ng-hide {
-        .translate(0, -110%);
-      }
-
-      &__item {
-        margin-bottom: 0;
-      }
-
-      &__add-item, &__item {
-        width:220px - (2px * 20px);
-        margin-bottom: 10px;
-      }
-    }
   }
 
   &__welcome-screen {

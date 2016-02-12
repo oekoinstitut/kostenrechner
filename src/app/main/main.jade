@@ -11,8 +11,10 @@
           =" or "
           a look a the defaults visualisation
   .main__vehicles(ng-show="('main.form.*' | includedByState) && main.vehicles.length || ('main.chart.*' | includedByState)")
-    .main__vehicles__item(ng-repeat="vehicle in main.vehicles")
-      .main__vehicles__item__heading(ng-style="{ background: vehicle.color }")
+    .main__vehicles__item(ng-repeat="vehicle in main.vehicles", ng-style="{ background: vehicle.color }")
+      .main__vehicles__item__overlay
+        i.fa.fa-eye
+      .main__vehicles__item__heading
         .main__vehicles__item__heading__color
         .main__vehicles__item__heading__actions
           button.btn.btn-xs.btn-link(ng-click="main.removeVehicle($index)")
@@ -21,8 +23,8 @@
         | Vehicle {{ $index + 1 }}      
       table.table.table-condensed.table-striped.main__vehicles__item__body
         tbody
-          tr(ng-repeat="setting in main.listedSettings | filter:main.hasNoParent | limitTo:4")
-            td {{ setting.label }} 
+          tr(ng-repeat="setting in main.listedSettings | orderBy:'-importancerank' | filter:main.filterSetting(vehicle) | limitTo:5")
+            td {{ setting.label }}
             td 
               strong {{ vehicle[setting.name].total || vehicle[setting.name] }}
     a.main__vehicles__add-item(ng-show="('main.chart.*' | includedByState) && main.vehicles.length < 2", ui-sref="main.form")
