@@ -10,6 +10,7 @@ var _    = require('lodash');
 var gulp = require('gulp');
 var conf = require('./conf');
 var Gss  = require('google-spreadsheet');
+var extractTranslate = require('gulp-angular-translate-extractor');
 
 var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del']
@@ -146,6 +147,20 @@ gulp.task('vehicle', function() {
         .pipe(gulp.dest('src/app/components/processor/'))
 });
 
+gulp.task('locales', function () {
+  var i18nsrc = ['./src/app/**/*.{jade,coffee,js}'];
+  var i18ndest = './src/assets/locales';
+  return gulp.src(i18nsrc)
+    .pipe(extractTranslate({
+      defaultLang: 'en',
+        lang: ['en', 'de'],
+        dest: i18ndest,
+        safeMode: true,
+        stringifyOptions: true
+    }))
+    .pipe(gulp.dest(i18ndest));
+});
+
 gulp.task('clean', function () {
   return $.del([path.join(conf.paths.dist, '/'), path.join(conf.paths.tmp, '/')]);
 });
@@ -157,4 +172,4 @@ gulp.task('deploy', ['build'], function() {
 });
 
 
-gulp.task('build', ['html', 'fonts', 'other', 'vehicle']);
+gulp.task('build', ['html', 'fonts', 'other', 'vehicle', 'locales']);
