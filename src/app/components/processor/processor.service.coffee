@@ -10,6 +10,8 @@ angular.module 'oekoKostenrechner'
           .sortBy('importancerank')
           .reverse()
           .value()
+      # Only returns settings names
+      getSettingsNames: => _.map @settings, 'name'
       # Some settings can be seen on list
       getPreliminarySettings: => @getSettingsBy preliminary: yes
       # Some settings can be seen on list

@@ -1,5 +1,5 @@
 angular.module 'oekoKostenrechner'
-  .controller 'MainChartController', ($scope, $state, processor)->
+  .controller 'MainChartController', ($scope, $state, $http, processor, MAIN)->
     'ngInject'
     new class MainChartController
       constructor: ->
@@ -17,3 +17,28 @@ angular.module 'oekoKostenrechner'
         @type  = 'spline'
         # Always redirect to child state
         $state.go 'main.chart.tco', type: 'spline'
+        # Generate a short permalink every time the vehicle array is upddated
+        $scope.$watch 'chart.vehicles', @generateShortPermalink, yes
+      getPermalink: ->
+        # Generate an absolute link to the chart
+        $state.href 'main.permalink', { vehicles: do @getJsonVehicles }, absolute: yes
+      getJsonVehicles: =>
+        angular.toJson do @getSimplifiedVehicles
+      # Turns vehicles list into a simplified one (that can be shared in the URL)
+      getSimplifiedVehicles: =>
+        names = do processor.getSettingsNames
+        _.chain @vehicles
+          .map (vehicle)->
+            _.pick vehicle, names
+          .value()
+      generateShortPermalink: =>
+        # Build request config
+        config =
+          cache: yes
+          params: url: do @getPermalink
+        # Temporary use the long permalink
+        @permalink = config.params.url
+        # We use an external service that received the view URL as param
+        $http.get(MAIN.SHORTENER_INTERFACE, config).then (res)=>
+          # Update the scope with the shortened url
+          @permalink = res.data.id if res.data.id

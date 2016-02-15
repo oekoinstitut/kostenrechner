@@ -8,7 +8,7 @@ angular.module 'oekoKostenrechner'
         # Vehicles created by the user
         @vehicles = []
         # do @addDefaultVehicles
-        # $state.go 'main.form'
+        # $state.go 'main.chart'
       # Get/Set current language
       use: $translate.use
       addDefaultVehicles: ->
