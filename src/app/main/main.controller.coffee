@@ -1,5 +1,5 @@
 angular.module 'oekoKostenrechner'
-  .controller 'MainController', ($state, $translate, processor, MAIN)->
+  .controller 'MainController', ($state, $translate, $uibModal, processor, MAIN)->
     'ngInject'
     new class MainController
       constructor: ->
@@ -10,12 +10,24 @@ angular.module 'oekoKostenrechner'
       # Get/Set current language
       use: $translate.use
       addDefaultVehicles: ->
+        @vehicles = []
         # Dummy vehicles
         for i in [0..1]
           @addVehicle
             "acquisition_year": 2014 + Math.round(Math.random()*10)
             "car_type": ["klein", "mittel", "groß"][i]
             "energy_type": ["benzin", "diesel", "BEV"][i]
+      openVehicle: (vehicle, index)->
+        $uibModal.open
+          animation: yes
+          size: 'lg'
+          templateUrl: 'app/main/vehicle/vehicle.html'
+          controller: 'MainVehicleController'
+          controllerAs: 'modal'
+          resolve:
+            vehicle:   -> vehicle
+            index:     -> index
+            processor: -> processor
       hasNoParent: (setting)->
         setting.parentid is '' or isNaN setting.parentid
       filterSetting: (vehicle)=>

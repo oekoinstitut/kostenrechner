@@ -1,0 +1,15 @@
+.main__vehicle
+  .modal-header
+    h3.modal-title {{ "vehicle_name" | translate:{ vehicle: modal.vehicle, index: modal.index + 1 } }}
+  .modal-body
+    div(ng-repeat="group in modal.groups | orderBy:'-importancerank'")
+      h4 {{ group.name | translate }}
+      table.table.table-condensed.table-striped
+        tbody
+          tr(ng-repeat="setting in group.settings | orderBy:'-importancerank'")
+            td(style="width: 60%")
+              | {{ setting.label }}
+            td(style="width: 40%")
+              strong {{ modal.vehicle[setting.name].total || modal.vehicle[setting.name] }}
+  .modal-footer
+    .btn.btn-primary Save

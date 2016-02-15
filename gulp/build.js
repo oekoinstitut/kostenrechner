@@ -2,6 +2,7 @@
 
 let GSSID = '1-BxTbzc5z-04-0-3Q4KJTJtLKmmjAOE5s8X8bzEdv5Q';
 let BOOL_FIELDS = ['hasslider', 'canbeonxaxis', 'shownonthelist', 'preliminary', 'editable'];
+let NUMBER_FIELDS = ['importancerank', 'interval']
 let UNWANTED_FIELDS = ['_xml', '_links'];
 
 var path = require('path');
@@ -109,6 +110,8 @@ gulp.task('gss:settings', function (cb) {
       for(let k of UNWANTED_FIELDS) delete row[k];
       // Convert values to boolean
       for(let k of BOOL_FIELDS) row[k] = row[k].toLowerCase()[0] === 't';
+      // Convert values to number
+      for(let k of NUMBER_FIELDS) row[k] = 1 * row[k];
       return row;
     });
     var file = JSON.stringify(data, null, 2);
