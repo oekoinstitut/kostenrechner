@@ -14,6 +14,18 @@
           </a>
         </li>
       </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li ng-class="{ active: main.use() === 'en' }">
+          <a ng-click="main.use('en')">
+            English
+          </a>
+        </li>
+        <li ng-class="{ active: main.use() === 'de' }">
+          <a ng-click="main.use('de')">
+            Deutsche
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>

@@ -1,5 +1,5 @@
 angular.module 'oekoKostenrechner'
-  .controller 'MainController', ($state, processor, MAIN)->
+  .controller 'MainController', ($state, $translate, processor, MAIN)->
     'ngInject'
     new class MainController
       constructor: ->
@@ -7,6 +7,8 @@ angular.module 'oekoKostenrechner'
         @listedSettings = do processor.getListedSettings
         # Vehicles created by the user
         @vehicles = []
+      # Get/Set current language
+      use: $translate.use
       addDefaultVehicles: ->
         # Dummy vehicles
         for i in [0..1]
