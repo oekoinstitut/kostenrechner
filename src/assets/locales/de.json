@@ -1,6 +1,7 @@
 {
     "add_vehicle_btn": "add_vehicle_btn",
     "app_title": "app_title",
+    "cancel_modal": "",
     "co2_btn": "co2_btn",
     "go_back": "go_back",
     "home_btn": "home_btn",
@@ -8,6 +9,7 @@
     "lorem": "lorem",
     "next_step": "next_step",
     "remove_btn": "remove_btn",
+    "save_modal": "",
     "select_choose_option": "--",
     "start_btn": "start_btn",
     "step_position": "step_position",

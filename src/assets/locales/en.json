@@ -1,6 +1,7 @@
 {
     "add_vehicle_btn": "Add a vehicle",
     "app_title": "Oeko Kostenrechner",
+    "cancel_modal": "Cancel",
     "co2_btn": "See CO2",
     "go_back": "Go Back",
     "home_btn": "Home",
@@ -8,6 +9,7 @@
     "lorem": "Dantooine mon calrissian fisto solo. Gonk calamari kessel watto calrissian darth fett. Skywalker gamorrean dagobah darth. Kashyyyk palpatine sidious kessel hutt. Organa darth antilles sidious kamino. Naboo hutt skywalker palpatine.",
     "next_step": "Continue",
     "remove_btn": "Remove",
+    "save_modal": "Save",
     "select_choose_option": "--",
     "start_btn": "Start adding a vehicle",
     "step_position": "Step {{ current }} of {{ total }}",

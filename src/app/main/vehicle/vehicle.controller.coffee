@@ -1,5 +1,5 @@
 angular.module 'oekoKostenrechner'
-  .controller 'MainVehicleController', (vehicle, index, processor, DynamicInput, $scope)->
+  .controller 'MainVehicleController', (vehicle, index, processor, DynamicInput, $scope, $uibModalInstance)->
     'ngInject'
     new class MainVehicleController
       constructor: ->
@@ -20,12 +20,18 @@ angular.module 'oekoKostenrechner'
             importancerank: _.max(settings, 'importancerank').importancerank
           res
         , []
+        # Update values when the vehicle change
         $scope.$watch 'modal.vehicle', =>
           # Create values object
           @values = {} unless @values?
           # Refresh value list from
           @values[id] = @inputs[id].getValues @vehicle for id of @inputs
           # Update vehicle values
-          do @vehicle.setMaintenanceCosts if @vehicle.setMaintenanceCosts?
-        # Deep watch vehicle change
+          do @vehicle.computeCosts if @vehicle.computeCosts?
+        # Deep watch vehicle changes
         , yes
+      saveVehicle: =>
+        angular.extend vehicle, @vehicle
+        do @close
+      close: =>
+        $uibModalInstance.close @vehicle
