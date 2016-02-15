@@ -1,8 +1,9 @@
 .main__form
   .main__form__step(ng-repeat='step in form.getSteps() | filter:form.isStepActive track by step.id')
     form(ng-submit="form.nextStep()", name="stepForm", novalidate)
-      h2.main__form__step__heading {{ step.label }}
-      .main__form__step__position Step {{ form.getActiveStepIdx() + 1 }} of {{ form.getStepsCount() }}
+      h2.main__form__step__heading {{ step.label | translate }}
+      .main__form__step__position
+        | {{ 'step_position' | translate:{ current: form.getActiveStepIdx() + 1, total: form.getStepsCount() } }}
         
       div(ng-switch, on=":: form.getStepType(step)")
         div(ng-switch-when="enum")
@@ -10,14 +11,14 @@
             label.main__form__step__body__radio.radio(ng-repeat="value in form.getStepValues(step).range track by $index",
               ng-class="{ 'active': form.newVehicle[step.name] === value }")
               input(type="radio", required, name="{{ step.name }}", ng-value="value", ng-model="form.newVehicle[step.name]")
-              {{ value }}            
+              {{ value | translate }}            
         div(ng-switch-when="interval")
           div(ng-if=":: !form.inputs[step.id].setting.hasslider")
             p.main__form__step__body.main__form__step__body--select
               label.main__form__step__body__radio.radio(ng-repeat="value in form.getStepValues(step).range track by $index",
                 ng-class="{ 'active': form.newVehicle[step.name] === value }")
                 input(type="radio", required, name="{{ step.name }}" ng-value="value" ng-model="form.newVehicle[step.name]")
-                {{ value }}
+                {{ value | translate }}
           div(ng-if=":: form.inputs[step.id].setting.hasslider")  
             div(ng-init="form.newVehicle[step.name] = form.getStepValues(step).value")
               p.main__form__step__body.main__form__step__body--slider
@@ -27,5 +28,5 @@
       
       p.main__form__step__description {{ step.description }}
       p.main__form__step__nav
-        a.btn.btn-link.btn-lg(ng-click="form.previousStep()") Go back
-        button.btn.btn-primary.btn-lg(type="submit", ng-disabled="stepForm.$invalid") Next step
+        a.btn.btn-link.btn-lg(ng-click="form.previousStep()") {{ 'go_back' | translate }}
+        button.btn.btn-primary.btn-lg(type="submit", ng-disabled="stepForm.$invalid") {{ 'next_step' | translate }}
