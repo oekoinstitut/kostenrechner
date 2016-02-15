@@ -148,7 +148,7 @@ gulp.task('vehicle', function() {
 });
 
 gulp.task('locales', function () {
-  var i18nsrc = ['./src/app/**/*.{jade,coffee,js}'];
+  var i18nsrc = ['./src/app/**/*.{jade,coffee,js,html}'];
   var i18ndest = './src/assets/locales';
   return gulp.src(i18nsrc)
     .pipe(extractTranslate({

@@ -1,7 +1,9 @@
 {
     "add_vehicle_btn": "Add a vehicle",
+    "app_title": "Oeko Kostenrechner",
     "co2_btn": "See CO2",
     "go_back": "Go Back",
+    "home_btn": "Home",
     "look_default_visualisation": "...or look at the default visualisation",
     "lorem": "Dantooine mon calrissian fisto solo. Gonk calamari kessel watto calrissian darth fett. Skywalker gamorrean dagobah darth. Kashyyyk palpatine sidious kessel hutt. Organa darth antilles sidious kamino. Naboo hutt skywalker palpatine.",
     "next_step": "Continue",
@@ -12,6 +14,6 @@
     "tco_title": "Total cost of ownership",
     "tco_trend_btn": "See the evolution",
     "vehicle_name": "Vehicle {{ index }}",
-    "welcome_description": "",
+    "welcome_description": "welcome_description",
     "welcome_title": "Kostenrechner"
 }
