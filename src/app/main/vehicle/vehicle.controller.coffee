@@ -3,7 +3,7 @@ angular.module 'oekoKostenrechner'
     'ngInject'
     new class MainVehicleController
       constructor: ->
-        @vehicle        = vehicle
+        @vehicle        = angular.copy vehicle
         @index          = index
         @listedSettings = do processor.getListedSettings
         # Create a dictionnary of inputs
@@ -20,8 +20,12 @@ angular.module 'oekoKostenrechner'
             importancerank: _.max(settings, 'importancerank').importancerank
           res
         , []
-        $scope.$watch 'modal.vehicle', ->
+        $scope.$watch 'modal.vehicle', =>
+          # Create values object
+          @values = {} unless @values?
           # Refresh value list from
-          @values[id]     = @inputs[id].getValues @newVehicle for id of @inputs
+          @values[id] = @inputs[id].getValues @vehicle for id of @inputs
+          # Update vehicle values
+          do @vehicle.setMaintenanceCosts if @vehicle.setMaintenanceCosts?
         # Deep watch vehicle change
         , yes

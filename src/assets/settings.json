@@ -217,7 +217,7 @@
     "editable": false,
     "use": "TCO",
     "context": "Vehicle",
-    "name": "maintenance_costs.total"
+    "name": "maintenance_costs_total"
   },
   {
     "id": "12",
@@ -237,7 +237,7 @@
     "editable": true,
     "use": "TCO",
     "context": "Vehicle",
-    "name": "maintenance_costs.repairs"
+    "name": "maintenance_costs_repairs"
   },
   {
     "id": "13",
@@ -257,7 +257,7 @@
     "editable": true,
     "use": "TCO",
     "context": "Vehicle",
-    "name": "maintenance_costs.inspection"
+    "name": "maintenance_costs_inspection"
   },
   {
     "id": "14",
@@ -277,6 +277,6 @@
     "editable": true,
     "use": "TCO",
     "context": "Vehicle",
-    "name": "maintenance_costs.tires"
+    "name": "maintenance_costs_tires"
   }
 ]

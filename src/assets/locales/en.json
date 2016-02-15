@@ -8,6 +8,7 @@
     "lorem": "Dantooine mon calrissian fisto solo. Gonk calamari kessel watto calrissian darth fett. Skywalker gamorrean dagobah darth. Kashyyyk palpatine sidious kessel hutt. Organa darth antilles sidious kamino. Naboo hutt skywalker palpatine.",
     "next_step": "Continue",
     "remove_btn": "Remove",
+    "select_choose_option": "--",
     "start_btn": "Start adding a vehicle",
     "step_position": "Step {{ current }} of {{ total }}",
     "tco_sharing_btn": "See the repartition",

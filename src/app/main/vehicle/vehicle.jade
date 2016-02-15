@@ -10,18 +10,19 @@
             td(style="width: 60%")
               | {{ setting.label }}
             td(style="width: 40%")
-              div(ng-switch, on=":: modal.inputs[setting.id].getType()", ng-if="!settings.editable")
+              div(ng-switch, on=":: modal.inputs[setting.id].getType()")
                 div(ng-switch-when="boolean")
                   input(type="checkbox", ng-model="modal.vehicle[setting.name]")                    
                 div(ng-switch-when="enum")
-                  select(ng-options="val as (val | translate) for val in :: modal.values[setting.id].range",
+                  select(ng-options="val as (val | translate) for val in modal.values[setting.id].range",
                          ng-model="modal.vehicle[setting.name]")
+                    option(value="") {{ 'select_choose_option' | translate }}
                 div(ng-switch-when="interval")
                   input.form-control(ng-model="modal.vehicle[setting.name]",
                                      min="{{ modal.values[setting.id].floor }}",
                                      max="{{ modal.values[setting.id].ceil }}",
                                      type="number")
                 div(ng-switch-default)
-                  strong {{ modal.vehicle[setting.name].total || modal.vehicle[setting.name] }}
+                  strong {{ modal.vehicle[setting.name] }}
   .modal-footer
     .btn.btn-primary Save
