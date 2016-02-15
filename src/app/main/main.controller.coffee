@@ -5,9 +5,9 @@ angular.module 'oekoKostenrechner'
       constructor: ->
         @processor = processor
         @listedSettings = do processor.getListedSettings
-        $state.go 'main.chart'
         # Vehicles created by the user
         @vehicles = []
+      addDefaultVehicles: ->
         # Dummy vehicles
         for i in [0..1]
           @addVehicle

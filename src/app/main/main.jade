@@ -10,7 +10,7 @@
         p.main__welcome-screen__footer
           a.btn.btn-primary.btn-md(ui-sref="main.form") {{ "start_btn" | translate }}        
           =" "
-          a(ui-sref="main.chart")
+          a(ui-sref="main.chart", ng-click="main.addDefaultVehicles()")
             | {{ "look_default_visualisation" | translate }}
   .main__vehicles(ng-show="('main.form.*' | includedByState) && main.vehicles.length || ('main.chart.*' | includedByState)")
     .main__vehicles__item(ng-repeat="vehicle in main.vehicles", ng-style="{ background: vehicle.color }")
