@@ -93,7 +93,7 @@ angular.module 'oekoKostenrechner'
             legend:
               show: no
             point:
-                show: no
+              show: no
             transition:
               duration: @TRANSITION_DURATION
             data:

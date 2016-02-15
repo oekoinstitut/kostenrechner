@@ -1,0 +1,21 @@
+angular.module 'oekoKostenrechner'
+  .config ($translateProvider)->
+    'ngInject'
+    $translateProvider
+      .useStaticFilesLoader
+        prefix: 'assets/locales/',
+        suffix: '.json'
+      .registerAvailableLanguageKeys ['en', 'de'],
+        'en_US': 'en',
+        'en_UK': 'en',
+        'de_DE': 'de',
+      .determinePreferredLanguage ->
+        lang = navigator.language or navigator.userLanguage
+        avalaibleKeys = [
+          'en_US', 'en_UK', 'en',
+          'de_DE', 'de'
+        ]
+        if avalaibleKeys.indexOf(lang) is -1 then 'en' else lang
+      .fallbackLanguage ['en', 'de']
+      .useCookieStorage()
+      .useSanitizeValueStrategy null

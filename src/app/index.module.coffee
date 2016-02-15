@@ -9,4 +9,5 @@ angular.module 'oekoKostenrechner', [
   'ui.router',
   'ui.bootstrap',
   'rzModule',
+  'pascalprecht.translate'
 ]
