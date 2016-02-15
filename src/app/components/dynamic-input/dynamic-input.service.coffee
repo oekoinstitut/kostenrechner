@@ -39,6 +39,9 @@ angular.module 'oekoKostenrechner'
       getType: =>
         # Test the content of the field's value to know its type.
         switch yes
+          # The value is static or calculated using other inputs
+          when not @setting.editable
+            DYNAMIC_INPUT.FIELD_STATIC
           # Its an interval of value
           when @setting.hasslider or FIELD_INTERVAL.test @setting.values
             DYNAMIC_INPUT.FIELD_INTERVAL
