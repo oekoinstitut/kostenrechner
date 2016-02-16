@@ -16,7 +16,7 @@
   .main__chart__view(ng-view)
     .main__chart__view__workspace
       chart(x="chart.xAxis", y="chart.yAxis", type="chart.type", vehicles="main.vehicles", processor="main.processor")
-    .main__chart__view__select-x-axis
+    .main__chart__view__select-x-axis.slide(ng-show="chart.type === 'spline'")
       select.form-control(ng-options="opt.name as (opt.label | translate) for opt in chart.xAxisOptions", ng-model="chart.xAxis")
   .main__chart__share
     input.form-control(type="text", readonly, ng-value="chart.permalink")

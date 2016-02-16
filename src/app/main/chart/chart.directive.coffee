@@ -14,40 +14,30 @@ angular.module 'oekoKostenrechner'
         FLOOR_YEAR: 2014
         CEIL_YEAR: 2025
         bindWatchers: ->
-          scope.$watch 'x', (x, old)=>
-            return unless old?
-            # Load new data
-            @chart.load
-              columns: do @generateColumns
-              # Enhance the chart with d3
-              done: @enhanceChart
-          scope.$watch 'type', (type, old)=>
-            return unless old?
-            @chart.transform type
-            # Enhance the chart with d3
-            do @enhanceChart
-          scope.$watch 'vehicles', (vehicles, old)=>
-            # New data columns
-            cols = do @generateColumns
-            # Columns to load or unload
-            toUnload = _.difference _.map(@chart.data(), 'id'), _.map(cols, 0)
-            toLoad = _.difference _.map(cols, 0), _.map(@chart.data(), 'id')
-            # Stop if there is nothing to add or remove
-            return unless toUnload.length + toLoad.length
-            # Load new data
-            @chart.load
-              columns: cols
-              # Refresh colors and groups
-              colors: @generateColors cols
-              groups: @generateGroups cols
-              # Previous data column (only the one that disapeared)
-              unload: toUnload
-              # Enhance the chart with d3
-              done: @enhanceChart
           # Deep watch vehicles
-          , yes
+          scope.$watch '[x, y, vehicles, type]', @updateChart, yes
+        updateChart: =>
+          # New data columns
+          cols = do @generateColumns
+          # Columns to load or unload
+          toUnload = _.difference _.map(@chart.data(), 'id'), _.map(cols, 0)
+          toLoad = _.difference _.map(cols, 0), _.map(@chart.data(), 'id')
+          # Stop if there is nothing to add or remove
+          return unless toUnload.length + toLoad.length
+          # Load new data
+          @chart.load
+            type: scope.type
+            columns: cols
+            # Refresh colors and groups
+            colors: @generateColors cols
+            groups: @generateGroups cols
+            # Previous data column (only the one that disapeared)
+            unload: toUnload
+            # Enhance the chart with d3
+            done: @enhanceChart
         getVehicleDisplay: (vehicle)->
-          display = scope.processor.findDisplay xaxis: scope.x, yaxis: scope.y
+          x = if scope.type is 'bar' then 'holding_time' else scope.x
+          display = scope.processor.findDisplay xaxis: x, yaxis: scope.y
           # Extract display for this vehicle
           vehicle[display.name] if display?
         getXValues: =>
@@ -125,9 +115,8 @@ angular.module 'oekoKostenrechner'
             # Create a serie line for each value
             series = series.concat( _.concat [n], values[n] for n of values)
           series
-        generateAxis: (columns)=>
-          if scope.type is 'bar'
-            x: type: 'category'
+        generateXAxis: (columns)=>
+          type: if scope.type is 'bar' then 'category' else 'timeseries'
         generateColors: (columns)=>
           colors = {}
           if scope.type is 'spline'
@@ -170,7 +159,8 @@ angular.module 'oekoKostenrechner'
               show: no
             transition:
               duration: @TRANSITION_DURATION
-            axis: @generateAxis columns
+            axis:
+              x: @generateXAxis columns
             data:
               x: 'x'
               type: scope.type
