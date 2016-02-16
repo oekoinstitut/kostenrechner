@@ -1,5 +1,5 @@
 angular.module 'oekoKostenrechner'
-  .directive 'chart', (DynamicInput)->
+  .directive 'chart', (DynamicInput, MAIN)->
     'ngInject'
     restrict: 'EA'
     scope:
@@ -37,8 +37,9 @@ angular.module 'oekoKostenrechner'
             # Load new data
             @chart.load
               columns: cols
-              # Refresh colors
-              colors: do @generateColors
+              # Refresh colors and groups
+              colors: @generateColors cols
+              groups: @generateGroups cols
               # Previous data column (only the one that disapeared)
               unload: toUnload
               # Enhance the chart with d3
@@ -50,8 +51,13 @@ angular.module 'oekoKostenrechner'
           # Extract display for this vehicle
           vehicle[display.name] if display?
         getXValues: =>
-          if scope.x is 'holding_time'
+          if scope.type is 'bar'
+            # One tick by vehicle
+            'Vehicle ' + idx for idx in [1..scope.vehicles.length]
+          # Year on x are set manually
+          else if scope.x is 'holding_time'
             y for y in [@FLOOR_YEAR..@CEIL_YEAR]
+          # Unkown range, we get it from the input value
           else
             setting = scope.processor.getSettingsBy(name: scope.x)[0]
             input = new DynamicInput setting
@@ -64,29 +70,97 @@ angular.module 'oekoKostenrechner'
           # Iterate over xValues' ticks
           for tick in xValues
             display[component][tick]?.total_cost or null
+        getRefYear: =>
+          refYear = null
+          # Collect displays for each vehicle
+          displays = ( @getVehicleDisplay vehicle for vehicle in scope.vehicles )
+          # We have to find the first common year of the vehicle.
+          # First we collect every years in the 'mittel' field of every vehicle.
+          years = _.concat.apply(null, _.chain(displays).map('mittel').map(_.keys).value() )
+          # Then we find the first year that appear twice
+          # so we count the time every year appear.
+          countByYear = _.chain(years).map(Number).sort().countBy().value()
+          # Look into the count by year to find out.
+          for year of countByYear
+            # The current year appears as many times as there is vehicles
+            if countByYear[year] is scope.vehicles.length
+              # So we can take it as referencial
+              refYear = year
+              # Because the countBy is sorted, we stop asap
+              break
+          refYear
         generateColumns: =>
           series = [ _.concat(['x'], do @getXValues) ]
-          # For each vehicle...
-          for vehicle in scope.vehicles
-            # Draw the 3 components of a vehicle
-            for component in ['contra', 'pro', 'mittel']
-              values = @getVehicleValues vehicle, component
-              series.push(_.concat [vehicle.id + '-' + component], values)
+          # Spline chart is divided in 3 groups
+          if scope.type is 'spline'
+            # For each vehicle...
+            for vehicle in scope.vehicles
+              # Draw the 3 components of a vehicle
+              for component in ['contra', 'pro', 'mittel']
+                values = @getVehicleValues vehicle, component
+                series.push(_.concat [vehicle.id + '-' + component], values)
+          # Bar chart...
+          else
+            refYear = do @getRefYear
+            values  = {}
+            # For this year, we collect variables for each vehicles
+            for vehicle in scope.vehicles
+              # Target 'mittel' component
+              if mittel = @getVehicleDisplay(vehicle).mittel
+                # We enclose this part of the code to be able to
+                # call it recursivly with variable within an object
+                (fn = (obj)->
+                  # Now we collect values!
+                  for n of obj
+                    # Skip 'total' variables
+                    continue if n.indexOf('total') is 0
+                    # Literal value are taken instantaneously
+                    if typeof obj[n] isnt 'object'
+                      # Create the array where you'll stores the values for this variable
+                      values[n] = [] unless values[n]?
+                      values[n].push obj[n]
+                    # Recursive lookup to flatten variable object
+                    else fn obj[n]
+                ) mittel[refYear]
+            # Create a serie line for each value
+            series = series.concat( _.concat [n], values[n] for n of values)
           series
-        generateColors: ->
+        generateAxis: (columns)=>
+          if scope.type is 'bar'
+            x: type: 'category'
+        generateColors: (columns)=>
           colors = {}
-          for v in scope.vehicles
-            for c in ['contra', 'pro']
-              colors[v.id + '-' + c] = v.color
-            colors[v.id + '-' + 'mittel'] = 'white'
+          if scope.type is 'spline'
+            for v in scope.vehicles
+              for c in ['contra', 'pro']
+                colors[v.id + '-' + c] = v.color
+              colors[v.id + '-' + 'mittel'] = 'white'
+          else
+            # Do we received data columns?
+            columns = do @generateColumns unless columns?
+            columns = angular.copy columns
+            # One color by key
+            for key, idx in _.map(columns.splice(1), 0)
+              colors[key] = MAIN.COLORS[idx % MAIN.COLORS.length]
           colors
+        generateGroups: (columns)=>
+          if scope.type is 'spline'
+            for v in scope.vehicles
+              [v.id + '-' + 'contra', v.id + '-' + 'pro', v.id + '-' + 'mittel']
+          else
+            # Do we received data columns?
+            columns = do @generateColumns unless columns?
+            columns = angular.copy columns
+            # Every dataset but 'x'
+            [ _.map(columns.splice(1), 0) ]
         generateChart: =>
+          columns = do @generateColumns
           @chart = c3.generate
             # Enhance the chart with d3
             onrendered: => do @enhanceChart if @chart?
             bindto: element[0]
             interaction:
-              enabled: no
+              enabled: yes
             padding:
               right: 20
               top: 20
@@ -96,11 +170,14 @@ angular.module 'oekoKostenrechner'
               show: no
             transition:
               duration: @TRANSITION_DURATION
+            axis: @generateAxis columns
             data:
               x: 'x'
               type: scope.type
-              colors: do @generateColors
-              columns: do @generateColumns
+              columns: columns
+              # We generate those options according to the columns
+              colors: @generateColors columns
+              groups: @generateGroups columns
         setupAreas: =>
           # First time we create areas
           if not @svg? or not @areasGroup?

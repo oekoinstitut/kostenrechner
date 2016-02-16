@@ -7,8 +7,9 @@ angular.module 'oekoKostenrechner'
         @listedSettings = do processor.getListedSettings
         # Vehicles created by the user
         @vehicles = []
-        # do @addDefaultVehicles
-        # $state.go 'main.chart'
+
+        do @addDefaultVehicles
+        $state.go 'main.chart'
       # Get/Set current language
       use: $translate.use
       addDefaultVehicles: ->
@@ -16,7 +17,7 @@ angular.module 'oekoKostenrechner'
         # Dummy vehicles
         for i in [0..1]
           @addVehicle
-            "acquisition_year": 2014 + Math.round(Math.random()*10)
+            "acquisition_year": 2014 + Math.round(Math.random()*5)
             "car_type": ["klein", "mittel", "groß"][i]
             "energy_type": ["benzin", "diesel", "BEV"][i]
       openVehicle: (vehicle, index)->
