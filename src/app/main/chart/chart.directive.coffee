@@ -115,7 +115,7 @@ angular.module 'oekoKostenrechner'
             # Create a serie line for each value
             series = series.concat( _.concat [n], values[n] for n of values)
           series
-        generateXAxis: (columns)=>
+        generateXAxis: (columns)->
           type: if scope.type is 'bar' then 'category' else 'timeseries'
         generateColors: (columns)=>
           colors = {}
@@ -195,21 +195,21 @@ angular.module 'oekoKostenrechner'
             # Name the path after the current group
             .attr 'class', (d)-> 'd3-chart-area d3-chart-area-' + d.id
           # And bind values to the group
-          areas.datum (d)=>
-              datum = []
-              # Value from chart's data
-              pro    = (@chart.data d.id + "-pro")[0].values
-              contra = (@chart.data d.id + "-contra")[0].values
-              # Merge data into an array
-              for i of pro
-                # Without null values
-                if pro[i].value?
-                  # Each spline of the array contains data for both groups
-                  # and the value on x
-                  datum.push pro: pro[i].value, contra: contra[i].value, x: pro[i].x
-              datum
-            # Colorize area using the current vehicle's color
-            .style 'fill', (d, i)-> vehicles[i].color
+          areas.datum( (d)=>
+            datum = []
+            # Value from chart's data
+            pro    = (@chart.data d.id + "-pro")[0].values
+            contra = (@chart.data d.id + "-contra")[0].values
+            # Merge data into an array
+            for i of pro
+              # Without null values
+              if pro[i].value?
+                # Each spline of the array contains data for both groups
+                # and the value on x
+                datum.push pro: pro[i].value, contra: contra[i].value, x: pro[i].x
+            datum
+          # Colorize area using the current vehicle's color
+          ).style 'fill', (d, i)-> vehicles[i].color
           # Update old elements
           areas.transition()
             .duration @TRANSITION_DURATION

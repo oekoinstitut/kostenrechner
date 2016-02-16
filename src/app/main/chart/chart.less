@@ -51,13 +51,18 @@
 
   &__share {
     padding:10px;
-    background:@panel-default-border;
+    border:1px solid @panel-default-border;
+    border-bottom-width:2px;
+
     margin-top:20px;
-    input {
+    width:100%;
+
+    input[readonly] {
       background:@input-bg;
       text-decoration: underline;
       color:@link-color;
       cursor:pointer;
+      margin-top:5px;
     }
   }
 }
