@@ -18,8 +18,8 @@ angular.module 'oekoKostenrechner'
           res.push
             name: name
             settings: settings
-            # Groups are ordered using there bigest importancerank
-            importancerank: _.max(settings, 'importancerank').importancerank
+            # Groups are ordered using there smallest importancerank
+            importancerank: _.min(settings, 'importancerank').importancerank
           res
         , []
         # Update values when the vehicle change
@@ -28,8 +28,10 @@ angular.module 'oekoKostenrechner'
           @values = {} unless @values?
           # Refresh value list from
           @values[id] = @inputs[id].getValues @vehicle for id of @inputs
+
+
           # Update vehicle values
-          do @vehicle.computeCosts if @vehicle.computeCosts?
+          # do @vehicle.computeCosts if @vehicle.computeCosts?
         # Deep watch vehicle changes
         , yes
       saveVehicle: =>

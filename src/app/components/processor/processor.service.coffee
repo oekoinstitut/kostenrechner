@@ -8,7 +8,6 @@ angular.module 'oekoKostenrechner'
         _(@settings)
           .filter(filter)
           .sortBy('importancerank')
-          .reverse()
           .value()
       # Only returns settings names
       getSettingsNames: => _.map @settings, 'name'

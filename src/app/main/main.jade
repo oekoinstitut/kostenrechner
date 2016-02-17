@@ -27,7 +27,7 @@
         {{ "vehicle_name" | translate:{ vehicle: vehicle, index: $index + 1 } }}
       table.table.table-condensed.table-striped.main__vehicles__item__body
         tbody
-          tr(ng-repeat="setting in main.listedSettings | orderBy:'-importancerank' | filter:main.filterSetting(vehicle) | limitTo:5")
+          tr(ng-repeat="setting in main.listedSettings | orderBy:'importancerank' | filter:main.filterSetting(vehicle) | limitTo:5")
             td {{ setting.label }}
             td 
               strong {{ vehicle[setting.name] }}

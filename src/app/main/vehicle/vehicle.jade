@@ -2,11 +2,12 @@ form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm")
   .modal-header
     h3.modal-title {{ "vehicle_name" | translate:{ vehicle: modal.vehicle, index: modal.index + 1 } }}
   .modal-body
-    div(ng-repeat="group in modal.groups | orderBy:'-importancerank'")
-      h4 {{ group.name | translate }}
+    div(ng-repeat="group in modal.groups | orderBy:'importancerank'")
+      h4 
+        | {{ group.name | translate }} 
       table.table.table-condensed.table-striped.table-bordered
         tbody
-          tr(ng-repeat="setting in group.settings | orderBy:'-importancerank'")
+          tr(ng-repeat="setting in group.settings | orderBy:'importancerank'")
             td(style="width: 60%")
               | {{ setting.label }}
             td(style="width: 40%")
