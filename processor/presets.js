@@ -81,6 +81,14 @@ var lademöglichkeiten = {
 	"Ladesäule 100 kW DC": { "acquisition": 48500, "maintenance": 4600}	
 }
 
+//Training costs for electrical cars in 2014
+
+var schulungskosten = {
+	"keine Schulung": 0,
+	"Schulung intern": 30,
+	"Schulung externer Dienstleister": 1000
+}
+
 // Variables for oil prices
 var oil_price_2014   = {"diesel": 1.217/1.19, "benzin":1.546/1.19} 		// € per L
 var mineralölsteuer  = {"diesel": 0.4704, "benzin":0.6545} 		// € per L
@@ -244,3 +252,4 @@ exports.faktor_BEV = faktor_BEV;
 exports.reperaturkosten = reperaturkosten;
 exports.co2_emissions = co2_emissions;
 exports.traffic_multiplicator = traffic_multiplicator;
+exports.schulungskosten = schulungskosten;

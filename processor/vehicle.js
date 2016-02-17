@@ -185,6 +185,7 @@ var Vehicle = function(params) {
 	this.maintenance_costs_charger = 0;
 	this.fleet_size = 1;
 	this.traffic = "normaler Verkehr"
+	this.training_option = "keine Schulung"
 
 	for(var prop in params) {
     if( params.hasOwnProperty(prop) && this.hasOwnProperty(prop) ) {
@@ -358,6 +359,7 @@ var Vehicle = function(params) {
 				if (year == this.acquisition_year) {
 					this.TCO[scenario][year]["fixed_costs"] = this.fixed_costs
 					this.TCO[scenario][year]["energy_costs"] = this.energy_costs[year][scenario]
+					this.TCO[scenario][year]["training_costs"] = this.training_costs
 					this.TCO[scenario][year]["variable_costs"] = {
 						"lubricant_costs": this.lubricant_costs,
 						"maintenance_costs": this.maintenance_costs_total
@@ -368,6 +370,7 @@ var Vehicle = function(params) {
 				} else {
 					this.TCO[scenario][year]["fixed_costs"] = {}
 					this.TCO[scenario][year]["variable_costs"] = {}
+					this.TCO[scenario][year]["training_costs"] = this.training_costs
 					this.TCO[scenario][year]["fixed_costs"]["car_tax"] = this.TCO[scenario][year - 1]["fixed_costs"]["car_tax"] + this.fixed_costs.car_tax
 					this.TCO[scenario][year]["fixed_costs"]["check_up"] = this.TCO[scenario][year - 1]["fixed_costs"]["check_up"] + this.fixed_costs.check_up
 					this.TCO[scenario][year]["fixed_costs"]["insurance"] = this.TCO[scenario][year - 1]["fixed_costs"]["insurance"] + this.fixed_costs.insurance
@@ -430,6 +433,11 @@ var Vehicle = function(params) {
 		}
 	}
 
+	this.getTrainingCosts = function() {
+		// Decrease in price is 5%/year
+		this.training_costs = presets.schulungskosten[this.training_option] * Math.pow(1 - 0.05, this.acquisition_year - 2014) / this.fleet_size;
+	}
+
 	this.getCO2byMileage = function(year) {
 		// Saves the initial value
 		var temp_mileage = this.mileage;
@@ -457,6 +465,7 @@ var Vehicle = function(params) {
 		this.getEnergyPrices();
 		this.getEnergyCosts();
 		this.getAmortization();
+		this.getTrainingCosts();
 		this.getTCOByHoldingTime();
 		this.getTCO2byHoldingTime();
 	}
