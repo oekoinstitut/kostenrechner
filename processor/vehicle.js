@@ -177,11 +177,14 @@ function getCO2FromElectricityMix(estimation_year) {
 var Vehicle = function(params) {
 	this.energy_type = "BEV";
 	this.car_type = "klein";
-	this.mileage = 15000;
+	this.mileage = 20000;
 	this.acquisition_year = 2014;
 	this.reichweite = 150;
 	this.energy_source = "strom_mix"; //can also be "strom_erneubar"
 	this.charging_option = undefined;
+	this.maintenance_costs_charger = 0;
+	this.fleet_size = 1;
+	this.traffic = "normaler Verkehr"
 
 	for(var prop in params) {
     if( params.hasOwnProperty(prop) && this.hasOwnProperty(prop) ) {
@@ -201,6 +204,9 @@ var Vehicle = function(params) {
 	this.CO2_by_mileage = {};
 
 	this.getMaintenanceCosts = function(){
+		if (this.energy_type =="BEV" && this.charging_option != undefined) {
+			this.maintenance_costs_charger = presets.lademöglichkeiten[this.charging_option]["maintenance"] / this.fleet_size;
+		}
 		if (this.energy_type == "BEV" && this.car_type.indexOf("LNF") == -1) {
 			this.maintenance_costs_tires = presets.reperaturkosten["benzin"][this.car_type]["reifen"] ;
 			this.maintenance_costs_inspection = presets.reperaturkosten["benzin"][this.car_type]["inspektion"];
@@ -214,10 +220,11 @@ var Vehicle = function(params) {
 			this.maintenance_costs_inspection = presets.reperaturkosten[this.energy_type][this.car_type]["inspektion"];
 			this.maintenance_costs_repairs = presets.reperaturkosten[this.energy_type][this.car_type]["reparatur"];
 		}
-		this.maintenance_costs_tires = ((this.maintenance_costs_tires * 12) / 20000) * this.mileage
-		this.maintenance_costs_inspection = ((this.maintenance_costs_inspection * 12) / 20000) * this.mileage
-		this.maintenance_costs_repairs = ((this.maintenance_costs_repairs * 12) / 20000) * this.mileage
-		this.maintenance_costs_total = this.maintenance_costs_tires + this.maintenance_costs_inspection + this.maintenance_costs_repairs;
+		this.maintenance_costs_tires = ((this.maintenance_costs_tires * 12) / 20000) * this.mileage * this.traffic_multiplicator;
+		this.maintenance_costs_inspection = ((this.maintenance_costs_inspection * 12) / 20000) * this.mileage * this.traffic_multiplicator;
+		this.maintenance_costs_repairs = ((this.maintenance_costs_repairs * 12) / 20000) * this.mileage * this.traffic_multiplicator;
+		
+		this.maintenance_costs_total = this.maintenance_costs_tires + this.maintenance_costs_inspection + this.maintenance_costs_repairs + this.maintenance_costs_charger;
 
 	}
 
@@ -232,8 +239,8 @@ var Vehicle = function(params) {
 			} else {
 				this.price.basis_price = getRawAcquisitionPrice(this.energy_type, this.car_type, this.acquisition_year);
 				this.price.battery_price[scenario] = this.getBatteryPrice(scenario);
-				this.price.charging_option = getChargingOptionPrice(this.charging_option, this.acquisition_year);
-				this.price.total[scenario] = this.price.basis_price + this.price.battery_price[scenario];
+				this.price.charging_option = getChargingOptionPrice(this.charging_option, this.acquisition_year) / this.fleet_size;
+				this.price.total[scenario] = this.price.basis_price + this.price.battery_price[scenario] + this.price.charging_option;
 			}
 		}
 	}
@@ -441,6 +448,7 @@ var Vehicle = function(params) {
 	}
 
 	this.computeCosts = function() {
+		this.traffic_multiplicator = presets.traffic_multiplicator[this.traffic];
 		this.getFixedCosts();
 		this.getAcquisitionPrice();
 		this.getMaintenanceCosts();

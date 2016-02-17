@@ -74,10 +74,10 @@ var batteriepreise = {			// in € per kWh
 
 // Charging options costs in EUR
 var lademöglichkeiten = { 
-	"Wallbox 3,7kW": { "acquisition": 350, "maintenance": 15},
+	"Wallbox 3.7kW": { "acquisition": 350, "maintenance": 15},
 	"Wallbox bis 22kW": { "acquisition": 800, "maintenance": 50},
 	"Ladesäule 22kW": { "acquisition": 2600, "maintenance": 330},
-	"Ladesäule 43,6kW": { "acquisition": 15250, "maintenance": 1600},
+	"Ladesäule 43.6kW": { "acquisition": 15250, "maintenance": 1600},
 	"Ladesäule 100 kW DC": { "acquisition": 48500, "maintenance": 4600}	
 }
 
@@ -143,6 +143,11 @@ var untersuchung = {
 
 // Variables for repairs
 var faktor_BEV = 0.82 	// Discount for repairs of electro vehicles
+var traffic_multiplicator = {
+	"normaler Verkehr" : 1,
+	"schwerer Verkehr" : 1.2,
+	"sehr schwerer Verkehr" : 2
+}
 var reperaturkosten = {
 	"benzin": {
 		"klein": {
@@ -238,3 +243,4 @@ exports.untersuchung = untersuchung;
 exports.faktor_BEV = faktor_BEV;
 exports.reperaturkosten = reperaturkosten;
 exports.co2_emissions = co2_emissions;
+exports.traffic_multiplicator = traffic_multiplicator;
