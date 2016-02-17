@@ -224,7 +224,7 @@ var Vehicle = function(params) {
 		this.maintenance_costs_tires = ((this.maintenance_costs_tires * 12) / 20000) * this.mileage * this.traffic_multiplicator;
 		this.maintenance_costs_inspection = ((this.maintenance_costs_inspection * 12) / 20000) * this.mileage * this.traffic_multiplicator;
 		this.maintenance_costs_repairs = ((this.maintenance_costs_repairs * 12) / 20000) * this.mileage * this.traffic_multiplicator;
-		
+
 		this.maintenance_costs_total = this.maintenance_costs_tires + this.maintenance_costs_inspection + this.maintenance_costs_repairs + this.maintenance_costs_charger;
 
 	}
@@ -477,3 +477,5 @@ var Vehicle = function(params) {
 }
 
 module.exports = Vehicle
+// Static object within the Vehicle class containing all presets
+module.exports.presets = presets
