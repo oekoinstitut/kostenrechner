@@ -16,7 +16,7 @@
     "parentid": "",
     "editable": true,
     "use": "both",
-    "context": "Vehicle",
+    "context": "vehicle",
     "name": "acquisition_year"
   },
   {
@@ -36,7 +36,7 @@
     "parentid": "",
     "editable": false,
     "use": "both",
-    "context": "Vehicle",
+    "context": "vehicle",
     "name": "holding_time"
   },
   {
@@ -56,7 +56,7 @@
     "parentid": "",
     "editable": true,
     "use": "both",
-    "context": "Vehicle",
+    "context": "vehicle",
     "name": "mileage"
   },
   {
@@ -76,7 +76,7 @@
     "parentid": "",
     "editable": true,
     "use": "both",
-    "context": "Vehicle",
+    "context": "vehicle",
     "name": "energy_type"
   },
   {
@@ -96,7 +96,7 @@
     "parentid": "",
     "editable": true,
     "use": "both",
-    "context": "Vehicle",
+    "context": "vehicle",
     "name": "car_type"
   },
   {
@@ -116,7 +116,7 @@
     "parentid": "",
     "editable": true,
     "use": "TCO",
-    "context": "Vehicle",
+    "context": "vehicle",
     "name": "charging_option"
   },
   {
@@ -136,7 +136,7 @@
     "parentid": "",
     "editable": false,
     "use": "both",
-    "context": "Vehicle",
+    "context": "vehicle",
     "name": "fuel_consumption"
   },
   {
@@ -216,7 +216,7 @@
     "parentid": "",
     "editable": false,
     "use": "TCO",
-    "context": "Vehicle",
+    "context": "vehicle",
     "name": "maintenance_costs_total"
   },
   {
@@ -236,7 +236,7 @@
     "parentid": "11",
     "editable": true,
     "use": "TCO",
-    "context": "Vehicle",
+    "context": "vehicle",
     "name": "maintenance_costs_repairs"
   },
   {
@@ -256,7 +256,7 @@
     "parentid": "11",
     "editable": true,
     "use": "TCO",
-    "context": "Vehicle",
+    "context": "vehicle",
     "name": "maintenance_costs_inspection"
   },
   {
@@ -276,7 +276,7 @@
     "parentid": "11",
     "editable": true,
     "use": "TCO",
-    "context": "Vehicle",
+    "context": "vehicle",
     "name": "maintenance_costs_tires"
   },
   {
@@ -296,7 +296,7 @@
     "parentid": "11",
     "editable": true,
     "use": "TCO",
-    "context": "Vehicle",
+    "context": "vehicle",
     "name": "traffic"
   },
   {
@@ -316,7 +316,7 @@
     "parentid": "11",
     "editable": true,
     "use": "TCO",
-    "context": "Vehicle",
+    "context": "vehicle",
     "name": "maintenance_costs_charger"
   },
   {
@@ -336,7 +336,7 @@
     "parentid": "",
     "editable": true,
     "use": "TCO",
-    "context": "Vehicle",
+    "context": "vehicle",
     "name": "fleet_size"
   },
   {
@@ -356,7 +356,7 @@
     "parentid": "",
     "editable": true,
     "use": "TCO",
-    "context": "Vehicle",
+    "context": "vehicle",
     "name": "training_option"
   },
   {
@@ -376,7 +376,7 @@
     "parentid": "",
     "editable": true,
     "use": "TCO",
-    "context": "Vehicle",
+    "context": "vehicle",
     "name": "training_costs"
   }
 ]

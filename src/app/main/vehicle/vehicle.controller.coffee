@@ -3,6 +3,8 @@ angular.module 'oekoKostenrechner'
     'ngInject'
     new class MainVehicleController
       constructor: ->
+        @contexts       = ['vehicle', 'presets']
+        @presets        = Vehicle.presets
         @vehicle        = angular.copy vehicle
         @index          = index
         @listedSettings = do processor.getListedSettings
@@ -21,7 +23,7 @@ angular.module 'oekoKostenrechner'
           res
         , []
         # Update values when the vehicle change
-        $scope.$watch 'modal.vehicle', =>
+        $scope.$watch '[modal.vehicle,modal.presets]', =>
           # Create values object
           @values = {} unless @values?
           # Refresh value list from
