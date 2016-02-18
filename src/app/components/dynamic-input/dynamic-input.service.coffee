@@ -19,10 +19,10 @@ angular.module 'oekoKostenrechner'
             # Define the step between value
             step = 1*@setting.interval or 1
             # We extract the bounds
-            [all, floor, ceil] = @setting.values.match(FIELD_INTERVAL)
+            [all, floor, ceil] = @setting.values.match FIELD_INTERVAL
             # floor and ceil might be dynamic
-            floor = if isNaN floor then 1 * @subset[floor] or 0 else 1*floor
-            ceil = if isNaN ceil then 1* @subset[ceil] or 10 else 1*ceil
+            floor = if isNaN floor then 1 * subset[floor] or 0 else 1*floor
+            ceil = if isNaN ceil then 1* subset[ceil] or 10 else 1*ceil
             # The range use a slider
             floor: floor
             ceil: ceil
@@ -43,11 +43,11 @@ angular.module 'oekoKostenrechner'
           when not @setting.editable
             DYNAMIC_INPUT.FIELD_STATIC
           # Its an interval of value
-          when @setting.hasslider or FIELD_INTERVAL.test @setting.values
+          when @setting.hasslider or @setting.values.match(FIELD_INTERVAL)?
             DYNAMIC_INPUT.FIELD_INTERVAL
           # Its a list of value
-          when FIELD_ENUM.test @setting.values
+          when @setting.values.match(FIELD_ENUM)?
             DYNAMIC_INPUT.FIELD_ENUM
           # Its a boolean
-          when FIELD_BOOLEAN.test @setting.values
+          when @setting.values.match(FIELD_BOOLEAN)?
             DYNAMIC_INPUT.FIELD_BOOLEAN
