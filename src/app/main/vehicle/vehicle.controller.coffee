@@ -3,11 +3,13 @@ angular.module 'oekoKostenrechner'
     'ngInject'
     new class MainVehicleController
       constructor: ->
-        @contexts       = ['vehicle', 'presets']
-        @presets        = Vehicle.presets
-        @vehicle        = angular.copy vehicle
-        @index          = index
-        @listedSettings = do processor.getListedSettings
+        @contexts         = ['vehicle', 'presets']
+        @presets          = Vehicle.presets
+        @vehicle          = angular.copy vehicle
+        @index            = index
+        # Settins edited by the user
+        @frozenSettings   = {}
+        @listedSettings   = do processor.getListedSettings
         # Create a dictionnary of inputs
         @inputs         = {}
         @inputs[s.id]   = new DynamicInput(s, @vehicle) for s in processor.settings
@@ -23,15 +25,18 @@ angular.module 'oekoKostenrechner'
           res
         , []
         # Update values when the vehicle change
-        $scope.$watch '[modal.vehicle, modal.presets]', =>
+        $scope.$watch 'modal.frozenSettings', =>
+          # Update vehicle values
+          @vehicle.computeCosts @frozenSettings if @vehicle.computeCosts?
           # Create values object
           @values = {} unless @values?
           # Refresh value list from
           @values[id] = @inputs[id].getValues @vehicle for id of @inputs
-          # Update vehicle values
-          # do @vehicle.computeCosts if @vehicle.computeCosts?
         # Deep watch vehicle changes
         , yes
+      editSetting: (setting, value)=>
+        # Add it to the list!
+        @frozenSettings[setting] = value
       whatChanged: =>
         diffs =
           for setting in @listedSettings

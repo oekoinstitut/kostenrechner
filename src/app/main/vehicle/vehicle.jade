@@ -1,4 +1,4 @@
-form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm")
+form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm", form-change="modal.editSetting($value, modal.vehicle[$value])")
   .modal-header
     h3.modal-title {{ "vehicle_name" | translate:{ vehicle: modal.vehicle, index: modal.index + 1 } }}
   .modal-body
@@ -14,10 +14,11 @@ form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm")
               div(ng-repeat="context in modal.contexts")
                 div(ng-switch, on=":: modal.inputs[setting.id].getType()", ng-if="setting.context === context")
                   div(ng-switch-when="boolean")
-                    input(type="checkbox", ng-model="modal[context][setting.name]")                    
+                    input(type="checkbox", ng-model="modal[context][setting.name]", form-change-mortadel="setting.name")
                   div(ng-switch-when="enum")
                     select(ng-options="val as (val | translate) for val in modal.values[setting.id].range",
-                           ng-model="modal[context][setting.name]")
+                           ng-model="modal[context][setting.name]",
+                           form-change-model="setting.name")
                       option(value="") {{ 'select_choose_option' | translate }}
                   div(ng-switch-when="interval")
                     input.form-control(ng-model="modal[context][setting.name]",
@@ -25,7 +26,8 @@ form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm")
                                        min="{{ modal.values[setting.id].floor }}",
                                        max="{{ modal.values[setting.id].ceil }}",
                                        step="{{ modal.values[setting.id].step != 1 ? modal.values[setting.id].step : 'any' }}"
-                                       type="number")
+                                       type="number",
+                                       form-change-model="setting.name")
                   div(ng-switch-default)
                     strong {{ modal[context][setting.name] }}                  
   .modal-footer
