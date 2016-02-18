@@ -34,16 +34,14 @@ angular.module 'oekoKostenrechner'
           @values[id] = @inputs[id].getValues @vehicle for id of @inputs
         # Deep watch vehicle changes
         , yes
-      editSetting: (setting, value)=>
-        # Add it to the list!
-        @frozenSettings[setting] = value
-      whatChanged: =>
-        diffs =
-          for setting in @listedSettings
-            if @vehicle[setting.name] isnt vehicle[setting.name]
-              setting.name
-        _.compact diffs
-
+      # A setting has been edited
+      editSetting: (setting, value)=> @frozenSettings[setting] = value
+      # If the given setting is visible
+      isSettingVisible: (setting)=>
+        # The setting is related to a specific enery type
+        setting.specifictoenergytype is '' or setting.specifictoenergytype is @vehicle.energy_type
+      # If any setting within the group is visible
+      isGroupVisible: (group)=> _.some group.settings, @isSettingVisible
       saveVehicle: =>
         angular.extend vehicle, @vehicle
         do @close
