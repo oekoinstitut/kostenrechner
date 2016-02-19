@@ -19,7 +19,6 @@ form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm", form-cha
                     select(ng-options="val as (val | translate) for val in modal.values[setting.id].range",
                            ng-model="modal[context][setting.name]",
                            form-change-model="setting.name")
-                      option(value="") {{ 'select_choose_option' | translate }}
                   div(ng-switch-when="interval")
                     input.form-control(ng-model="modal[context][setting.name]",
                                        ng-model-options="{ updateOn: 'blur' }",
