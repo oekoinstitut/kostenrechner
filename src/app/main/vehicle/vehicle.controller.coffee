@@ -4,7 +4,7 @@ angular.module 'oekoKostenrechner'
     new class MainVehicleController
       constructor: ->
         @contexts         = ['vehicle', 'presets']
-        @presets          = Vehicle.presets
+        @presets          = angular.copy Vehicle.presets
         @vehicle          = angular.copy vehicle
         @index            = index
         # Settins edited by the user
@@ -44,6 +44,7 @@ angular.module 'oekoKostenrechner'
       isGroupVisible: (group)=> _.some group.settings, @isSettingVisible
       saveVehicle: =>
         angular.extend vehicle, @vehicle
+        angular.extend Vehicle.presets, @presets
         do @close
       close: =>
         $uibModalInstance.close @vehicle
