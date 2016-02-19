@@ -20,8 +20,10 @@ angular.module 'oekoKostenrechner'
             "acquisition_year": 2014 + Math.round(Math.random()*5)
             "car_type": ["klein", "mittel", "groß"][i]
             "energy_type": ["benzin", "diesel", "BEV"][i]
+      updateComputedCosts: =>
+        vehicle.computeCosts() for vehicle in @vehicles
       openVehicle: (vehicle, index)->
-        @vehicleMod = $uibModal.open
+        @vehicleModal = $uibModal.open
           animation: yes
           size: 'lg'
           templateUrl: 'app/main/vehicle/vehicle.html'
@@ -31,6 +33,7 @@ angular.module 'oekoKostenrechner'
             vehicle:   -> vehicle
             index:     -> index
             processor: -> processor
+        @vehicleModal.result.then @updateComputedCosts
       hasNoParent: (setting)->
         setting.parentid is '' or isNaN setting.parentid
       filterSetting: (vehicle)=>
