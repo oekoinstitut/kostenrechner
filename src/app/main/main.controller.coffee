@@ -7,8 +7,8 @@ angular.module 'oekoKostenrechner'
         @listedSettings = do processor.getListedSettings
         # Vehicles created by the user
         @vehicles = []
-        # do @addDefaultVehicles
-        # @openVehicle @vehicles[0], 0
+        do @addDefaultVehicles
+        @openVehicle @vehicles[0], 0
         # $state.go 'main.chart'
       # Get/Set current language
       use: $translate.use
@@ -21,7 +21,7 @@ angular.module 'oekoKostenrechner'
             "car_type": ["klein", "mittel", "groß"][i]
             "energy_type": ["benzin", "diesel", "BEV"][i]
       openVehicle: (vehicle, index)->
-        $uibModal.open
+        @vehicleMod = $uibModal.open
           animation: yes
           size: 'lg'
           templateUrl: 'app/main/vehicle/vehicle.html'

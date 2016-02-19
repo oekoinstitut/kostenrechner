@@ -1,34 +1,34 @@
 form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm", form-change="modal.editSetting($value, modal.vehicle[$value])")
   .modal-header
     h3.modal-title {{ "vehicle_name" | translate:{ vehicle: modal.vehicle, index: modal.index + 1 } }}
-  .modal-body
-    div(ng-repeat="group in modal.groups | orderBy:'importancerank' | filter:modal.isGroupVisible")
-      h4 
+  .main__vehicle__group(ng-repeat="group in modal.groups | orderBy:'importancerank' | filter:modal.isGroupVisible")
+    .modal-body
+      h4.main__vehicle__group__title
         | {{ group.name | translate }} 
-      table.table.table-condensed.table-striped.table-bordered
-        tbody
-          tr(ng-repeat="setting in group.settings | orderBy:'importancerank' | filter:modal.isSettingVisible")
-            td(style="width: 60%")
-              | {{ setting.label }}
-            td(style="width: 40%")
-              div(ng-repeat="context in modal.contexts")
-                div(ng-switch, on=":: modal.inputs[setting.id].getType()", ng-if="setting.context === context")
-                  div(ng-switch-when="boolean")
-                    input(type="checkbox", ng-model="modal[context][setting.name]", form-change-mortadel="setting.name")
-                  div(ng-switch-when="enum")
-                    select(ng-options="val as (val | translate) for val in modal.values[setting.id].range",
-                           ng-model="modal[context][setting.name]",
-                           form-change-model="setting.name")
-                  div(ng-switch-when="interval")
-                    input.form-control(ng-model="modal[context][setting.name]",
-                                       ng-model-options="{ updateOn: 'blur' }",
-                                       min="{{ modal.values[setting.id].floor }}",
-                                       max="{{ modal.values[setting.id].ceil }}",
-                                       step="{{ modal.values[setting.id].step != 1 ? modal.values[setting.id].step : 'any' }}"
-                                       type="number",
-                                       form-change-model="setting.name")
-                  div(ng-switch-default)
-                    strong {{ modal[context][setting.name] }}                  
+    table.table.table-striped.main__vehicle__group__table
+      tbody
+        tr(ng-repeat="setting in group.settings | orderBy:'importancerank' | filter:modal.isSettingVisible", ng-class="{ warning: setting.context === 'presets' }")
+          td(style="width: 60%")
+            | {{ setting.label }}
+          td(style="width: 40%")
+            div(ng-repeat="context in modal.contexts")
+              div(ng-switch, on=":: modal.inputs[setting.id].getType()", ng-if="setting.context === context")
+                div(ng-switch-when="boolean")
+                  input(type="checkbox", ng-model="modal[context][setting.name]", form-change-mortadel="setting.name")
+                div(ng-switch-when="enum")
+                  select(ng-options="val as (val | translate) for val in modal.values[setting.id].range",
+                         ng-model="modal[context][setting.name]",
+                         form-change-model="setting.name")
+                div(ng-switch-when="interval")
+                  input.form-control(ng-model="modal[context][setting.name]",
+                                     ng-model-options="{ updateOn: 'blur' }",
+                                     min="{{ modal.values[setting.id].floor }}",
+                                     max="{{ modal.values[setting.id].ceil }}",
+                                     step="{{ modal.values[setting.id].step != 1 ? modal.values[setting.id].step : 'any' }}"
+                                     type="number",
+                                     form-change-model="setting.name")
+                div(ng-switch-default)
+                  strong {{ modal[context][setting.name] }}                  
   .modal-footer
     button.btn.btn-default.btn-lg.pull-left(type="button", ng-click="modal.close()")
       | {{ 'cancel_modal' | translate }}
