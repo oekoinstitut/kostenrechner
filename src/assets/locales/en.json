@@ -32,7 +32,7 @@
     "desc9": "On how many years the car can be amortized in the books.",
     "diesel": "Diesel",
     "Electrical details": "Electrical details",
-    "energ_unit": "L/km or kWh/km",
+    "energy_unit": "L/km or kWh/km",
     "Energy consumption": "Energy consumption",
     "Energy type": "Energy type",
     "Financials": "Financials",

@@ -1,5 +1,5 @@
 angular.module 'oekoKostenrechner'
-  .controller 'MainFormController', ($scope, $timeout, $state, processor, DynamicInput)->
+  .controller 'MainFormController', ($scope, $timeout, $state, $translate, processor, DynamicInput)->
     'ngInject'
     new class MainFormController
       constructor: ->
@@ -39,7 +39,7 @@ angular.module 'oekoKostenrechner'
       getStepType: (step)=> @inputs[step.id].getType()
       getStepValues: (step)=>
         _.extend @values[step.id],
-          translate: (v)-> v + ' ' + step.unit
+          translate: (v)-> v + ' ' + $translate.instant(step.unit)
       # Shortcuts on the active step
       getActiveStep: => @getSteps()[@activeStepIdx]
       getActiveStepIdx: => @activeStepIdx

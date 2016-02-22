@@ -26,7 +26,7 @@
                          rz-slider-options="form.getStepValues(step)")
           
       
-      p.main__form__step__description {{ step.description }}
+      p.main__form__step__description {{ step.description | translate }}
       p.main__form__step__nav
         a.btn.btn-link.btn-lg(ng-click="form.previousStep()") {{ 'go_back' | translate }}
         button.btn.btn-primary.btn-lg(type="submit", ng-disabled="stepForm.$invalid") {{ 'next_step' | translate }}
