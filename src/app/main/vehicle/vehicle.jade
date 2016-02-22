@@ -34,6 +34,7 @@ form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm", form-cha
                     | {{ setting.unit }}
                 div(ng-switch-default)
                   strong {{ modal[context][setting.name] }}                  
+                  span(ng-show="setting.unit") {{ setting.unit }}
   .modal-footer
     button.btn.btn-default.btn-lg.pull-left(type="button", ng-click="modal.close()")
       | {{ 'cancel_modal' | translate }}
