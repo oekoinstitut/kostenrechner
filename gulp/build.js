@@ -112,6 +112,10 @@ gulp.task('gss:settings', function (cb) {
       for(let k of BOOL_FIELDS) row[k] = row[k].toLowerCase()[0] === 't';
       // Convert values to number
       for(let k of NUMBER_FIELDS) row[k] = 1 * row[k];
+      // Convert to null when empty
+      for(let k in row) {
+        if( row[k] === '' ) row[k] = null;
+      }
       return row;
     });
     var file = JSON.stringify(data, null, 2);

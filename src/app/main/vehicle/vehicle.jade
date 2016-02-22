@@ -15,11 +15,14 @@ form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm", form-cha
               div(ng-switch, on=":: modal.inputs[setting.id].getType()", ng-if="setting.context === context")
                 div(ng-switch-when="boolean")
                   input(type="checkbox", ng-model="modal[context][setting.name]", form-change-mortadel="setting.name")
-                div(ng-switch-when="enum")
-                  select(ng-options="val as (val | translate) for val in modal.values[setting.id].range",
-                         ng-model="modal[context][setting.name]",
-                         form-change-model="setting.name")
-                div(ng-switch-when="interval")
+                div(ng-switch-when="enum", ng-class="{ 'input-group': setting.unit }")
+                  select.form-control(
+                    ng-options="val as (val | translate) for val in modal.values[setting.id].range",
+                    ng-model="modal[context][setting.name]",
+                    form-change-model="setting.name")
+                  span.input-group-addon(ng-show="setting.unit") 
+                    | {{ setting.unit }}
+                div(ng-switch-when="interval", ng-class="{ 'input-group': setting.unit }")
                   input.form-control(ng-model="modal[context][setting.name]",
                                      ng-model-options="{ updateOn: 'blur' }",
                                      min="{{ modal.values[setting.id].floor }}",
@@ -27,6 +30,8 @@ form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm", form-cha
                                      step="{{ modal.values[setting.id].step != 1 ? modal.values[setting.id].step : 'any' }}"
                                      type="number",
                                      form-change-model="setting.name")
+                  span.input-group-addon(ng-show="setting.unit") 
+                    | {{ setting.unit }}
                 div(ng-switch-default)
                   strong {{ modal[context][setting.name] }}                  
   .modal-footer
