@@ -35,7 +35,7 @@ angular.module 'oekoKostenrechner'
             processor: -> processor
         @vehicleModal.result.then @updateComputedCosts
       hasNoParent: (setting)->
-        setting.parentid is '' or isNaN setting.parentid
+        setting.parentid is null or isNaN setting.parentid
       filterSetting: (vehicle)=>
         (setting)=>
           vehicle[setting.name]? and @hasNoParent setting
