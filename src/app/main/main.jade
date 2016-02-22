@@ -31,6 +31,7 @@
             td {{ setting.label }}
             td 
               strong {{ vehicle[setting.name] }}
+              span &nbsp;{{ setting.unit }}
     a.main__vehicles__add-item(ng-show="('main.chart.*' | includedByState) && main.vehicles.length < 2", ui-sref="main.form")
       i.fa.fa-plus
       div {{ "add_vehicle_btn" | translate }}

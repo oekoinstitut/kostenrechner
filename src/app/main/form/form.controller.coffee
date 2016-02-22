@@ -37,7 +37,9 @@ angular.module 'oekoKostenrechner'
         @steps = do processor.getPreliminarySettings
       isStepActive: (step, index)=> index is do @getActiveStepIdx and @values[step.id]?
       getStepType: (step)=> @inputs[step.id].getType()
-      getStepValues: (step)=> @values[step.id]
+      getStepValues: (step)=>
+        _.extend @values[step.id],
+          translate: (v)-> v + ' ' + step.unit
       # Shortcuts on the active step
       getActiveStep: => @getSteps()[@activeStepIdx]
       getActiveStepIdx: => @activeStepIdx
