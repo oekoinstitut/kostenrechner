@@ -2,7 +2,7 @@ angular.module 'oekoKostenrechner'
   .constant 'MAIN',
     SHORTENER_INTERFACE: '//white-shortener.herokuapp.com'
     SHORTENER_PROVIDER: 'goo.gl',
-    CHART_TYPE: 'bar'
+    CHART_TYPE: 'spline'
     CHART_YAXIS: 'TCO'
     CHART_XAXIS: 'holding_time'
     COLORS: ["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6",

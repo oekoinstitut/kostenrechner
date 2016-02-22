@@ -21,20 +21,19 @@ angular.module 'oekoKostenrechner'
           cols = do @generateColumns
           # Columns to load or unload
           toUnload = _.difference _.map(@chart.data(), 'id'), _.map(cols, 0)
-          toLoad = _.difference _.map(cols, 0), _.map(@chart.data(), 'id')
-          # Stop if there is nothing to add or remove
-          return unless toUnload.length + toLoad.length
           # Load new data
           @chart.load
             type: scope.type
             columns: cols
             # Refresh colors and groups
             colors: @generateColors cols
-            groups: @generateGroups cols
+            # categories: @generateXAxis(cols).categories
             # Previous data column (only the one that disapeared)
             unload: toUnload
             # Enhance the chart with d3
             done: @enhanceChart
+          # Groups are loaded separetaly
+          @chart.groups( @generateGroups cols )
         getVehicleDisplay: (vehicle)->
           x = if scope.type is 'bar' then 'holding_time' else scope.x
           display = scope.processor.findDisplay xaxis: x, yaxis: scope.y
@@ -45,13 +44,8 @@ angular.module 'oekoKostenrechner'
             # One tick by vehicle
             'Vehicle ' + idx for idx in [1..scope.vehicles.length]
           # Year on x are set manually
-          else if scope.x is 'holding_time'
-            y for y in [@FLOOR_YEAR..@CEIL_YEAR]
-          # Unkown range, we get it from the input value
           else
-            setting = scope.processor.getSettingsBy(name: scope.x)[0]
-            input = new DynamicInput setting
-            input.getValues().range
+            y for y in [@FLOOR_YEAR..@CEIL_YEAR]
         getVehicleValues: (vehicle, component)=>
           # Use xValues to fill empty tick
           xValues = do @getXValues
@@ -59,7 +53,11 @@ angular.module 'oekoKostenrechner'
           display = @getVehicleDisplay vehicle
           # Iterate over xValues' ticks
           for tick in xValues
-            display[component][tick]?.total_cost or null
+            # This vehicle's values are divided into components
+            if component?
+              display[component][tick]?.total_cost or null
+            else
+              display[tick] or null
         getRefYear: =>
           refYear = null
           # Collect displays for each vehicle
@@ -85,10 +83,17 @@ angular.module 'oekoKostenrechner'
           if scope.type is 'spline'
             # For each vehicle...
             for vehicle in scope.vehicles
-              # Draw the 3 components of a vehicle
-              for component in ['contra', 'pro', 'mittel']
-                values = @getVehicleValues vehicle, component
-                series.push(_.concat [vehicle.id + '-' + component], values)
+              # Get value by components and year
+              if scope.y is 'TCO'
+                # Draw the 3 components of a vehicle
+                for component in ['contra', 'pro', 'mittel']
+                  values = @getVehicleValues vehicle, component
+                  series.push(_.concat [vehicle.id + '-' + component], values)
+              # Get value by year
+              else
+                values = @getVehicleValues vehicle
+                # Draw a serie by vehicle
+                series.push( _.concat ['vehicle-' + vehicle.id], values)
           # Bar chart...
           else
             refYear = do @getRefYear
@@ -115,15 +120,19 @@ angular.module 'oekoKostenrechner'
             # Create a serie line for each value
             series = series.concat( _.concat [n], values[n] for n of values)
           series
-        generateXAxis: (columns)->
-          type: if scope.type is 'bar' then 'category' else 'timeseries'
+        generateXAxis: (columns)=>
+          type: 'category'
+          categories: do @getXValues
         generateColors: (columns)=>
           colors = {}
-          if scope.type is 'spline'
+          if scope.y is 'CO2'
+            for v in scope.vehicles
+              colors['vehicle-' + v.id] = v.color
+          else if scope.y is 'TCO' and scope.type is 'spline'
             for v in scope.vehicles
               for c in ['contra', 'pro']
                 colors[v.id + '-' + c] = v.color
-              colors[v.id + '-' + 'mittel'] = 'white'
+              colors[v.id + '-mittel'] = 'white'
           else
             # Do we received data columns?
             columns = do @generateColumns unless columns?
@@ -133,20 +142,19 @@ angular.module 'oekoKostenrechner'
               colors[key] = MAIN.COLORS[idx % MAIN.COLORS.length]
           colors
         generateGroups: (columns)=>
-          if scope.type is 'spline'
-            for v in scope.vehicles
-              [v.id + '-' + 'contra', v.id + '-' + 'pro', v.id + '-' + 'mittel']
-          else
+          if scope.type is 'bar'
             # Do we received data columns?
             columns = do @generateColumns unless columns?
             columns = angular.copy columns
             # Every dataset but 'x'
             [ _.map(columns.splice(1), 0) ]
+          else
+            []
         generateChart: =>
           columns = do @generateColumns
           @chart = c3.generate
             # Enhance the chart with d3
-            onrendered: => do @enhanceChart if @chart?
+            onrendered: @enhanceChart
             bindto: element[0]
             interaction:
               enabled: yes
@@ -181,13 +189,16 @@ angular.module 'oekoKostenrechner'
               .attr 'class', 'd3-chart-areas'
         getArea: =>
           d3.svg.area()
-            .x (d)=> @chart.internal.x d.x
+            .x  (d)=> @chart.internal.x d.x
             .y0 (d)=> @chart.internal.y d.pro
             .y1 (d)=> @chart.internal.y d.contra
         enhanceChart: =>
+          # Chart must be ready
+          return unless @chart?
+          # Prepare areas
           do @setupAreas
           # Disabled areas on bar chart
-          vehicles = if scope.type is 'spline' then scope.vehicles else []
+          vehicles = if scope.type is 'spline' and scope.y is 'TCO' then scope.vehicles else []
           # Within the same group... append a path
           areas = @areasGroup.selectAll('path.d3-chart-area').data vehicles
           areas.enter()
