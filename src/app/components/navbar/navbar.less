@@ -1,3 +1,24 @@
 .navbar {
+  border-width:1px;
   border-bottom-width:2px;
+  border-top-width:0;
+  max-width:@screen-sm - 20px * 2px;
+  left:50%;
+  .translate(-50%, 0);
+
+  &__languages {
+    &.navbar-nav li {
+
+      &:hover > a {
+        background:transparent;
+        cursor: pointer;
+      }
+
+      &.active > a,
+      &.active:hover > a {
+        background:transparent;
+        font-weight: bold;
+      }
+    }
+  }
 }

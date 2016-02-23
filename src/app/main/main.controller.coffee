@@ -15,7 +15,7 @@ angular.module 'oekoKostenrechner'
       addDefaultVehicles: ->
         @vehicles = []
         # Dummy vehicles
-        for i in [0..1]
+        for i in [0..0]
           @addVehicle
             "acquisition_year": 2014 + Math.round(Math.random()*5)
             "car_type": ["klein", "mittel", "groß"][i]
