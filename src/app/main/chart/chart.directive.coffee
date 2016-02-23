@@ -44,8 +44,13 @@ angular.module 'oekoKostenrechner'
             # One tick by vehicle
             'Vehicle ' + idx for idx in [1..scope.vehicles.length]
           # Year on x are set manually
-          else
+          else if scope.x is 'holding_time'
             y for y in [@FLOOR_YEAR..@CEIL_YEAR]
+          # Unkown range, we get it from the input value
+          else
+            setting = scope.processor.getSettingsBy(name: scope.x)[0]
+            input = new DynamicInput setting
+            input.getValues().range
         getVehicleValues: (vehicle, component)=>
           # Use xValues to fill empty tick
           xValues = do @getXValues
