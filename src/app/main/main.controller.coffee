@@ -24,7 +24,7 @@ angular.module 'oekoKostenrechner'
         vehicle.computeCosts() for vehicle in @vehicles
       openVehicle: (vehicle, index)->
         @vehicleModal = $uibModal.open
-          animation: yes
+          animation: no
           size: 'lg'
           templateUrl: 'app/main/vehicle/vehicle.html'
           controller: 'MainVehicleController'

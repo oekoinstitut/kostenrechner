@@ -1,12 +1,26 @@
 .main__vehicle {
 
+  background: @panel-bg;
+
+  &__heading, &__heading > * {
+    color:white;
+    font-weight: bold;
+    text-align: center;
+    font-size:1.1em;
+    text-transform: uppercase;
+  }
+
   &__group  {
-    border-bottom:1px solid @table-border-color;
+    background:white;
+    margin:10px;
+    border:1px solid @table-border-color;
+    border-bottom-width:2px;
 
     &__title {
+      font-size:1.05em;
       font-weight: bold;
     }
-    
+
     &__table {
       margin:0;
     }
