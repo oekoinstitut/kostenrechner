@@ -32,7 +32,7 @@
     "desc9": "On how many years the car can be amortized in the books.",
     "diesel": "Diesel",
     "Electrical details": "Elektrofahrzeug",
-    "energ_unit": "L/km oder kWh/km",
+    "energ_unit": "L/100 km oder kWh/km",
     "Energy consumption": "Energieverbrauch",
     "Energy type": "Antrieb",
     "Financials": "Finanzmarkt",
@@ -83,5 +83,6 @@
     "Wallbox bis 22kW": "Wallbox bis 22kW",
     "welcome_description": "welcome_description",
     "welcome_title": "Kostenrechner",
-    "years": "Jahre"
+    "years": "Jahre",
+    "vehicle_name": "{{ car_type }} - {{ energy_type }}"
 }

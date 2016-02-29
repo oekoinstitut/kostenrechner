@@ -34,7 +34,7 @@
     "Electrical details": "Electrical details",
     "Energy consumption": "Energy consumption",
     "Energy type": "Energy type",
-    "energy_unit": "L/km or kWh/km",
+    "energy_unit": "L/100km or kWh/km",
     "Financials": "Financials",
     "go_back": "Go Back",
     "groß": "Large",
@@ -83,5 +83,6 @@
     "Wallbox bis 22kW": "Wallbox up to 22kW",
     "welcome_description": "welcome_description",
     "welcome_title": "Kostenrechner",
-    "years": "years"
+    "years": "years",
+     "vehicle_name": "{{ car_type }} - {{ energy_type }}"
 }
