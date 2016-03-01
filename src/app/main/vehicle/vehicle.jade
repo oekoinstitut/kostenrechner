@@ -1,6 +1,7 @@
 form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm", form-change="modal.editSetting($value, modal.vehicle[$value])")
   .modal-header.main__vehicle__heading(ng-style="{ background: modal.vehicle.color }")
-    h3.modal-title {{ "vehicle_name" | translate:{ vehicle: modal.vehicle, index: modal.index + 1 } }}
+    h3.modal-title
+    | {{ "vehicle_name" | translate:{ energy_type:(modal.vehicle.energy_type|translate), car_type:(modal.vehicle.car_type|translate) } }}
   .main__vehicle__group(ng-repeat="group in modal.groups | orderBy:'importancerank' | filter:modal.isGroupVisible")
     .modal-body
       h4.main__vehicle__group__title
