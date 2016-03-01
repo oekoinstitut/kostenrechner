@@ -130,6 +130,8 @@ angular.module 'oekoKostenrechner'
         generateXAxis: (columns)=>
           type: 'category'
           categories: do @getXValues
+          culling:
+            max: 10 
         generateYAxis: (columns)=>
           label:
             position: 'outer-middle'

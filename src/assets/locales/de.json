@@ -78,11 +78,10 @@
     "Training option": "Schulungsart",
     "Vehicle details": "Fahrzeug",
     "Vehicle use": "Fahrzeugnutzung",
-    "vehicle_name": "Fahrzeug {{ index }}",
+    "vehicle_name": "{{ car_type }} - {{ energy_type }}",
     "Wallbox 3.7kW": "Wallbox 3,7kW",
     "Wallbox bis 22kW": "Wallbox bis 22kW",
     "welcome_description": "welcome_description",
     "welcome_title": "Kostenrechner",
-    "years": "Jahre",
-    "vehicle_name": "{{ car_type }} - {{ energy_type }}"
+    "years": "Jahre"
 }

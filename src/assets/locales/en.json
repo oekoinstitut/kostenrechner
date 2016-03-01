@@ -11,6 +11,7 @@
     "Charging option": "Charging option",
     "co2_btn": "See CO2",
     "Corporate tax": "Corporate tax",
+    "cost_unit": "Cost in €",
     "desc1": "When the car is bought",
     "desc10": "A German law proposes to change accounting rules for electrical vehicles.",
     "desc11": "Costs of tires, repairs and yearly inspection",
@@ -42,6 +43,7 @@
     "home_btn": "Home",
     "hybrid": "Hybrid",
     "Inpection costs": "Inpection costs",
+    "kg_unit": "Kg of CO2",
     "klein": "Small",
     "Ladesäule 100 kW DC": "Charging station 100kW DC",
     "Ladesäule 22kW": "Charging station 22kW",
@@ -78,13 +80,10 @@
     "Training option": "Training option",
     "Vehicle details": "Vehicle details",
     "Vehicle use": "Vehicle use",
-    "vehicle_name": "Vehicle {{ index }}",
+    "vehicle_name": "{{ car_type }} - {{ energy_type }}",
     "Wallbox 3.7kW": "Wallbox 3.7kW",
     "Wallbox bis 22kW": "Wallbox up to 22kW",
     "welcome_description": "welcome_description",
     "welcome_title": "Kostenrechner",
-    "years": "years",
-    "vehicle_name": "{{ car_type }} - {{ energy_type }}",
-    "cost_unit": "Cost in €",
-    "kg_unit": "Kg of CO2"
+    "years": "years"
 }
