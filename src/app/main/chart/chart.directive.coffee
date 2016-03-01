@@ -1,5 +1,5 @@
 angular.module 'oekoKostenrechner'
-  .directive 'chart', (DynamicInput, MAIN)->
+  .directive 'chart', (DynamicInput, MAIN, $translate)->
     'ngInject'
     restrict: 'EA'
     scope:
@@ -32,6 +32,8 @@ angular.module 'oekoKostenrechner'
             unload: toUnload
             # Enhance the chart with d3
             done: @enhanceChart
+          # Update axis
+          @chart.axis.labels y: @generateYAxis(cols).label.text
           # Groups are loaded separetaly
           @chart.groups( @generateGroups cols )
         getVehicleDisplay: (vehicle)->
@@ -128,6 +130,10 @@ angular.module 'oekoKostenrechner'
         generateXAxis: (columns)=>
           type: 'category'
           categories: do @getXValues
+        generateYAxis: (columns)=>
+          label:
+            position: 'outer-middle'
+            text: $translate.instant(if scope.y is 'CO2' then 'kg_unit' else 'cost_unit')
         generateColors: (columns)=>
           colors = {}
           if scope.y is 'CO2'
@@ -174,6 +180,7 @@ angular.module 'oekoKostenrechner'
               duration: @TRANSITION_DURATION
             axis:
               x: @generateXAxis columns
+              y: @generateYAxis columns
             data:
               x: 'x'
               type: scope.type

@@ -84,5 +84,7 @@
     "welcome_description": "welcome_description",
     "welcome_title": "Kostenrechner",
     "years": "years",
-     "vehicle_name": "{{ car_type }} - {{ energy_type }}"
+    "vehicle_name": "{{ car_type }} - {{ energy_type }}",
+    "cost_unit": "Cost in €",
+    "kg_unit": "Kg of CO2"
 }
