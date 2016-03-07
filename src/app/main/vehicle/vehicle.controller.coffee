@@ -35,7 +35,13 @@ angular.module 'oekoKostenrechner'
         # Deep watch vehicle changes
         , yes
       # A setting has been edited
-      editSetting: (setting, value)=> @frozenSettings[setting] = value
+      editSetting: (setting, value)=>
+        @frozenSettings[setting] = value
+      gs: (context, name)=>
+        (value)=>
+          if value?
+            @frozenSettings[name] = @[context][name]  = value
+          @[context][name]
       # If the given setting is visible
       isSettingVisible: (setting)=>
         # The setting is related to a specific enery type

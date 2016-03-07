@@ -1,4 +1,4 @@
-form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm", form-change="modal.editSetting($value, modal.vehicle[$value])")
+form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm")
   .modal-header.main__vehicle__heading(ng-style="{ background: modal.vehicle.color }")
     h3.modal-title
     | {{ "vehicle_name" | translate:{ energy_type:(modal.vehicle.energy_type|translate), car_type:(modal.vehicle.car_type|translate) } }}
@@ -15,22 +15,23 @@ form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm", form-cha
             div(ng-repeat="context in modal.contexts")
               div(ng-switch, on=":: modal.inputs[setting.id].getType()", ng-if="setting.context === context")
                 div(ng-switch-when="boolean")
-                  input(type="checkbox", ng-model="modal[context][setting.name]", form-change-mortadel="setting.name")
+                  input(type="checkbox", 
+                    ng-model="modal.gs(context, setting.name)", 
+                    ng-model-options="{ getterSetter: true }")
                 div(ng-switch-when="enum", ng-class="{ 'input-group': setting.unit }")
                   select.form-control(
                     ng-options="val as (val | translate) for val in modal.values[setting.id].range",
-                    ng-model="modal[context][setting.name]",
-                    form-change-model="setting.name")
+                    ng-model="modal.gs(context, setting.name)", 
+                    ng-model-options="{ getterSetter: true }")
                   span.input-group-addon(ng-show="setting.unit") 
                     | {{ setting.unit | translate }}
                 div(ng-switch-when="interval", ng-class="{ 'input-group': setting.unit }")
-                  input.form-control(ng-model="modal[context][setting.name]",
-                                     ng-model-options="{ updateOn: 'blur' }",
-                                     min="{{ modal.values[setting.id].floor }}",
-                                     max="{{ modal.values[setting.id].ceil }}",
-                                     step="{{ modal.values[setting.id].step != 1 ? modal.values[setting.id].step : 'any' }}"
-                                     type="number",
-                                     form-change-model="setting.name")
+                  input.form-control(type="number",
+                    min="{{ modal.values[setting.id].floor }}",
+                    max="{{ modal.values[setting.id].ceil }}",
+                    step="{{ modal.values[setting.id].step != 1 ? modal.values[setting.id].step : 'any' }}",
+                    ng-model="modal.gs(context, setting.name)", 
+                    ng-model-options="{ getterSetter: true, updateOn: 'blur' }")
                   span.input-group-addon(ng-show="setting.unit") 
                     | {{ setting.unit | translate }}
                 div(ng-switch-default)
