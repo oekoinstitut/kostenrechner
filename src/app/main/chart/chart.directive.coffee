@@ -26,8 +26,7 @@ angular.module 'oekoKostenrechner'
             type: scope.type
             columns: cols
             # Refresh colors and groups
-            colors: @generateColors cols
-            # categories: @generateXAxis(cols).categories
+            colors: @generateColors
             # Previous data column (only the one that disapeared)
             unload: toUnload
             # Enhance the chart with d3
@@ -128,10 +127,9 @@ angular.module 'oekoKostenrechner'
             series = series.concat( _.concat [n], values[n] for n of values)
           series
         generateXAxis: (columns)=>
-          type: 'category'
-          categories: do @getXValues
+          type: 'categories'
           culling:
-            max: 10 
+            max: 10
         generateYAxis: (columns)=>
           label:
             position: 'outer-middle'
@@ -183,6 +181,9 @@ angular.module 'oekoKostenrechner'
             axis:
               x: @generateXAxis columns
               y: @generateYAxis columns
+            grid:
+              y:
+                show: yes
             data:
               x: 'x'
               type: scope.type

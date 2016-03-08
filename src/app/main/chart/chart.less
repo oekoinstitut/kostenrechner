@@ -35,6 +35,15 @@
           line, path {
             stroke: @text-muted;
           }
+
+          &-y .domain, &-y .tick line {
+            stroke: transparent;
+            fill: transparent;
+          }
+        }
+
+        .c3-ygrid, .c3-axis-x .domain, .c3-axis-x .tick line {
+          stroke:#ccc;
         }
 
         .d3-chart-area {
