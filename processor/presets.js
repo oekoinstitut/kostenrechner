@@ -47,9 +47,9 @@ var aufpreis = {
 		"LNF2": 2500
 	},
 	"hybrid": {
-		"klein": 2564,
-		"mittel": 2340,
-		"groß": 2232
+		"klein": 1480,
+		"mittel": 2425,
+		"groß": 3830
 	},
 	"BEV":{
 		"klein":{"2014": 1500},
@@ -128,6 +128,20 @@ var verbrauch = {
 	"hybrid": {"klein": 5.21, "mittel": 6.06,"groß": 6.64}
 				}
 
+// Hybrid consume less fuel
+var hybrid_minderverbrauch = {
+	"klein" : .918,
+	"mittel" : .9211,
+	"groß" : .8725
+}
+
+// Hybrid consumes less lubricant
+
+var hybrid_minderverbrauch_schmierstoff = .45
+
+//Number of days in the year when the vehicle is in use
+var einsatztage_pro_jahr = 250;
+
 // Insurance in €/year
 var versicherung = {
 	"benzin": {"klein": 721, "mittel": 836,"groß": 1025},
@@ -139,7 +153,9 @@ var versicherung = {
 var kfzsteuer = {
 	"benzin": {"klein": 66.6, "mittel": 108.5,"groß": 137.8},
 	"diesel": {"klein": 105.33, "mittel": 193.19,"groß": 227.01, "LNF1": 293.63, "LNF2": 390.59},
-	"BEV":    {"klein": 0, "mittel": 0,"groß": 0, "LNF1": 0, "LNF2": 0}
+	"hybrid-benzin": {"klein": 23, "mittel": 38,"groß": 48},
+	"hybrid-diesel": {"klein": 37, "mittel": 68,"groß": 79},
+	"BEV":    {"klein": 33.75, "mittel": 45,"groß": 56.25, "LNF1": 0, "LNF2": 0}
 				}
 
 // Yearly check up in €
@@ -253,3 +269,6 @@ exports.reperaturkosten = reperaturkosten;
 exports.co2_emissions = co2_emissions;
 exports.traffic_multiplicator = traffic_multiplicator;
 exports.schulungskosten = schulungskosten;
+exports.hybrid_minderverbrauch = hybrid_minderverbrauch;
+exports.hybrid_minderverbrauch_schmierstoff = hybrid_minderverbrauch_schmierstoff;
+exports.einsatztage_pro_jahr = einsatztage_pro_jahr;

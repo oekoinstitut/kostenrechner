@@ -1,4 +1,5 @@
 var presets = require('./presets');
+var extend = require("xtend")
 var scenarios = ["pro", "mittel", "contra"]
 
 // Corrects amounts for inflation
@@ -11,7 +12,7 @@ function getRawAcquisitionPrice(energy_type, car_type, year) {
 	// Updates the starting prices with diesel
 	var starting_price = presets.nettolistenpreise;
 
-	if (energy_type != "BEV") {
+	if (energy_type != "BEV" && energy_type.indexOf("hybrid") == -1) {
 		for (type in starting_price["benzin"]) {
 			if (energy_type != "benzin") {starting_price[energy_type][type] = {};}
 			starting_price[energy_type][type]["2014"] = starting_price["benzin"][type]["2014"] + getPriceSurcharge(energy_type, type, year);
@@ -20,6 +21,13 @@ function getRawAcquisitionPrice(energy_type, car_type, year) {
 		var yearly_increase = Math.pow((1 + presets.kostensteigerung20102030[energy_type][car_type]), (1/20)) - 1;
 		// Computes the value for the asked year
 		return starting_price[energy_type][car_type]["2014"] * Math.pow(1+yearly_increase, year - 2014)
+	
+	} else if (energy_type.indexOf("hybrid") > -1) { // hybrid car
+		if (energy_type.indexOf("diesel") > -1) { //hybrid-diesel
+			return getRawAcquisitionPrice("diesel", car_type, year) + getPriceSurcharge("hybrid", car_type, year);
+		} else {
+			return getRawAcquisitionPrice("benzin", car_type, year) + getPriceSurcharge("hybrid", car_type, year);
+		}
 	} else { // Elektro car
 		if (car_type.indexOf("LNF") > -1) {
 			return getRawAcquisitionPrice("diesel", car_type, year) + getPriceSurcharge(energy_type, car_type, year);
@@ -32,9 +40,9 @@ function getRawAcquisitionPrice(energy_type, car_type, year) {
 // Returns the surcharge one has to pay for an electro vehicle in a given year (excl. battery)
 function getPriceSurcharge(energy_type, car_type, year) {
 	if (energy_type == "benzin") { return 0 }
-	else if (energy_type != "BEV") {
+	else if (energy_type == "diesel") {
 		return presets.aufpreis[energy_type][car_type]
-	} else {
+	} else if (energy_type == "BEV") {
 		var surcharge = presets.aufpreis["BEV"];
 		var surcharge_decrease_2020 = -.5;
 		var yearly_surcharge_deacrease = Math.pow((1 + surcharge_decrease_2020), (1/6)) - 1;
@@ -49,6 +57,8 @@ function getPriceSurcharge(energy_type, car_type, year) {
 			}
 		}
 		return surcharge[car_type][year]
+	} else {
+		return presets.aufpreis["hybrid"][car_type]
 	}
 }
 
@@ -177,6 +187,7 @@ function getCO2FromElectricityMix(estimation_year) {
 var Vehicle = function(params) {
 	this.energy_type = "BEV";
 	this.car_type = "klein";
+	this.electricity_consumption = 0;
 	this.mileage = 20000;
 	this.acquisition_year = 2014;
 	this.reichweite = 150;
@@ -186,6 +197,11 @@ var Vehicle = function(params) {
 	this.fleet_size = 1;
 	this.traffic = "normaler Verkehr"
 	this.training_option = "keine Schulung"
+	this.share_electric = 55;
+	this.second_charge = false;
+	if (this.energy_type.indexOf("hybrid") > -1 ) {
+		this.reichweite = 50;
+	}
 
 	for(var prop in params) {
     if( params.hasOwnProperty(prop) && this.hasOwnProperty(prop) ) {
@@ -193,6 +209,7 @@ var Vehicle = function(params) {
 		}
 	}
 
+	this.fixed_vars = {}
 	this.price = {};
 	this.maintenance_costs_total = this.maintenance_costs_repairs = this.maintenance_costs_tires = this.maintenance_costs_inspection = 0;
 	this.fixed_costs = {};
@@ -216,14 +233,24 @@ var Vehicle = function(params) {
 			this.maintenance_costs_tires = presets.reperaturkosten["diesel"][this.car_type]["reifen"];
 			this.maintenance_costs_inspection = presets.reperaturkosten["diesel"][this.car_type]["inspektion"];
 			this.maintenance_costs_repairs = presets.reperaturkosten["diesel"][this.car_type]["reparatur"] * presets.faktor_BEV;
-		} else {
+		} else if (this.energy_type.indexOf("hybrid") > -1) { // Takes the same value of the non-hybrid of same type
+			this.maintenance_costs_tires = presets.reperaturkosten[this.energy_type.split("-")[1]][this.car_type]["reifen"];
+			this.maintenance_costs_inspection = presets.reperaturkosten[this.energy_type.split("-")[1]][this.car_type]["inspektion"];
+			this.maintenance_costs_repairs = presets.reperaturkosten[this.energy_type.split("-")[1]][this.car_type]["reparatur"] * presets.faktor_BEV;
+		} 
+		else {
 			this.maintenance_costs_tires = presets.reperaturkosten[this.energy_type][this.car_type]["reifen"];
 			this.maintenance_costs_inspection = presets.reperaturkosten[this.energy_type][this.car_type]["inspektion"];
 			this.maintenance_costs_repairs = presets.reperaturkosten[this.energy_type][this.car_type]["reparatur"];
 		}
+
 		this.maintenance_costs_tires = ((this.maintenance_costs_tires * 12) / 20000) * this.mileage * this.traffic_multiplicator;
 		this.maintenance_costs_inspection = ((this.maintenance_costs_inspection * 12) / 20000) * this.mileage * this.traffic_multiplicator;
-		this.maintenance_costs_repairs = ((this.maintenance_costs_repairs * 12) / 20000) * this.mileage * this.traffic_multiplicator;
+		this.maintenance_costs_repairs = ((this.maintenance_costs_repairs * 12) / 20000) * this.mileage * this.traffic_multiplicator
+
+		if (this.fixed_vars.hasOwnProperty("maintenance_costs_inspection")) {
+			this.maintenance_costs_inspection = this.fixed_vars["maintenance_costs_inspection"]
+		}
 
 		this.maintenance_costs_total = this.maintenance_costs_tires + this.maintenance_costs_inspection + this.maintenance_costs_repairs + this.maintenance_costs_charger;
 
@@ -264,15 +291,33 @@ var Vehicle = function(params) {
 	}
 
 	this.getFixedCosts = function() {
+		
+		if (this.energy_type.indexOf("hybrid") > -1) {
+			energy_type = this.energy_type.split("-")[1];
+		} else {
+			energy_type = this.energy_type
+		}
+
 		this.fixed_costs.car_tax = presets.kfzsteuer[this.energy_type][this.car_type];
-		this.fixed_costs.check_up = presets.untersuchung[this.energy_type]["AU"] + presets.untersuchung[this.energy_type]["HU"]
-		this.fixed_costs.insurance = presets.versicherung[this.energy_type][this.car_type];
+		if (this.energy_type == "BEV") { this.fixed_costs.car_tax = 0 }
+		this.fixed_costs.check_up = presets.untersuchung[energy_type]["AU"] + presets.untersuchung[energy_type]["HU"]
+		this.fixed_costs.insurance = presets.versicherung[energy_type][this.car_type];
 		this.fixed_costs.total = this.fixed_costs.car_tax + this.fixed_costs.check_up + this.fixed_costs.insurance;
 	}
 
 	this.getLubricantConsumption = function() {
 		if (this.energy_type == "BEV") { return 0 }
-		var lubricant_consumption = presets.hubraum[this.energy_type][this.car_type] / 2000 * (0.5/1000);
+		else if (this.energy_type.indexOf("hybrid") > -1 ) {
+			var energy_type = this.energy_type.split("-")[1];
+		} else { 
+			var energy_type = this.energy_type;
+		}
+		var lubricant_consumption = presets.hubraum[energy_type][this.car_type] / 2000 * (0.5/1000);
+
+		if (this.energy_type.indexOf("hybrid") > -1 ) { //special case for hybrids
+			return presets.price_of_lubricant * lubricant_consumption * presets.hybrid_minderverbrauch_schmierstoff 
+		}
+		
 		return presets.price_of_lubricant * lubricant_consumption;
 	}
 
@@ -280,32 +325,58 @@ var Vehicle = function(params) {
 		this.lubricant_costs = this.getLubricantConsumption() * this.mileage;
 	}
 
-	this.getConsumption = function() {
-		this.fuel_consumption = presets.verbrauch[this.energy_type][this.car_type];
-		var improvement_first_decade = presets.verbrauchsentwicklung[this.energy_type]["2010"];
-		var yearly_improvement_first_decade = Math.pow((1 + improvement_first_decade), (1/10)) - 1;
-		var improvement_second_decade = presets.verbrauchsentwicklung[this.energy_type]["2020"];
-		var yearly_improvement_second_decade = Math.pow(1 + improvement_second_decade, .1) - 1;
-
-		// Need to take into account the rate of improvement of the previous decade
-		if (this.acquisition_year > 2020) {
-			this.fuel_consumption *= Math.pow(1+yearly_improvement_first_decade, this.acquisition_year - 2014);
-			this.fuel_consumption *= Math.pow(1+yearly_improvement_second_decade, this.acquisition_year - 2020);
+	this.getConsumption = function(energy_type) {
+		if (energy_type.indexOf("hybrid") > -1) {
+			this.getConsumption("BEV");
+			this.getConsumption(energy_type.split("-")[1]);
+			this.fuel_consumption *= presets.hybrid_minderverbrauch[this.car_type];
 		} else {
-			this.fuel_consumption *= Math.pow(1+yearly_improvement_first_decade, this.acquisition_year - 2014);
-		}
+			this.fuel_consumption = presets.verbrauch[energy_type][this.car_type];
+			var improvement_first_decade = presets.verbrauchsentwicklung[energy_type]["2010"];
+			var yearly_improvement_first_decade = Math.pow((1 + improvement_first_decade), (1/10)) - 1;
+			var improvement_second_decade = presets.verbrauchsentwicklung[energy_type]["2020"];
+			var yearly_improvement_second_decade = Math.pow(1 + improvement_second_decade, .1) - 1;
 
-		// Because the information for electric cars is in kWh per km
-		if (this.energy_type == "BEV") { this.fuel_consumption *= 100 }
+			// Need to take into account the rate of improvement of the previous decade
+			if (this.acquisition_year > 2020) {
+				this.fuel_consumption *= Math.pow(1+yearly_improvement_first_decade, this.acquisition_year - 2014);
+				this.fuel_consumption *= Math.pow(1+yearly_improvement_second_decade, this.acquisition_year - 2020);
+			} else {
+				this.fuel_consumption *= Math.pow(1+yearly_improvement_first_decade, this.acquisition_year - 2014);
+			}
+
+			// Because the information for electric cars is in kWh per km
+			if (energy_type == "BEV") { 
+				this.electricity_consumption = this.fuel_consumption * 100;
+				this.fuel_consumption = 0;
+			}
+		}
 
 	}
 
 	this.getEnergyPrices = function() {
-		for (var year = this.acquisition_year; year <= 2025; year++) {
-			this.energy_prices[year] = {}
-			this.energy_prices[year]["pro"] = getEnergyPrice(this.energy_type, year, "pro");
-			this.energy_prices[year]["mittel"] = getEnergyPrice(this.energy_type, year, "mittel");
-			this.energy_prices[year]["contra"] = getEnergyPrice(this.energy_type, year, "contra");
+		
+		if (this.energy_type.indexOf("hybrid") > -1) { //compute 2 sets of energy prices for hybrid vehicles
+			var energy_type = this.energy_type.split("-")[1];
+			this.energy_prices[energy_type] = {};
+			this.energy_prices["BEV"] = {};
+			for (var year = this.acquisition_year; year <= 2025; year++) {
+				this.energy_prices[energy_type][year] = {}
+				this.energy_prices[energy_type][year]["pro"] = getEnergyPrice(energy_type, year, "pro");
+				this.energy_prices[energy_type][year]["mittel"] = getEnergyPrice(energy_type, year, "mittel");
+				this.energy_prices[energy_type][year]["contra"] = getEnergyPrice(energy_type, year, "contra");
+				this.energy_prices["BEV"][year] = {}
+				this.energy_prices["BEV"][year]["pro"] = getEnergyPrice("BEV", year, "pro");
+				this.energy_prices["BEV"][year]["mittel"] = getEnergyPrice("BEV", year, "mittel");
+				this.energy_prices["BEV"][year]["contra"] = getEnergyPrice("BEV", year, "contra");
+			}
+		} else {
+			for (var year = this.acquisition_year; year <= 2025; year++) {
+				this.energy_prices[year] = {}
+				this.energy_prices[year]["pro"] = getEnergyPrice(this.energy_type, year, "pro");
+				this.energy_prices[year]["mittel"] = getEnergyPrice(this.energy_type, year, "mittel");
+				this.energy_prices[year]["contra"] = getEnergyPrice(this.energy_type, year, "contra");
+			}
 		}
 	}
 
@@ -318,11 +389,31 @@ var Vehicle = function(params) {
 	}
 
 	this.getEnergyCosts = function(){
-		for (var year = this.acquisition_year; year <= 2025; year++) {
-			this.energy_costs[year] = {}
-			this.energy_costs[year]["pro"] = (this.mileage / 100) * this.fuel_consumption * this.energy_prices[year]["pro"];
-			this.energy_costs[year]["mittel"] = (this.mileage / 100) * this.fuel_consumption * this.energy_prices[year]["mittel"];
-			this.energy_costs[year]["contra"] = (this.mileage / 100) * this.fuel_consumption * this.energy_prices[year]["contra"];
+		if (this.energy_type == "benzin" || this.energy_type == "diesel") {
+			for (var year = this.acquisition_year; year <= 2025; year++) {
+				this.energy_costs[year] = {}
+				this.energy_costs[year]["pro"] = (this.mileage / 100) * this.fuel_consumption * this.energy_prices[year]["pro"];
+				this.energy_costs[year]["mittel"] = (this.mileage / 100) * this.fuel_consumption * this.energy_prices[year]["mittel"];
+				this.energy_costs[year]["contra"] = (this.mileage / 100) * this.fuel_consumption * this.energy_prices[year]["contra"];
+			}
+		} else if (this.energy_type == "BEV") {
+			for (var year = this.acquisition_year; year <= 2025; year++) {
+				this.energy_costs[year] = {}
+				this.energy_costs[year]["pro"] = (this.mileage / 100) * this.electricity_consumption * this.energy_prices[year]["pro"];
+				this.energy_costs[year]["mittel"] = (this.mileage / 100) * this.electricity_consumption * this.energy_prices[year]["mittel"];
+				this.energy_costs[year]["contra"] = (this.mileage / 100) * this.electricity_consumption * this.energy_prices[year]["contra"];
+			}
+		} else { //Hybrid vehicles
+			var energy_type = this.energy_type.split("-")[1];
+			for (var year = this.acquisition_year; year <= 2025; year++) {
+				this.energy_costs[year] = {}
+				this.energy_costs[year]["pro"] = (this.mileage / 100) * this.share_electric / 100 * this.electricity_consumption * this.energy_prices["BEV"][year]["pro"];
+				this.energy_costs[year]["pro"] += (this.mileage / 100) * (1 - this.share_electric / 100) * this.fuel_consumption * this.energy_prices[energy_type][year]["pro"];
+				this.energy_costs[year]["mittel"] = (this.mileage / 100) * this.share_electric / 100 * this.electricity_consumption * this.energy_prices["BEV"][year]["mittel"];
+				this.energy_costs[year]["mittel"] += (this.mileage / 100) * (1 - this.share_electric / 100) * this.fuel_consumption * this.energy_prices[energy_type][year]["mittel"];
+				this.energy_costs[year]["contra"] = (this.mileage / 100) * this.share_electric / 100 * this.electricity_consumption * this.energy_prices["BEV"][year]["contra"];
+				this.energy_costs[year]["contra"] += (this.mileage / 100) * (1 - this.share_electric / 100) * this.fuel_consumption * this.energy_prices[energy_type][year]["contra"];
+			}
 		}
 	}
 
@@ -357,6 +448,12 @@ var Vehicle = function(params) {
 				this.TCO[scenario][year] = {}
 
 				if (year == this.acquisition_year) {
+
+					// Special case: BEV cars bought after Jan 1 2021 pay taxes
+					if (this.energy_type == "BEV" && this.acquisition_year >= 2021) {
+						this.fixed_costs.car_tax = presets.kfzsteuer[this.energy_type][this.car_type];
+					}
+
 					this.TCO[scenario][year]["fixed_costs"] = this.fixed_costs
 					this.TCO[scenario][year]["energy_costs"] = this.energy_costs[year][scenario]
 					this.TCO[scenario][year]["training_costs"] = this.training_costs
@@ -372,6 +469,12 @@ var Vehicle = function(params) {
 					this.TCO[scenario][year]["variable_costs"] = {}
 					this.TCO[scenario][year]["training_costs"] = this.training_costs
 					this.TCO[scenario][year]["fixed_costs"]["car_tax"] = this.TCO[scenario][year - 1]["fixed_costs"]["car_tax"] + this.fixed_costs.car_tax
+
+					// Special case: BEV cars older than 6 years old pay taxes
+					if (this.energy_type == "BEV" && (year - this.acquisition_year) >= 6) {
+						this.TCO[scenario][year]["fixed_costs"]["car_tax"] = this.TCO[scenario][year - 1]["fixed_costs"]["car_tax"] + presets.kfzsteuer[this.energy_type][this.car_type];
+					}
+
 					this.TCO[scenario][year]["fixed_costs"]["check_up"] = this.TCO[scenario][year - 1]["fixed_costs"]["check_up"] + this.fixed_costs.check_up
 					this.TCO[scenario][year]["fixed_costs"]["insurance"] = this.TCO[scenario][year - 1]["fixed_costs"]["insurance"] + this.fixed_costs.insurance
 					this.TCO[scenario][year]["fixed_costs"]["total"] = this.TCO[scenario][year - 1]["fixed_costs"]["total"] + this.fixed_costs.total
@@ -421,8 +524,13 @@ var Vehicle = function(params) {
 		for (var year=this.acquisition_year; year <= 2025; year++) {
 			this.CO2[year] = {};
 
-			if (this.energy_source == "strom_mix") {
-				this.CO2[year] = (this.mileage / 100) * this.fuel_consumption * getCO2FromElectricityMix(year)
+			if (this.energy_type.indexOf("hybrid") > -1) {
+				//assumes strom mix for hybrids
+				this.CO2[year] = (this.mileage / 100) * (this.share_electric /100) *  this.electricity_consumption * getCO2FromElectricityMix(year)
+				this.CO2[year] += (this.mileage / 100) * (1-this.share_electric /100) *  this.fuel_consumption * presets.co2_emissions[this.energy_type.split("-")[1]]
+			}
+			else if (this.energy_source == "strom_mix") {
+				this.CO2[year] = (this.mileage / 100) * this.electricity_consumption * getCO2FromElectricityMix(year)
 			} else {
 				this.CO2[year] = (this.mileage / 100) * this.fuel_consumption * presets.co2_emissions[this.energy_source]
 			}
@@ -455,13 +563,28 @@ var Vehicle = function(params) {
 		this.computeCosts();
 	}
 
-	this.computeCosts = function() {
+	this.checkMaxElecShare = function() {
+		// Checks that the max elec share input by the user is right. If not, set it to max
+		var daily_mileage = this.mileage / presets.einsatztage_pro_jahr;
+		var max_elec_share = (this.reichweite / daily_mileage) * 100;
+		if (this.second_charge === true) { max_elec_share = ((this.reichweite * 2) / daily_mileage) * 100; }
+		if (max_elec_share > 100){ max_elec_share = 100 }
+		if (this.share_electric > max_elec_share) { this.share_electric = max_elec_share }
+	}
+
+	this.computeCosts = function(fixed_vars) {
+		this.fixed_vars = extend(this.fixed_vars, fixed_vars);
 		this.traffic_multiplicator = presets.traffic_multiplicator[this.traffic];
 		this.getFixedCosts();
+		
+		if (this.energy_type.indexOf("hybrid") > -1 ) {
+			this.checkMaxElecShare();
+		}
+		
 		this.getAcquisitionPrice();
 		this.getMaintenanceCosts();
 		this.getLubricantCosts();
-		this.getConsumption();
+		this.getConsumption(this.energy_type);
 		this.getEnergyPrices();
 		this.getEnergyCosts();
 		this.getAmortization();
@@ -479,3 +602,10 @@ var Vehicle = function(params) {
 module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
+
+vehicle1 = new Vehicle({"energy_type": "benzin"});
+vehicle2 = new Vehicle();
+vehicle3 = new Vehicle({"energy_type": "hybrid-benzin"});
+console.log(vehicle1.electricity_consumption, vehicle1.fuel_consumption, vehicle1.CO2["2025"])
+console.log(vehicle2.electricity_consumption, vehicle2.fuel_consumption, vehicle2.CO2["2025"])
+console.log(vehicle3.electricity_consumption, vehicle3.fuel_consumption, vehicle3.CO2["2025"])
