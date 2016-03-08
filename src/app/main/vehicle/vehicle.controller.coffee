@@ -44,8 +44,10 @@ angular.module 'oekoKostenrechner'
           @[context][name]
       # If the given setting is visible
       isSettingVisible: (setting)=>
+        # No specific condition
+        return yes if setting.specifictoenergytype is null
         # The setting is related to a specific enery type
-        setting.specifictoenergytype is null or setting.specifictoenergytype is @vehicle.energy_type
+        _.map( setting.specifictoenergytype.split(','), _.trim).indexOf( @vehicle.energy_type ) > -1
       # If any setting within the group is visible
       isGroupVisible: (group)=> _.some group.settings, @isSettingVisible
       saveVehicle: =>
