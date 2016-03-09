@@ -31,6 +31,7 @@ angular.module 'oekoKostenrechner'
             unload: toUnload
             # Enhance the chart with d3
             done: @enhanceChart
+            categories: do @getXValues
           # Update axis
           @chart.axis.labels y: @generateYAxis(cols).label.text
           # Groups are loaded separetaly
@@ -128,9 +129,12 @@ angular.module 'oekoKostenrechner'
           series
         generateXAxis: (columns)=>
           type: 'categories'
-          culling:
-            max: 10
-        generateYAxis: (columns)=>
+          categories: do @getXValues
+          tick:
+            centered: yes
+            culling: yes
+            multiline: no
+        generateYAxis: (columns)->
           label:
             position: 'outer-middle'
             text: $translate.instant(if scope.y is 'CO2' then 'kg_unit' else 'cost_unit')
@@ -176,6 +180,8 @@ angular.module 'oekoKostenrechner'
               show: no
             point:
               show: no
+            line:
+              connectNull: yes
             transition:
               duration: @TRANSITION_DURATION
             axis:
@@ -224,8 +230,8 @@ angular.module 'oekoKostenrechner'
           areas.datum( (d)=>
             datum = []
             # Value from chart's data
-            pro    = (@chart.data d.id + "-pro")[0].values
-            contra = (@chart.data d.id + "-contra")[0].values
+            pro    = (@chart.data d.id + "-pro")[0]?.values
+            contra = (@chart.data d.id + "-contra")[0]?.values
             # Merge data into an array
             for i of pro
               # Without null values
