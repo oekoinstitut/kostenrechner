@@ -29,7 +29,7 @@
     "interval": 1,
     "hasslider": false,
     "canbeonxaxis": true,
-    "shownonthelist": true,
+    "shownonthelist": false,
     "importancerank": 5,
     "specifictoenergytype": null,
     "preliminary": false,
@@ -110,7 +110,7 @@
     "hasslider": false,
     "canbeonxaxis": false,
     "shownonthelist": true,
-    "importancerank": 10,
+    "importancerank": 5,
     "specifictoenergytype": "BEV, hybrid-benzin, hybrid-diesel",
     "preliminary": false,
     "parentid": null,
@@ -438,5 +438,25 @@
     "use": "both",
     "context": "vehicle",
     "name": "second_charge"
+  },
+  {
+    "id": "23",
+    "label": "Autonomy",
+    "description": "desc23",
+    "unit": "km",
+    "group": "Electrical details",
+    "values": "50..250",
+    "interval": 1,
+    "hasslider": false,
+    "canbeonxaxis": false,
+    "shownonthelist": true,
+    "importancerank": 12,
+    "specifictoenergytype": "BEV, hybrid-benzin, hybrid-diesel",
+    "preliminary": false,
+    "parentid": null,
+    "editable": true,
+    "use": "TCO",
+    "context": "vehicle",
+    "name": "reichweite"
   }
 ]
