@@ -155,7 +155,7 @@ var kfzsteuer = {
 	"diesel": {"klein": 105.33, "mittel": 193.19,"groß": 227.01, "LNF1": 293.63, "LNF2": 390.59},
 	"hybrid-benzin": {"klein": 23, "mittel": 38,"groß": 48},
 	"hybrid-diesel": {"klein": 37, "mittel": 68,"groß": 79},
-	"BEV":    {"klein": 33.75, "mittel": 45,"groß": 56.25, "LNF1": 0, "LNF2": 0}
+	"BEV":    {"klein": 33.75, "mittel": 45,"groß": 56.25, "LNF1": 56.25, "LNF2": 67.5}
 				}
 
 // Yearly check up in €
