@@ -1,18 +1,15 @@
 .main__chart
-  .row
-    .col-md-5
-      h2.main__chart__heading {{ "tco_title" | translate }}
-    .col-md-7
-      ul.main__chart__nav.nav.nav-pills(role="navigation")
-        li(ui-sref-active="active")
-          a(ui-sref="main.chart.tco({ type: 'spline' })")
-            | {{ "tco_trend_btn" | translate }}
-        li(ui-sref-active="active")
-          a(ui-sref="main.chart.tco({ type: 'bar' })")
-            | {{ "tco_sharing_btn" | translate }}
-        li(ui-sref-active="active")
-          a(ui-sref="main.chart.co2")
-            | {{ "co2_btn" | translate }}
+  ul.main__chart__nav.nav.nav-pills.pull-right(role="navigation")
+    li(ui-sref-active="active")
+      a(ui-sref="main.chart.tco({ type: 'spline' })")
+        | {{ "tco_trend_btn" | translate }}
+    li(ui-sref-active="active")
+      a(ui-sref="main.chart.tco({ type: 'bar' })")
+        | {{ "tco_sharing_btn" | translate }}
+    li(ui-sref-active="active")
+      a(ui-sref="main.chart.co2")
+        | {{ "co2_btn" | translate }}
+  h2.main__chart__heading {{ "tco_title" | translate }}    
   .main__chart__view(ng-view)
     .main__chart__view__workspace
       chart(x="chart.xAxis", y="chart.yAxis", type="chart.type", vehicles="main.vehicles", processor="main.processor")

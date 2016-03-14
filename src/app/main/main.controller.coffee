@@ -43,7 +43,7 @@ angular.module 'oekoKostenrechner'
         (setting)=>
           vehicle[setting.name]? and @hasNoParent setting
       removeVehicle: (index)=> @vehicles.splice index, 1
-      getVehicleColor: (n)-> MAIN.COLORS[n % MAIN.COLORS.length]
+      getVehicleColor: (n)-> MAIN.COLORS[(n-1) % MAIN.COLORS.length]
       addVehicle: (params)=>
         vehicle = new Vehicle params
         # Create a uniq id for this vehiclle
