@@ -131,6 +131,7 @@ angular.module 'oekoKostenrechner'
           type: 'categories'
           categories: do @getXValues
           tick:
+            outer: false
             centered: yes
             culling: yes
             multiline: no
