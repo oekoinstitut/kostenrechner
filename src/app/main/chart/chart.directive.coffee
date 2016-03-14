@@ -190,6 +190,10 @@ angular.module 'oekoKostenrechner'
             grid:
               y:
                 show: yes
+            tooltip:
+              position: (data, width)=>
+                maxLeft = element.width() - width
+                top: 0, left: Math.min(@chart.internal.x(data[0].x), maxLeft)
             data:
               x: 'x'
               type: scope.type
