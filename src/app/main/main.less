@@ -166,10 +166,19 @@
     }
 
     &__footer {
-      border-top:2px solid darken(@body-bg, 10);
-      background:@panel-default-border;
+      border-top:0;
+      background:@brand-primary;
       padding:15px 20px;
       margin:0;
+
+      &, .btn {
+        font-size:1.1em;
+      }
+
+      .btn {
+        font-weight:bold;
+        margin-right:10px;
+      }
     }
   }
 

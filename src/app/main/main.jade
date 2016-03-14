@@ -8,13 +8,16 @@
           // p.lead {{ "welcome_description" | translate }}
           p.lead {{ "lorem" | translate }}
         p.main__welcome-screen__footer(ng-show="main.vehicles.length < 2")
-          a.btn.btn-primary.btn-md(ui-sref="main.form") {{ "start_btn" | translate }}        
+          a.btn.btn-default.btn-md(ui-sref="main.form")
+            i.fa.fa-car.fa-fw
+            | &nbsp{{ "start_btn" | translate }}        
           =" "
           a(ui-sref="main.chart", ng-click="main.addDefaultVehicles()")
             | {{ "look_default_visualisation" | translate }}
         p.main__welcome-screen__footer(ng-hide="main.vehicles.length < 2")
-          a.btn.btn-primary.btn-md(ui-sref="main.chart")
-            | {{ "see_visulization" | translate }}
+          a.btn.btn-default.btn-md(ui-sref="main.chart")
+            i.fa.fa-line-chart.fa-fw
+            | &nbsp{{ "see_visulization" | translate }}
   
   .main__vehicles(ng-show="('main.form.*' | includedByState) && main.vehicles.length || ('main.chart.*' | includedByState)")
     .main__vehicles__wrapper
