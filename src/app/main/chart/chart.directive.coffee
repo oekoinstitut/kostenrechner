@@ -26,7 +26,7 @@ angular.module 'oekoKostenrechner'
             type: scope.type
             columns: cols
             # Refresh colors and groups
-            colors: @generateColors
+            colors: do @generateColors
             # Previous data column (only the one that disapeared)
             unload: toUnload
             # Enhance the chart with d3
