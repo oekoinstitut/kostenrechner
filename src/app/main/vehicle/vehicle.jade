@@ -1,4 +1,4 @@
-form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm")
+form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm", novalidate)
   .modal-header.main__vehicle__heading(ng-style="{ background: modal.vehicle.color }")
     h3.modal-title
     | {{ "vehicle_name" | translate:{ energy_type:(modal.vehicle.energy_type|translate), car_type:(modal.vehicle.car_type|translate) } }}

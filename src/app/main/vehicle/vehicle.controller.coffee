@@ -40,7 +40,7 @@ angular.module 'oekoKostenrechner'
       gs: (context, name)=>
         (value)=>
           if value?
-            @frozenSettings[name] = @[context][name]  = value
+            @frozenSettings[name] = @[context][name] = value
           @[context][name]
       # If the given setting is visible
       isSettingVisible: (setting)=>
