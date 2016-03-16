@@ -32,7 +32,7 @@ angular.module 'oekoKostenrechner'
             unload: toUnload
             # Enhance the chart with d3
             done: @enhanceChart
-            categories: do @getXValues
+            categories: _.map(do @getXValues, @formatTick)
           # Update axis
           @chart.axis.labels y: @generateYAxis(cols).label.text
           # Groups are loaded separetaly
@@ -131,7 +131,15 @@ angular.module 'oekoKostenrechner'
             # Create a serie line for each value
             series = series.concat( _.concat [n], values[n] for n of values)
           series
+        formatTick: (d)=>
+          # Format function according to the current chart type and x axis
+          d if scope.x is 'holding_time' or scope.type is 'bar'
+          # Available format method
+          format = de: 'formatDeDe', en: 'formatEnUs'
+          # Choose format according to the current language
+          d3_format[ format[do $translate.use]  ].format(',') d
         generateXAxis: (columns)=>
+          # Return a configuration objects
           type: 'categories'
           categories: do @getXValues
           tick:
@@ -139,13 +147,10 @@ angular.module 'oekoKostenrechner'
             centered: yes
             culling: yes
             multiline: no
-        generateYAxis: (columns)->
+        generateYAxis: (columns)=>
+          # Return a configuration objects
           tick:
-            format: (d)->
-              # Available format method
-              format = de: 'formatDeDe', en: 'formatEnUs'
-              # Choose format according to the current language
-              d3_format[ format[do $translate.use]  ].format(',') d
+            format: @formatTick
           label:
             position: 'outer-middle'
             text: $translate.instant(if scope.y is 'CO2' then 'kg_unit' else 'cost_unit')
