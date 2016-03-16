@@ -227,7 +227,7 @@ angular.module 'oekoKostenrechner'
             # Select the existing c3 chart
             @areasGroup = @svg.select '.c3-chart'
               # Create a group
-              .insert 'g', ':first-child'
+              .insert 'g', '.c3-chart-lines'
               # Name it accordingly
               .attr 'class', 'd3-chart-areas'
         getArea: =>
