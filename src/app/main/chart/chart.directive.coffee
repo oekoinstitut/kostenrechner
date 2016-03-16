@@ -16,6 +16,7 @@ angular.module 'oekoKostenrechner'
         bindWatchers: ->
           # Deep watch vehicles
           scope.$watch '[x, y, vehicles, type]', @updateChart, yes
+          scope.$watch ( -> $translate.use() ), @updateChart
         updateChart: =>
           # New data columns
           cols = do @generateColumns
@@ -139,6 +140,12 @@ angular.module 'oekoKostenrechner'
             culling: yes
             multiline: no
         generateYAxis: (columns)->
+          tick:
+            format: (d)->
+              # Available format method
+              format = de: 'formatDeDe', en: 'formatEnUs'
+              # Choose format according to the current language
+              d3_format[ format[do $translate.use]  ].format(',') d
           label:
             position: 'outer-middle'
             text: $translate.instant(if scope.y is 'CO2' then 'kg_unit' else 'cost_unit')

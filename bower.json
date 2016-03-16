@@ -17,6 +17,7 @@
     "lodash": "~4.3.0",
     "angularjs-slider": "~2.8.0",
     "c3": "0.4.11-rc4",
+    "d3-format": "https://d3js.org/d3-format.v0.5.min.js",
     "angular-translate": "~2.9.1",
     "angular-translate-loader-static-files": "~2.9.1",
     "angular-translate-storage-cookie": "~2.9.1"
