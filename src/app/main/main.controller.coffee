@@ -41,7 +41,12 @@ angular.module 'oekoKostenrechner'
         setting.parentid is null or isNaN setting.parentid
       filterSetting: (vehicle)=>
         (setting)=>
-          vehicle[setting.name]? and @hasNoParent setting
+          # No specific condition
+          (setting.specifictoenergytype is null or
+          # The setting is related to a specific enery type
+          _.map( setting.specifictoenergytype.split(','), _.trim).indexOf( vehicle.energy_type ) > -1 ) and
+          # The setting has no parent and is not related to a preset
+          vehicle[setting.name]? and @hasNoParent setting and setting.context is 'vehicle'
       removeVehicle: (index)=> @vehicles.splice index, 1
       getVehicleColor: (n)-> MAIN.COLORS[(n-1) % MAIN.COLORS.length]
       addVehicle: (params)=>

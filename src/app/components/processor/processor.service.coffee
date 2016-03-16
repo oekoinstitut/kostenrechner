@@ -11,7 +11,7 @@ angular.module 'oekoKostenrechner'
           .value()
       # Only returns settings names
       getSettingsNames: => _.map @settings, 'name'
-      # Some settings can be seen on list
+      # Some settings can be seen on preleminary form
       getPreliminarySettings: => @getSettingsBy preliminary: yes
       # Some settings can be seen on list
       getListedSettings: => @getSettingsBy shownonthelist: yes
