@@ -5,8 +5,10 @@ angular.module 'oekoKostenrechner'
     CHART_TYPE: 'spline'
     CHART_YAXIS: 'TCO'
     CHART_XAXIS: 'holding_time'
-    COLORS: ["#71BF44", "#00B8DE", "#DD291B", "#FDC900",
-             "#3366cc", "#109618", "#990099", "#0099c6",
-             "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99",
-             "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262",
-             "#5574a6", "#3b3eac"]
+    COLORS: do ->
+      base = ["#71BF44", "#00B8DE", "#DD291B", "#FDC900"]
+      colors = []
+      colors.push c for c in base
+      colors.push d3.rgb(c).darker(1).toString() for c in base
+      colors.push d3.rgb(c).darker(2).toString() for c in base
+      colors
