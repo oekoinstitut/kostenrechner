@@ -151,6 +151,8 @@ angular.module 'oekoKostenrechner'
           # Return a configuration objects
           tick:
             format: @formatTick
+          padding:
+            bottom: 0
           label:
             position: 'outer-middle'
             text: $translate.instant(if scope.y is 'CO2' then 'kg_unit' else 'cost_unit')
