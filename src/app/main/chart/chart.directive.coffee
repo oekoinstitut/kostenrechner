@@ -165,7 +165,7 @@ angular.module 'oekoKostenrechner'
             for v in scope.vehicles
               for c in ['contra', 'pro']
                 colors[v.id + '-' + c] = v.color
-              colors[v.id + '-mittel'] = 'white'
+              colors[v.id + '-mittel'] = d3.rgb(v.color).darker(1).toString()
           else
             # Do we received data columns?
             columns = do @generateColumns unless columns?

@@ -26,6 +26,13 @@
 
         font-family: @font-family-base;
 
+        .c3-lines-1-contra,
+        .c3-lines-1-pro,
+        .c3-lines-2-contra,
+        .c3-lines-2-pro {
+          opacity:0;
+        }
+
         .c3-axis {
           text {
             fill: @text-muted;
@@ -34,6 +41,7 @@
 
           line, path {
             stroke: @text-muted;
+
           }
 
           &-y .domain, &-y .tick line {
@@ -47,7 +55,7 @@
         }
 
         .d3-chart-area {
-          fill-opacity:0.5;
+          fill-opacity:0.2;
           stroke-width:0;
         }
       }
