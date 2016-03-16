@@ -36,9 +36,9 @@
         table.table.table-condensed.table-striped.main__vehicles__wrapper__item__body
           tbody
             tr(ng-repeat="setting in main.listedSettings | orderBy:'importancerank' | filter:main.filterSetting(vehicle) | limitTo:5")
-              td {{ setting.label }}
+              td {{ setting.label | translate }}
               td 
-                strong {{ vehicle[setting.name] }}
+                strong {{ vehicle[setting.name] | translate }}
                 span &nbsp;{{ setting.unit | translate }}
       a.main__vehicles__wrapper__add-item(ng-show="('main.chart.*' | includedByState) && main.vehicles.length < 2", ui-sref="main.form")
         i.fa.fa-plus

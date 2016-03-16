@@ -10,7 +10,7 @@ form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm", novalida
       tbody
         tr(ng-repeat="setting in group.settings | orderBy:'importancerank' | filter:modal.isSettingVisible", ng-class="{ warning: setting.context === 'presets' }")
           td(style="width: 60%")
-            | {{ setting.label }}
+            | {{ setting.label | translate }}
           td(style="width: 40%")
             div(ng-repeat="context in modal.contexts")
               div(ng-switch, on=":: modal.inputs[setting.id].getType()", ng-if="setting.context === context")
