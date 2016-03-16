@@ -46,7 +46,7 @@
     "unit": "km",
     "group": "Vehicle details",
     "values": "0..100000",
-    "interval": 5000,
+    "interval": 10000,
     "hasslider": true,
     "canbeonxaxis": true,
     "shownonthelist": true,

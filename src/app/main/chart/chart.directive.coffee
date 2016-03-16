@@ -44,7 +44,10 @@ angular.module 'oekoKostenrechner'
         getXValues: =>
           if scope.type is 'bar'
             # One tick by vehicle
-            'Vehicle ' + idx for idx in [1..scope.vehicles.length]
+            for vehicle in scope.vehicles
+              $translate.instant "vehicle_name",
+                energy_type: $translate.instant vehicle.energy_type
+                car_type: $translate.instant vehicle.car_type
           # Year on x are set manually
           else if scope.x is 'holding_time'
             y for y in [@FLOOR_YEAR..@CEIL_YEAR]
