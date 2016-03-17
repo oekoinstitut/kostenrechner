@@ -68,7 +68,6 @@ angular.module 'oekoKostenrechner'
           display = scope.processor.findDisplay xaxis: x, yaxis: scope.y
           # Extract display for this vehicle
           value = if display? then vehicle[display.name] else {}
-          console.log value
           # Some value might be relative to a year
           if display.relative then value[scope.year] or {} else value
         getVehicleTranslation: (vehicle)->
