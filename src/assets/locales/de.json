@@ -83,5 +83,13 @@
     "Wallbox bis 22kW": "Wallbox bis 22kW",
     "welcome_description": "welcome_description",
     "welcome_title": "Kostenrechner",
-    "years": "Jahre"
+    "years": "Jahre",
+    "residual_vehicle_value": "Restwert",
+    "energy_costs": "Energiekosten",
+    "insurance": "Versicherungskosten",
+    "maintenance_costs": "Reparaturkosten",
+    "check_up": "Inspektionskosten",
+    "training_costs": "Schulungskosten",
+    "lubricant_costs": "Schmierstoffskosten",
+    "car_tax": "KFZ steuer"
 }
