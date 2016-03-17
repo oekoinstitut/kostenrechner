@@ -91,5 +91,7 @@
     "check_up": "Inspektionskosten",
     "training_costs": "Schulungskosten",
     "lubricant_costs": "Schmierstoffskosten",
-    "car_tax": "KFZ steuer"
+    "car_tax": "KFZ steuer",
+    "hybrid-benzin": "Hybrid-Benzin",
+    "hybrid-diesel": "Hybrid-Diesel"
 }

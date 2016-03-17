@@ -98,5 +98,7 @@
     "check_up": "Check up costs",
     "training_costs": "Training costs",
     "lubricant_costs": "Lubricant costs",
-    "car_tax": "Car tax"
+    "car_tax": "Car tax",
+    "hybrid-benzin": "Hybrid gasoline",
+    "hybrid-diesel": "Hybrid diesel"
 }
