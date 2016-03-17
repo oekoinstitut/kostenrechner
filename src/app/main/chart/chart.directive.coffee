@@ -63,12 +63,14 @@ angular.module 'oekoKostenrechner'
                 .value()
           c3.chart.internal.fn.getTooltipContent.apply(@chart.internal, arguments)
 
-
         getVehicleDisplay: (vehicle)->
           x = if scope.type is 'bar' then 'holding_time' else scope.x
           display = scope.processor.findDisplay xaxis: x, yaxis: scope.y
           # Extract display for this vehicle
-          vehicle[display.name] if display?
+          value = if display? then vehicle[display.name] else {}
+          console.log value
+          # Some value might be relative to a year
+          if display.relative then value[scope.year] or {} else value
         getVehicleTranslation: (vehicle)->
           $translate.instant "vehicle_name",
             energy_type: $translate.instant vehicle.energy_type
@@ -115,7 +117,7 @@ angular.module 'oekoKostenrechner'
               refYear = year
               # Because the countBy is sorted, we stop asap
               break
-          refYear
+          Math.max refYear, scope.year
         generateColumns: =>
           series = [ _.concat(['x'], do @getXValues) ]
           # Spline chart is divided in 3 groups
@@ -155,7 +157,7 @@ angular.module 'oekoKostenrechner'
                       values[n].push obj[n]
                     # Recursive lookup to flatten variable object
                     else fn obj[n]
-                fn( if mittel[scope.year]? then mittel[scope.year] else mittel[refYear])
+                fn mittel[refYear]
             # Create a serie line for each value
             series = series.concat( _.concat [n], values[n] for n of values)
           series
