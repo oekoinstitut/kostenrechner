@@ -462,7 +462,7 @@ var Vehicle = function(params) {
 						"maintenance_costs": this.maintenance_costs_total
 					}
 					this.TCO[scenario][year]["residual_vehicle_value"] = Math.round(this.price.total[scenario] - this.amortization[scenario][year]);
-					this.TCO[scenario][year]["total_cost"] = this.fixed_costs.total + this.energy_costs[year][scenario] + this.lubricant_costs + this.maintenance_costs_total + this.price.total[scenario] - this.amortization[scenario][year]
+					this.TCO[scenario][year]["total_cost"] = Math.round(this.fixed_costs.total + this.energy_costs[year][scenario] + this.lubricant_costs + this.maintenance_costs_total + this.price.total[scenario] - this.amortization[scenario][year])
 
 				} else {
 					this.TCO[scenario][year]["fixed_costs"] = {}
