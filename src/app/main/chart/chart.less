@@ -26,10 +26,9 @@
 
         font-family: @font-family-base;
 
-        .c3-lines-1-contra,
-        .c3-lines-1-pro,
-        .c3-lines-2-contra,
-        .c3-lines-2-pro {
+
+        .c3-lines[class*="-pro"],
+        .c3-lines[class*="-contra"] {
           opacity:0;
         }
 
@@ -65,7 +64,7 @@
       }
     }
 
-    &__select-x-axis {
+    &__options {
       margin-top:10px;
     }
   }

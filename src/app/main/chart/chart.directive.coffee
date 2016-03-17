@@ -5,17 +5,16 @@ angular.module 'oekoKostenrechner'
     scope:
       x: "="
       y: "="
+      year: "="
       vehicles: "="
       type: "="
       processor: "="
     link: (scope, element, attr)->
       new class Chart
         TRANSITION_DURATION: 600
-        FLOOR_YEAR: 2014
-        CEIL_YEAR: 2025
         bindWatchers: ->
           # Deep watch vehicles
-          scope.$watch '[x, y, vehicles, type]', @updateChart, yes
+          scope.$watch '[x, y, vehicles, type, year]', @updateChart, yes
           scope.$watch ( -> $translate.use() ), @updateChart
         updateChart: =>
           # New data columns
@@ -51,7 +50,7 @@ angular.module 'oekoKostenrechner'
                 car_type: $translate.instant vehicle.car_type
           # Year on x are set manually
           else if scope.x is 'holding_time'
-            y for y in [@FLOOR_YEAR..@CEIL_YEAR]
+            y for y in [MAIN.FLOOR_YEAR..MAIN.CEIL_YEAR]
           # Unkown range, we get it from the input value
           else
             setting = scope.processor.getSettingsBy(name: scope.x)[0]
@@ -127,7 +126,7 @@ angular.module 'oekoKostenrechner'
                       values[n].push obj[n]
                     # Recursive lookup to flatten variable object
                     else fn obj[n]
-                ) mittel[refYear]
+                ) mittel[scope.year]
             # Create a serie line for each value
             series = series.concat( _.concat [n], values[n] for n of values)
           series

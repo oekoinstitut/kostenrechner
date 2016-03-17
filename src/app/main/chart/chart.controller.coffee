@@ -12,13 +12,16 @@ angular.module 'oekoKostenrechner'
         # X-axis available options
         @xAxisOptions = do processor.getXAxisSettings
         # Get default X-axis value
-        @xAxis = MAIN.CHART_XAXIS
-        @yAxis = MAIN.CHART_YAXIS
-        @type  = MAIN.CHART_TYPE
+        @xAxis     = MAIN.CHART_XAXIS
+        @yAxis     = MAIN.CHART_YAXIS
+        @type      = MAIN.CHART_TYPE
+        @xAxisYear = MAIN.FLOOR_YEAR
         # Always redirect to child state
         $state.go 'main.chart.tco', type: MAIN.CHART_TYPE
         # Generate a short permalink every time the vehicle array is upddated
         $scope.$watch 'chart.vehicles', @generateShortPermalink, yes
+      getXYears: ->
+        y for y in [MAIN.FLOOR_YEAR..MAIN.CEIL_YEAR]
       getPermalink: ->
         # Generate an absolute link to the chart
         $state.href 'main.permalink', { vehicles: do @getJsonVehicles }, absolute: yes
