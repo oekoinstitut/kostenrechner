@@ -164,7 +164,7 @@ angular.module 'oekoKostenrechner'
           if scope.x is 'holding_time' or scope.type is 'bar'
             return d
           else
-            return formatNumber d
+            return @formatNumber d
         formatNumber: (d)=>
           # Available format method
           format = de: 'formatDeDe', en: 'formatEnUs'
@@ -182,7 +182,7 @@ angular.module 'oekoKostenrechner'
         generateYAxis: (columns)=>
           # Return a configuration objects
           tick:
-            format: @formatTick
+            format: @formatNumber
           padding:
             bottom: 0
           label:
