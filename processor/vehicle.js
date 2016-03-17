@@ -567,7 +567,7 @@ var Vehicle = function(params) {
 				// Updates the energy costs for the new mileage
 				this.mileage = miles;
 				this.computeCosts();
-				this.CO2_by_mileage[miles] = this.CO2[year]
+				this.CO2_by_mileage[year][miles] = this.CO2[year]
 			}
 		}
 		// Goes back to original position
