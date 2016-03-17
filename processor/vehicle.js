@@ -497,6 +497,10 @@ var Vehicle = function(params) {
 		for (var year=this.acquisition_year; year <= 2025; year++) {
 			
 			this.TCO_by_mileage[year] = {}
+			for (var i in scenarios) {
+				var scenario = scenarios[i];
+				this.TCO_by_mileage[year][scenario] = {};
+			}
 		}
 
 		for (var i in scenarios) {
@@ -505,8 +509,6 @@ var Vehicle = function(params) {
 			for (var miles=0; miles <= 100000; miles+=10000) {
 
 				for (var year=this.acquisition_year; year <= 2025; year++) {
-					
-					this.TCO_by_mileage[year][scenario] = {};
 
 					// Updates the energy costs for the new mileage
 					this.mileage = miles;
@@ -580,6 +582,8 @@ var Vehicle = function(params) {
 		if (this.second_charge === true) { max_elec_share = ((this.reichweite * 2) / daily_mileage) * 100; }
 		if (max_elec_share > 100){ max_elec_share = 100 }
 		if (this.share_electric > max_elec_share) { this.share_electric = max_elec_share }
+
+		this.share_electric = Math.round(this.share_electric)
 	}
 
 	this.computeCosts = function(fixed_vars) {
@@ -611,11 +615,14 @@ var Vehicle = function(params) {
 		this.maintenance_costs_tires = Math.round(this.maintenance_costs_tires * 100)/100
 		this.maintenance_costs_charger = Math.round(this.maintenance_costs_charger * 100)/100
 		this.lubricant_costs = Math.round(this.lubricant_costs * 100)/100
+
 	}
 
 	this.computeCosts();
 	this.getTCOByMileage();
 	this.getCO2byMileage();
+
+	
 
 }
 
