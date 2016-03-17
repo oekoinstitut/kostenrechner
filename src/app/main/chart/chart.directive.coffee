@@ -12,6 +12,7 @@ angular.module 'oekoKostenrechner'
     link: (scope, element, attr)->
       new class Chart
         TRANSITION_DURATION: 600
+        DEFAULT_CONFIG: c3.chart.internal.fn.getDefaultConfig()
         bindWatchers: ->
           # Deep watch vehicles
           scope.$watch '[x, y, vehicles, type, year]', @updateChart, yes
@@ -36,18 +37,46 @@ angular.module 'oekoKostenrechner'
           @chart.axis.labels y: @generateYAxis(cols).label.text
           # Groups are loaded separetaly
           @chart.groups( @generateGroups cols )
+
+        getTooltipContents: =>
+          # Only spline chart has special display
+          if scope.type isnt 'bar'
+            if scope.y is 'TCO'
+              arguments[0] = _.chain(arguments[0])
+                # TCO display must only show mittel value
+                .filter (datum)-> datum.id.indexOf('-mittel') > -1
+                .each (datum)=>
+                  # Find vehicle idx from row id
+                  idx = 1 * datum.id.replace('-mittel', '') - 1
+                  # Extract vehicle name
+                  datum.name = @getVehicleTranslation scope.vehicles[idx]
+                # Return the new values
+                .value()
+            else if scope.y is 'CO2'
+              arguments[0] = _.chain(arguments[0])
+                .each (datum)=>
+                  # Find vehicle idx from row id
+                  idx = 1 * datum.id.replace('vehicle-', '') - 1
+                  # Extract vehicle name
+                  datum.name = @getVehicleTranslation scope.vehicles[idx]
+                # Return the new values
+                .value()
+          c3.chart.internal.fn.getTooltipContent.apply(@chart.internal, arguments)
+
+
         getVehicleDisplay: (vehicle)->
           x = if scope.type is 'bar' then 'holding_time' else scope.x
           display = scope.processor.findDisplay xaxis: x, yaxis: scope.y
           # Extract display for this vehicle
           vehicle[display.name] if display?
+        getVehicleTranslation: (vehicle)->
+          $translate.instant "vehicle_name",
+            energy_type: $translate.instant vehicle.energy_type
+            car_type: $translate.instant vehicle.car_type
         getXValues: =>
           if scope.type is 'bar'
-            # One tick by vehicle
-            for vehicle in scope.vehicles
-              $translate.instant "vehicle_name",
-                energy_type: $translate.instant vehicle.energy_type
-                car_type: $translate.instant vehicle.car_type
+            # One tick translated by vehicle
+            @getVehicleTranslation vehicle for vehicle in scope.vehicles
           # Year on x are set manually
           else if scope.x is 'holding_time'
             y for y in [MAIN.FLOOR_YEAR..MAIN.CEIL_YEAR]
@@ -114,7 +143,7 @@ angular.module 'oekoKostenrechner'
               if mittel = @getVehicleDisplay(vehicle).mittel
                 # We enclose this part of the code to be able to
                 # call it recursivly with variable within an object
-                (fn = (obj)->
+                fn = (obj)->
                   # Now we collect values!
                   for n of obj
                     # Skip 'total' variables
@@ -126,7 +155,7 @@ angular.module 'oekoKostenrechner'
                       values[n].push obj[n]
                     # Recursive lookup to flatten variable object
                     else fn obj[n]
-                ) mittel[scope.year]
+                fn( if mittel[scope.year]? then mittel[scope.year] else mittel[refYear])
             # Create a serie line for each value
             series = series.concat( _.concat [n], values[n] for n of values)
           series
@@ -168,7 +197,7 @@ angular.module 'oekoKostenrechner'
             for v in scope.vehicles
               for c in ['contra', 'pro']
                 colors[v.id + '-' + c] = v.color
-              colors[v.id + '-mittel'] = d3.rgb(v.color).darker(1).toString()
+              colors[v.id + '-mittel'] = d3.rgb(v.color).toString()
           else
             # Do we received data columns?
             columns = do @generateColumns unless columns?
@@ -186,9 +215,23 @@ angular.module 'oekoKostenrechner'
             [ _.map(columns.splice(1), 0) ]
           else
             []
+        generateTooltip: =>
+          format:
+            # Translate labels
+            name: (v)=> $translate.instant v
+            # Format numbers and add units
+            value: (v)=>
+              units = TCO: '€', CO2: 'kg CO<sub>2</sub>'
+              @formatNumber(v) + units[scope.y]
+          # Special function to generate tooltip contents
+          contents: @getTooltipContents
+          # Fix tooltip position
+          position: (data, width)=>
+            maxLeft = element.width() - width
+            top: 0, left: Math.min(@chart.internal.x(data[0].x), maxLeft)
         generateChart: =>
           columns = do @generateColumns
-          @chart = c3.generate
+          window.c = @chart = c3.generate
             # Enhance the chart with d3
             onrendered: @enhanceChart
             bindto: element[0]
@@ -211,15 +254,7 @@ angular.module 'oekoKostenrechner'
             grid:
               y:
                 show: yes
-            tooltip:
-              format:
-                name: (v)=> $translate.instant v
-                value: (v)=>
-                  units = TCO: '€', CO2: 'kg CO<sub>2</sub>'
-                  @formatNumber(v) + units[scope.y]
-              position: (data, width)=>
-                maxLeft = element.width() - width
-                top: 0, left: Math.min(@chart.internal.x(data[0].x), maxLeft)
+            tooltip: do @generateTooltip
             data:
               x: 'x'
               type: scope.type
