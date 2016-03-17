@@ -132,7 +132,11 @@ angular.module 'oekoKostenrechner'
           series
         formatTick: (d)=>
           # Format function according to the current chart type and x axis
-          d if scope.x is 'holding_time' or scope.type is 'bar'
+          if scope.x is 'holding_time' or scope.type is 'bar'
+            return d
+          else
+            return formatNumber d
+        formatNumber: (d)=>
           # Available format method
           format = de: 'formatDeDe', en: 'formatEnUs'
           # Choose format according to the current language
@@ -208,6 +212,11 @@ angular.module 'oekoKostenrechner'
               y:
                 show: yes
             tooltip:
+              format:
+                name: (v)=> $translate.instant v
+                value: (v)=>
+                  units = TCO: '€', CO2: 'kg CO<sub>2</sub>'
+                  @formatNumber(v) + units[scope.y]
               position: (data, width)=>
                 maxLeft = element.width() - width
                 top: 0, left: Math.min(@chart.internal.x(data[0].x), maxLeft)
