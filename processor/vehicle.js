@@ -497,26 +497,29 @@ var Vehicle = function(params) {
 		for (var year=this.acquisition_year; year <= 2025; year++) {
 			
 			this.TCO_by_mileage[year] = {}
+		}
 
-			for (var i in scenarios) {
-				var scenario = scenarios[i];
-				this.TCO_by_mileage[year][scenario] = {};
+		for (var i in scenarios) {
+			var scenario = scenarios[i];
+			
+			for (var miles=0; miles <= 100000; miles+=10000) {
 
-				for (var miles=0; miles <= 100000; miles+=10000) {
+				for (var year=this.acquisition_year; year <= 2025; year++) {
+					
+					this.TCO_by_mileage[year][scenario] = {};
 
 					// Updates the energy costs for the new mileage
 					this.mileage = miles;
 					this.computeCosts();
-					// this.TCO_by_mileage[scenario][year][miles] = this.TCO[scenario][year]
 					this.TCO_by_mileage[year][scenario][miles] = this.TCO[scenario][year]
-
 				}
+
 			}
+			
 		}
 		// Goes back to original position
 		this.mileage = temp_mileage;
-		this.computeCosts();
-	}
+		this.computeCosts();	}
 
 	this.getTCO2byHoldingTime = function() {
 
@@ -553,17 +556,16 @@ var Vehicle = function(params) {
 		// Saves the initial value
 		var temp_mileage = this.mileage;
 
-		for (var year=this.acquisition_year; year <= 2025; year++) {
-			
+		for (var year=this.acquisition_year; year <= 2025; year++) {	
 			this.CO2_by_mileage[year] = {}
+		}
 
-			for (var miles=0; miles <= 100000; miles+=10000) {
-
+		for (var miles=0; miles <= 100000; miles+=10000) {
+			for (var year=this.acquisition_year; year <= 2025; year++) {	
 				// Updates the energy costs for the new mileage
 				this.mileage = miles;
 				this.computeCosts();
 				this.CO2_by_mileage[miles] = this.CO2[year]
-
 			}
 		}
 		// Goes back to original position
