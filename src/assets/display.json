@@ -4,27 +4,31 @@
     "xaxis": "holding_time",
     "yaxis": "TCO",
     "context": "Vehicle",
-    "name": "TCO"
+    "name": "TCO",
+    "relative": false
   },
   {
     "id": "2",
     "xaxis": "mileage",
     "yaxis": "TCO",
     "context": "Vehicle",
-    "name": "TCO_by_mileage"
+    "name": "TCO_by_mileage",
+    "relative": true
   },
   {
     "id": "3",
     "xaxis": "holding_time",
     "yaxis": "CO2",
     "context": "Vehicle",
-    "name": "CO2"
+    "name": "CO2",
+    "relative": false
   },
   {
     "id": "4",
     "xaxis": "mileage",
     "yaxis": "CO2",
     "context": "Vehicle",
-    "name": "CO2_by_mileage"
+    "name": "CO2_by_mileage",
+    "relative": true
   }
 ]

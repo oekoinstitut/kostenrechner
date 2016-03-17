@@ -1,7 +1,7 @@
 'use strict';
 
 let GSSID = '1-BxTbzc5z-04-0-3Q4KJTJtLKmmjAOE5s8X8bzEdv5Q';
-let BOOL_FIELDS = ['hasslider', 'canbeonxaxis', 'shownonthelist', 'preliminary', 'editable'];
+let BOOL_FIELDS = ['hasslider', 'canbeonxaxis', 'shownonthelist', 'preliminary', 'editable', 'relative'];
 let NUMBER_FIELDS = ['importancerank', 'interval']
 let UNWANTED_FIELDS = ['_xml', '_links'];
 
@@ -100,24 +100,35 @@ gulp.task('other', function () {
     .pipe(gulp.dest(path.join(conf.paths.dist, '/')));
 });
 
+var prepareRows = function(rows) {
+  return _.map(rows, function(row) {
+    var exists = k => typeof(row[k]) !== 'undefined'
+    // Remove unwanted properties
+    for(let k of UNWANTED_FIELDS) {
+      if(exists(k)) delete row[k];
+    }
+    // Convert values to boolean
+    for(let k of BOOL_FIELDS) {
+      if(exists(k)) row[k] = (row[k] || '').toLowerCase()[0] === 't';
+    }
+    // Convert values to number
+    for(let k of NUMBER_FIELDS) {
+      if(exists(k)) row[k] = 1 * row[k];
+    }
+    // Convert to null when empty
+    for(let k in row) {
+      if( row[k] === '' ) row[k] = null;
+    }
+    return row;
+  });
+}
+
 gulp.task('gss:settings', function (cb) {
 
   let gss = new Gss(GSSID);
 
   gss.getRows(1, function(err, rows){
-    var data = _.map(rows, function(row) {
-      // Remove unwanted properties
-      for(let k of UNWANTED_FIELDS) delete row[k];
-      // Convert values to boolean
-      for(let k of BOOL_FIELDS) row[k] = row[k].toLowerCase()[0] === 't';
-      // Convert values to number
-      for(let k of NUMBER_FIELDS) row[k] = 1 * row[k];
-      // Convert to null when empty
-      for(let k in row) {
-        if( row[k] === '' ) row[k] = null;
-      }
-      return row;
-    });
+    var data = prepareRows(rows);
     var file = JSON.stringify(data, null, 2);
     // And override the existinng JSON file
     fs.writeFile(path.join(__dirname, '../src/assets/settings.json'), file, cb);
@@ -129,11 +140,7 @@ gulp.task('gss:display', function (cb) {
   let gss = new Gss(GSSID);
 
   gss.getRows(2, function(err, rows){
-    var data = _.map(rows, function(row) {
-      // Remove unwanted properties
-      for(let k of UNWANTED_FIELDS) delete row[k];
-      return row;
-    });
+    var data = prepareRows(rows);
     var file = JSON.stringify(data, null, 2);
     // And override the existinng JSON file
     fs.writeFile(path.join(__dirname, '../src/assets/display.json'), file, cb);
