@@ -307,7 +307,9 @@ angular.module 'oekoKostenrechner'
                 datum.push pro: pro[i].value, contra: contra[i].value, x: pro[i].x
             datum
           # Colorize area using the current vehicle's color
-          ).style 'fill', (d, i)-> vehicles[i].color
+          ).style
+            fill: (d, i)-> vehicles[i].color
+            opacity: 1
           # Update old elements
           areas.transition()
             .duration @TRANSITION_DURATION
