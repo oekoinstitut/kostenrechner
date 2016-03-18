@@ -2,12 +2,20 @@
 
   padding-bottom:120px;
 
+  @media print {
+    padding-bottom:20px;
+  }
+
   &__vehicles {
 
     position:fixed;
     bottom:0;
     left:0;
     right:0;
+
+    @media print {
+      position:static;
+    }
 
     .transition(0.6s transform);
     .translate(0, 100px);
@@ -81,6 +89,21 @@
           padding:5px;
           border-bottom:@panel-default-border 1px solid;
           position: relative;
+          z-index:10;
+          overflow: hidden;
+          background:transparent;
+
+          @media print {
+            &__printable-color {
+              z-index: -1;
+              position:absolute;
+              top:0;
+              left:0;
+              right:0;
+              border-bottom:100px solid red;
+
+            }
+          }
 
           &__color, &__actions {
             position:absolute;
@@ -100,6 +123,10 @@
             .btn-link:hover {
               color:inherit;
             }
+
+            @media print {
+              display:none;
+            }
           }
         }
 
@@ -118,6 +145,9 @@
           pointer-events: none;
           opacity: 0;
           .transition(0.6s);
+          @media print {     
+            display: none;
+          }
         }
 
         &__body {

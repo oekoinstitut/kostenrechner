@@ -27,7 +27,7 @@
         .main__vehicles__wrapper__item__overlay
           i.fa.fa-eye
         .main__vehicles__wrapper__item__heading
-          .main__vehicles__wrapper__item__heading__color
+          .main__vehicles__wrapper__item__heading__printable-color(ng-style="{ 'border-color': vehicle.color }")          
           .main__vehicles__wrapper__item__heading__actions
             button.btn.btn-xs.btn-link(ng-click="main.removeVehicle($index)")
               i.fa.fa-trash

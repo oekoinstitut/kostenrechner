@@ -1,5 +1,5 @@
 angular.module 'oekoKostenrechner'
-  .controller 'MainChartController', ($scope, $state, $http, processor, MAIN)->
+  .controller 'MainChartController', ($scope, $state, $http, $window, processor, MAIN)->
     'ngInject'
     new class MainChartController
       constructor: ->
@@ -20,6 +20,7 @@ angular.module 'oekoKostenrechner'
         $state.go 'main.chart.tco', type: MAIN.CHART_TYPE
         # Generate a short permalink every time the vehicle array is upddated
         $scope.$watch 'chart.vehicles', @generateShortPermalink, yes
+      print: -> do $window.print
       getXYears: ->
         y for y in [MAIN.FLOOR_YEAR..MAIN.CEIL_YEAR]
       getPermalink: ->
