@@ -245,8 +245,18 @@ var Vehicle = function(params) {
 		this.maintenance_costs_inspection = ((this.maintenance_costs_inspection * 12) / 20000) * this.mileage * this.traffic_multiplicator;
 		this.maintenance_costs_repairs = ((this.maintenance_costs_repairs * 12) / 20000) * this.mileage * this.traffic_multiplicator
 
+
+		if (this.fixed_vars.hasOwnProperty("maintenance_costs_tires")) {
+			this.maintenance_costs_tires = this.fixed_vars["maintenance_costs_tires"]
+		}
 		if (this.fixed_vars.hasOwnProperty("maintenance_costs_inspection")) {
 			this.maintenance_costs_inspection = this.fixed_vars["maintenance_costs_inspection"]
+		}
+		if (this.fixed_vars.hasOwnProperty("maintenance_costs_repairs")) {
+			this.maintenance_costs_repairs = this.fixed_vars["maintenance_costs_repairs"]
+		}
+		if (this.fixed_vars.hasOwnProperty("maintenance_costs_charger")) {
+			this.maintenance_costs_charger = this.fixed_vars["maintenance_costs_charger"]
 		}
 
 		this.maintenance_costs_total = this.maintenance_costs_tires + this.maintenance_costs_inspection + this.maintenance_costs_repairs + this.maintenance_costs_charger;
@@ -350,6 +360,13 @@ var Vehicle = function(params) {
 				this.electricity_consumption = this.fuel_consumption * 100;
 				this.fuel_consumption = 0;
 			}
+		}
+
+		if (this.fixed_vars.hasOwnProperty("fuel_consumption")) {
+			this.fuel_consumption = this.fixed_vars["fuel_consumption"]
+		}
+		if (this.fixed_vars.hasOwnProperty("electricity_consumption")) {
+			this.electricity_consumption = this.fixed_vars["electricity_consumption"]
 		}
 
 	}
@@ -615,7 +632,7 @@ var Vehicle = function(params) {
 		this.maintenance_costs_tires = Math.round(this.maintenance_costs_tires * 100)/100
 		this.maintenance_costs_charger = Math.round(this.maintenance_costs_charger * 100)/100
 		this.lubricant_costs = Math.round(this.lubricant_costs * 100)/100
-
+		console.log(this.fixed_vars)
 	}
 
 	this.computeCosts();
