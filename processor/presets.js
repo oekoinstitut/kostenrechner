@@ -239,6 +239,15 @@ var co2_emissions = {
 	"diesel": 3.15
 }
 
+// Calculation of the Restwert
+
+var restwert_constants = {
+	"a": 0.97948,
+	"b1": -0.01437,
+	"b2": -0.000117,
+	"b3": 0.91569
+}
+
 exports.inflationsrate = inflationsrate;
 exports.exchange_rate = exchange_rate;
 exports.abschreibungszeitraum = abschreibungszeitraum;
@@ -272,3 +281,4 @@ exports.schulungskosten = schulungskosten;
 exports.hybrid_minderverbrauch = hybrid_minderverbrauch;
 exports.hybrid_minderverbrauch_schmierstoff = hybrid_minderverbrauch_schmierstoff;
 exports.einsatztage_pro_jahr = einsatztage_pro_jahr;
+exports.restwert_constants = restwert_constants;

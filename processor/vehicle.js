@@ -199,6 +199,7 @@ var Vehicle = function(params) {
 	this.training_option = "keine Schulung"
 	this.share_electric = 55;
 	this.second_charge = false;
+	this.residual_value_method = "Methode 1";
 
 	for(var prop in params) {
     if( params.hasOwnProperty(prop) && this.hasOwnProperty(prop) ) {
@@ -206,7 +207,8 @@ var Vehicle = function(params) {
 		}
 	}
 
-	this.fixed_vars = {}
+	this.fixed_vars = {};
+	this.residual_value = {};
 	this.price = {};
 	this.maintenance_costs_total = this.maintenance_costs_repairs = this.maintenance_costs_tires = this.maintenance_costs_inspection = 0;
 	this.fixed_costs = {};
@@ -217,6 +219,15 @@ var Vehicle = function(params) {
 	this.amortization = {};
 	this.CO2 = {}
 	this.CO2_by_mileage = {};
+
+	this.getResidualValue = function(){
+		for (var year = this.acquisition_year; year <= 2025; year++) {
+			this.residual_value[year] = Math.exp(presets.restwert_constants["a"]) 										  // Constant
+			this.residual_value[year] *= Math.exp(12 * presets.restwert_constants["b1"] * (year - this.acquisition_year + 1)) // Age
+			this.residual_value[year] *= Math.exp(presets.restwert_constants["b2"] /12 * this.mileage)						  // Yearly mileage
+			this.residual_value[year] *= Math.pow(this.price.total["mittel"], presets.restwert_constants["b3"])				  // Initial price
+		} 
+	}
 
 	this.getMaintenanceCosts = function(){
 		if (this.energy_type =="BEV" && this.charging_option != undefined) {
@@ -478,8 +489,10 @@ var Vehicle = function(params) {
 						"lubricant_costs": this.lubricant_costs,
 						"maintenance_costs": this.maintenance_costs_total
 					}
-					this.TCO[scenario][year]["residual_vehicle_value"] = Math.round(this.price.total[scenario] - this.amortization[scenario][year]);
-					this.TCO[scenario][year]["total_cost"] = Math.round(this.fixed_costs.total + this.energy_costs[year][scenario] + this.lubricant_costs + this.maintenance_costs_total + this.price.total[scenario] - this.amortization[scenario][year])
+					this.TCO[scenario][year]["vehicle_cost"] = Math.round(this.price.total[scenario])
+					this.TCO[scenario][year]["amortization"] = Math.round(- this.amortization[scenario][year])
+					this.TCO[scenario][year]["residual_value"] = Math.round(- this.residual_value[year])
+					this.TCO[scenario][year]["total_cost"] = Math.round(this.fixed_costs.total + this.energy_costs[year][scenario] + this.lubricant_costs + this.maintenance_costs_total + this.price.total[scenario] - this.amortization[scenario][year] - this.residual_value[year])
 
 				} else {
 					this.TCO[scenario][year]["fixed_costs"] = {}
@@ -498,8 +511,13 @@ var Vehicle = function(params) {
 					this.TCO[scenario][year]["variable_costs"]["lubricant_costs"] = Math.round(this.TCO[scenario][year - 1]["variable_costs"]["lubricant_costs"] + this.lubricant_costs)
 					this.TCO[scenario][year]["variable_costs"]["maintenance_costs"] = Math.round(this.TCO[scenario][year - 1]["variable_costs"]["maintenance_costs"] + this.maintenance_costs_total)
 					this.TCO[scenario][year]["energy_costs"] = Math.round(this.TCO[scenario][year - 1]["energy_costs"] + this.energy_costs[year][scenario])
-					this.TCO[scenario][year]["residual_vehicle_value"] = Math.round(this.TCO[scenario][year - 1]["residual_vehicle_value"] - this.amortization[scenario][year])
+					this.TCO[scenario][year]["vehicle_cost"] = Math.round(this.price.total[scenario])
+					this.TCO[scenario][year]["amortization"] = Math.round(this.TCO[scenario][year - 1]["amortization"] - this.amortization[scenario][year])
+					this.TCO[scenario][year]["residual_value"] = Math.round(- this.residual_value[year])
 					this.TCO[scenario][year]["total_cost"] = Math.round(this.TCO[scenario][year - 1]["total_cost"] + this.fixed_costs.total + this.energy_costs[year][scenario] + this.lubricant_costs + this.maintenance_costs_total - this.amortization[scenario][year])
+					// Needs to remove the residual value for the previous year and add the new one
+					this.TCO[scenario][year]["total_cost"] += Math.round(this.residual_value[year - 1])
+					this.TCO[scenario][year]["total_cost"] -= Math.round(this.residual_value[year])
 				}
 			}
 		}
@@ -626,6 +644,7 @@ var Vehicle = function(params) {
 		this.getEnergyCosts();
 		this.getAmortization();
 		this.getTrainingCosts();
+		this.getResidualValue();
 		this.getTCOByHoldingTime();
 		this.getTCO2byHoldingTime();
 
