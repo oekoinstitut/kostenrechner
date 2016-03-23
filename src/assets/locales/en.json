@@ -102,5 +102,9 @@
     "Wallbox bis 22kW": "Wallbox up to 22kW",
     "welcome_description": "welcome_description",
     "welcome_title": "Kostenrechner",
-    "years": "years"
+    "years": "years",
+    "vehicle_net_cost": "Net cost of vehicle",
+    "vehicle_cost": "Cost of vehicle",
+    "amortization": "Amortization",
+    "residual_value": "Residual value"
 }

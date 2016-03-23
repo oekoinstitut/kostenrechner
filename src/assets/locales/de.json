@@ -97,5 +97,9 @@
     "welcome_title": "Kostenrechner",
     "years": "Jahre",
     "elec_unit": "kWh/100km",
-    "hydrocarbon_unit": "L/100 km"
+    "hydrocarbon_unit": "L/100 km",
+    "vehicle_net_cost": "Netto-Investitonskosten",
+    "vehicle_cost": "Anschaffungspreis",
+    "amortization": "Absetzung für Abnutzungen",
+    "residual_value": "Restwert"
 }
