@@ -624,7 +624,6 @@ var Vehicle = function(params) {
 	this.computeCosts = function(fixed_vars) {
 
 		if (this.fixed_vars != fixed_vars && fixed_vars != undefined){
-			console.log("Fixed vars have changed")
 			this.fixed_vars = extend(this.fixed_vars, fixed_vars);
 			this.computeMileageVars();
 		}
