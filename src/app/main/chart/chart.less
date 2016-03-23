@@ -7,6 +7,10 @@
     padding-top:20px;
     float:right;
 
+    @media print {
+      display: none !important;
+    }
+
     @media (max-width: @screen-md-max) {
       float:none;
     }
@@ -21,6 +25,12 @@
     &__workspace {
       background:@panel-bg;
       border-bottom: 2px solid @panel-default-border;
+
+      .c3-tooltip-container {
+        @media print {
+          display: none !important;
+        }
+      }
 
       .c3 svg {
 
@@ -77,9 +87,12 @@
     padding:10px;
     border:1px solid @panel-default-border;
     border-bottom-width:2px;
-
     margin-top:20px;
-    width:100%;
+    width:calc(~"100% - 80px");
+
+    @media print {
+      width:100%;
+    }
 
     input[readonly] {
       background:@input-bg;
@@ -87,6 +100,19 @@
       color:@link-color;
       cursor:pointer;
       margin-top:5px;
+    }
+  }
+
+  &__print {
+    cursor: pointer;
+    margin-top:20px;
+    float:right;
+    padding:15px 15px 18px;
+    border:1px solid @panel-default-border;
+    border-bottom-width:2px;
+
+    @media print {
+      display: none;
     }
   }
 }
