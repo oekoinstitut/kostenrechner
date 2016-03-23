@@ -511,7 +511,7 @@ var Vehicle = function(params) {
 		// Saves the initial value
 		var temp_mileage = this.mileage;
 
-		for (var year=this.acquisition_year; year <= 2025; year++) {
+		for (var year=2014; year <= 2025; year++) {
 			
 			this.TCO_by_mileage[year] = {}
 			for (var i in scenarios) {
@@ -575,7 +575,7 @@ var Vehicle = function(params) {
 		// Saves the initial value
 		var temp_mileage = this.mileage;
 
-		for (var year=this.acquisition_year; year <= 2025; year++) {	
+		for (var year=2014; year <= 2025; year++) {	
 			this.CO2_by_mileage[year] = {}
 		}
 
@@ -604,7 +604,13 @@ var Vehicle = function(params) {
 	}
 
 	this.computeCosts = function(fixed_vars) {
-		this.fixed_vars = extend(this.fixed_vars, fixed_vars);
+
+		if (this.fixed_vars != fixed_vars && fixed_vars != undefined){
+			console.log("Fixed vars have changed")
+			this.fixed_vars = extend(this.fixed_vars, fixed_vars);
+			this.computeMileageVars();
+		}
+
 		this.traffic_multiplicator = presets.traffic_multiplicator[this.traffic];
 		this.getFixedCosts();
 		
@@ -632,14 +638,16 @@ var Vehicle = function(params) {
 		this.maintenance_costs_tires = Math.round(this.maintenance_costs_tires * 100)/100
 		this.maintenance_costs_charger = Math.round(this.maintenance_costs_charger * 100)/100
 		this.lubricant_costs = Math.round(this.lubricant_costs * 100)/100
-		console.log(this.fixed_vars)
+		
+	}
+
+	this.computeMileageVars = function(){
+		this.getTCOByMileage();
+		this.getCO2byMileage();
 	}
 
 	this.computeCosts();
-	this.getTCOByMileage();
-	this.getCO2byMileage();
-
-	
+	this.computeMileageVars();
 
 }
 

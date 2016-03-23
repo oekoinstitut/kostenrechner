@@ -36,7 +36,7 @@
     "desc8": "The tax rate for corporate gains",
     "desc9": "On how many years the car can be amortized in the books.",
     "diesel": "Diesel",
-    "elec_unit": "kWh/km",
+    "elec_unit": "kWh/100km",
     "Electrical details": "Electrical details",
     "Electricity consumption": "Electricity consumption",
     "Energy type": "Energy type",

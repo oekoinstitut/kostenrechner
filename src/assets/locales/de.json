@@ -94,5 +94,7 @@
     "Wallbox bis 22kW": "Wallbox bis 22kW",
     "welcome_description": "welcome_description",
     "welcome_title": "Kostenrechner",
-    "years": "Jahre"
+    "years": "Jahre",
+    "elec_unit": "kWh/100km",
+    "hydrocarbon_unit": "L/100 km"
 }
