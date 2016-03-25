@@ -85,7 +85,7 @@
     "description": "desc5",
     "unit": null,
     "group": "Vehicle details",
-    "values": "\"klein\", \"mittel\", \"groß\", \"LNF1\", \"LNF2\"",
+    "values": "\"klein\", \"mittel\", \"groß\"",
     "interval": 0,
     "hasslider": false,
     "canbeonxaxis": false,

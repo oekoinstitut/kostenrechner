@@ -33,7 +33,16 @@ angular.module 'oekoKostenrechner'
           # Enumerates literal values
           when DYNAMIC_INPUT.FIELD_ENUM
             # Split using commat and trim space and quotes
-            range: _.map @setting.values.split(','), (v) ->_.trim v, ' "'
+            range = _.map @setting.values.split(','), (v) ->_.trim v, ' "'
+            # Filter value for certain car types
+            for EXCEPTION in DYNAMIC_INPUT.EXCEPTIONS
+              # Does the exception applies to the current field?
+              if EXCEPTION.TO is @setting.name
+                # Is the exception value included into the current vehicle ?
+                if EXCEPTION.INCLUDE.indexOf(subset[EXCEPTION.IF]) > -1
+                  # Add the values
+                  range = range.concat EXCEPTION.ADD
+            range: range
           # Booleans enumerates only 2 value (obviously)
           when DYNAMIC_INPUT.FIELD_BOOLEAN then range: [yes, no]
       getType: =>
