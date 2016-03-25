@@ -23,6 +23,12 @@ angular.module 'oekoKostenrechner'
       print: -> do $window.print
       getXYears: ->
         y for y in [MAIN.FLOOR_YEAR..MAIN.CEIL_YEAR]
+      getExplainer: ->
+        # Bar chart always display the same explainer
+        return 'expl5' if @type is 'bar'
+        # For the other chart types we use the display helper
+        display = processor.findDisplay xaxis: @xAxis, yaxis: @yAxis
+        display.explainer
       getPermalink: ->
         # Generate an absolute link to the chart
         $state.href 'main.permalink', { vehicles: do @getJsonVehicles }, absolute: yes
