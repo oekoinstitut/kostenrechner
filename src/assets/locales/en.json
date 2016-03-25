@@ -106,5 +106,10 @@
     "vehicle_net_cost": "Net cost of vehicle",
     "vehicle_cost": "Cost of vehicle",
     "amortization": "Amortization",
-    "residual_value": "Residual value"
+    "residual_value": "Residual value",
+    "expl1": "This graph shows the total cost of a vehicle (everything a company pays for minus amortization and the resale value of the vehicle) from its acquisition year to 2025.",
+    "expl2": "This graph shows the total cost of a vehicle for a given year between its acquisition year and 2025 for different values of kilometers driven every year.",
+    "expl3": "This graph shows the total quantity of CO2 emitted by driving a vehicle between its acquisition year and 2025.",
+    "expl4": "This graph shows the total quantity of CO2 emitted for a given year between its acquisition year and 2025 for different values of kilometers driven every year.",
+    "expl5": "This graph shows the breakdown of the cost positions for a vehicle for a given year between its acquisition year and 2025."
 }
