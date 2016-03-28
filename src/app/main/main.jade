@@ -5,8 +5,8 @@
       .main__welcome-screen
         h2.main__welcome-screen__heading {{ "welcome_title" | translate }}
         .main__welcome-screen__body
-          // p.lead {{ "welcome_description" | translate }}
-          p.lead {{ "lorem" | translate }}
+          p.lead {{ "welcome_description" | translate }}
+          // p.lead {{ "lorem" | translate }}
         p.main__welcome-screen__footer(ng-show="main.vehicles.length < 2")
           a.btn.btn-default.btn-md(ui-sref="main.form")
             i.fa.fa-car.fa-fw
