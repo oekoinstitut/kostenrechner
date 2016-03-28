@@ -83,83 +83,83 @@ function getBatteryPricePerKWh (year, scenario) {
 	else { return presets.batteriepreise[year]; }
 }
 
-function getEnergyPrice(energy_type, estimation_year, scenario) {
-	switch(energy_type) {
-	    case "diesel":
-	    case "benzin":
-	        var estimates = {};
-	        // Fills out the known prices
-	        for (var year in presets.price_per_barrel) {
-	        	// Converts barrels to liters and to euros
-	        	var ppb_eur = presets.price_per_barrel[year] / presets.exchange_rate
-	        	var ppl_eur = ppb_eur / 158
-	        	estimates[year] = getCurrentPrice(ppl_eur, 2011, 2014)
-	        }
-	        // Computes the price for 2040 to make it easier below
-	        estimates["2040"] = estimates["2030"] + ((estimates["2050"] - estimates["2030"]) / 2)
+function getEnergyPrice() {
+	var estimates = {};
+	var energy_types = ["diesel", "benzin"]
+	for (var energy_type_index in energy_types) {  
+		energy_type = energy_types[energy_type_index]
+		estimates[energy_type] = {}
 
-	        if (estimation_year in estimates) {
-	        	price_per_l = estimates[estimation_year]
-	        } else {
-		        // Computes the price for all years
-		        for (var year = 2014; year <2050; year++) {
-			        if (year < 2020) {
-			        	estimates[year] = presets.oil_price_2014[energy_type] + ((getEnergyPrice(energy_type, 2020) - presets.oil_price_2014[energy_type]) / 6) * (estimation_year - 2014)
-			        } else if ((year % 10) != 0) {
-			        	// Computes the linear growth rate of the price between 2 decades
-			        	var decade_start = Math.floor(year / 10) * 10
-			        	var decade_end = Math.ceil(year / 10) * 10
-			        	estimates[year] = estimates[decade_start] + ((estimates[decade_end] - estimates[decade_start]) / 10) * (year - decade_start)
-			        }
+	    // Fills out the known prices
+	    for (var year in presets.price_per_barrel) {
+	    	estimates[energy_type][year] = {}
+	    	// Converts barrels to liters and to euros
+	    	var ppb_eur = presets.price_per_barrel[year] / presets.exchange_rate
+	    	var ppl_eur = ppb_eur / 158
+	    	estimates[energy_type][year]["mittel"] = getCurrentPrice(ppl_eur, 2011, 2014)
+	    	estimates[energy_type][year]["mittel"] += presets.mineralölsteuer[energy_type] + presets.deckungsbeitrag[energy_type]
+	    }
+	    // Computes the price for 2040 to make it easier below
+	    estimates[energy_type]["2040"] = {}
+	    estimates[energy_type]["2040"]["mittel"] = estimates[energy_type]["2030"]["mittel"] + ((estimates[energy_type]["2050"]["mittel"] - estimates[energy_type]["2030"]["mittel"]) / 2)
+
+        for (var year = 2014; year <2050; year++) {
+        	if (!(year in estimates[energy_type])){
+        		estimates[energy_type][year] = {}
+		        if (year < 2020) {
+		        	estimates[energy_type][year]["mittel"] = presets.oil_price_2014[energy_type] + ((estimates[energy_type]["2020"]["mittel"] - presets.oil_price_2014[energy_type]) / 6) * (year - 2014)
+		        } else if ((year % 10) != 0) {
+		        	// Computes the linear growth rate of the price between 2 decades
+		        	var decade_start = Math.floor(year / 10) * 10
+		        	var decade_end = Math.ceil(year / 10) * 10
+		        	estimates[energy_type][year]["mittel"] = estimates[energy_type][decade_start]["mittel"] + ((estimates[energy_type][decade_end]["mittel"] - estimates[energy_type][decade_start]["mittel"]) / 10) * (year - decade_start)
 		        }
-		        price_per_l = estimates[estimation_year]
-	        }
+		    }
 
-	        if (estimation_year >= 2020) {
-		        price_per_l += presets.mineralölsteuer[energy_type] + presets.deckungsbeitrag[energy_type];
-		        price_per_l *= (1 + presets.mehrwertsteuer);
-	        }
+	    	estimates[energy_type][year]["pro"] = estimates[energy_type][year]["mittel"] * 1.1
+	    	estimates[energy_type][year]["contra"] = estimates[energy_type][year]["mittel"] * .9
 
-	        if (scenario == "pro") { return price_per_l * 1.1; }
-	        else if (scenario == "contra") {return price_per_l * .9;}
-	        else {return price_per_l;}
-	        break;
-	    case "BEV":
-	    	var estimates = {};
-	    	// Fills out the known prices
-	        for (var year in presets.electricity_prices) {
-	        	if (year != "2014"){
-		        	if (scenario == "pro") { estimates[year] = presets.electricity_prices[year]["private"] * .9; }
-		        	else if (scenario == "contra") {estimates[year] = presets.electricity_prices[year]["private"] * 1.1;}
-		        	else { estimates[year] = presets.electricity_prices[year]["private"]; }
-		        	estimates[year] = getCurrentPrice(estimates[year], 2011, 2014)
-	        	} else {
-	        		estimates[year] = presets.electricity_prices[year]["private"]
-	        	}
-	        }
-	        // Computes the price for 2040 to make it easier below
-	        estimates["2040"] = estimates["2030"] + ((estimates["2050"] - estimates["2030"]) / 2)
-	        if (estimation_year in estimates) {
-	        	estimates[year] = estimates[estimation_year]
-	        } else {
-		        // Computes the price for all years
-		        for (var year = 2014; year <2050; year++) {
-			        if (year < 2020) {
-			        	estimates[year] = estimates["2014"] + ((estimates["2020"] - estimates["2014"]) / 6) * (estimation_year - 2014)
-			        } else if ((year % 10) != 0) {
-			        	// Computes the linear growth rate of the price between 2 decades
-			        	var decade_start = Math.floor(year / 10) * 10
-			        	var decade_end = Math.ceil(year / 10) * 10
-			        	estimates[year] = estimates[decade_start] + ((estimates[decade_end] - estimates[decade_start]) / 10) * (year - decade_start)
-			        }
-		        }
-	        }
-
-	        // divides by 100 as we were in cents till then
-	        return estimates[estimation_year] / 100
-
-	    	break;
+        }
 	}
+	
+	//Computes electricity prices
+	energy_type = "BEV"
+	estimates[energy_type] = {}
+    for (var year in presets.electricity_prices) {
+    	estimates[energy_type][year] = {}
+    	if (year != "2014"){
+        	estimates[energy_type][year]["pro"] = presets.electricity_prices[year]["private"] * .9
+        	estimates[energy_type][year]["contra"] = presets.electricity_prices[year]["private"] * 1.1
+        	estimates[energy_type][year]["mittel"] = presets.electricity_prices[year]["private"]
+        	estimates[energy_type][year]["mittel"] = getCurrentPrice(estimates[energy_type][year]["mittel"], 2011, 2014)
+    	} else {
+    		estimates[energy_type][year]["mittel"] = presets.electricity_prices[year]["private"]
+    	}
+    }
+    // Computes the price for 2040 to make it easier below
+    estimates[energy_type]["2040"] = {}
+    estimates[energy_type]["2040"]["mittel"] = estimates[energy_type]["2030"]["mittel"] + ((estimates[energy_type]["2050"]["mittel"] - estimates[energy_type]["2030"]["mittel"]) / 2)
+  
+    for (var year = 2014; year <2050; year++) {
+    	if (!(year in estimates[energy_type])){
+    		estimates[energy_type][year] = {}
+    		
+	        if (year < 2020) {
+	        	estimates[energy_type][year]["mittel"] = estimates[energy_type]["2014"]["mittel"] + ((estimates[energy_type]["2020"]["mittel"] - estimates[energy_type]["2014"]["mittel"]) / 6) * (year - 2014)
+	        } else if ((year % 10) != 0) {
+	        	// Computes the linear growth rate of the price between 2 decades
+	        	var decade_start = Math.floor(year / 10) * 10
+	        	var decade_end = Math.ceil(year / 10) * 10
+	        	estimates[energy_type][year]["mittel"] = estimates[energy_type][decade_start]["mittel"] + ((estimates[energy_type][decade_end]["mittel"] - estimates[energy_type][decade_start]["mittel"]) / 10) * (year - decade_start)
+	        }
+    	}
+
+    	estimates[energy_type][year]["pro"] = estimates[energy_type][year]["mittel"] * 1.1
+	    estimates[energy_type][year]["contra"] = estimates[energy_type][year]["mittel"] * .9
+	}
+
+	return estimates
+	
 }
 
 // Returns the estimated kg of CO2 per kWh based on the data points we have
@@ -188,7 +188,7 @@ var Vehicle = function(params) {
 	this.energy_type = "BEV";
 	this.car_type = "klein";
 	this.electricity_consumption = 0;
-	this.mileage = 20000;
+	this.mileage = 50000;
 	this.acquisition_year = 2014;
 	this.reichweite = 150;
 	this.energy_source = "strom_mix"; //can also be "strom_erneubar"
@@ -200,6 +200,9 @@ var Vehicle = function(params) {
 	this.share_electric = 55;
 	this.second_charge = false;
 	this.residual_value_method = "Methode 1";
+	this.second_user_holding_time = 6
+	this.second_user_yearly_mileage = 20000
+	this.max_battery_charges = 2500
 
 	for(var prop in params) {
     if( params.hasOwnProperty(prop) && this.hasOwnProperty(prop) ) {
@@ -207,6 +210,8 @@ var Vehicle = function(params) {
 		}
 	}
 
+	this.charges_per_year = this.mileage / this.reichweite
+	this.battery_duration = this.max_battery_charges / this.charges_per_year
 	this.fixed_vars = {};
 	this.residual_value = {};
 	this.price = {};
@@ -220,13 +225,54 @@ var Vehicle = function(params) {
 	this.CO2 = {}
 	this.CO2_by_mileage = {};
 
-	this.getResidualValue = function(){
-		for (var year = this.acquisition_year; year <= 2025; year++) {
-			this.residual_value[year] = Math.exp(presets.restwert_constants["a"]) 										  // Constant
-			this.residual_value[year] *= Math.exp(12 * presets.restwert_constants["b1"] * (year - this.acquisition_year + 1)) // Age
-			this.residual_value[year] *= Math.exp(presets.restwert_constants["b2"] /12 * this.mileage)						  // Yearly mileage
-			this.residual_value[year] *= Math.pow(this.price.total["mittel"], presets.restwert_constants["b3"])				  // Initial price
-		} 
+	this.getResidualValue = function(method){
+		if (method == "Methode 1"){
+			for (var year = this.acquisition_year; year <= 2025; year++) {
+				this.residual_value[year] = Math.exp(presets.restwert_constants["a"]) 										  // Constant
+				this.residual_value[year] *= Math.exp(12 * presets.restwert_constants["b1"] * (year - this.acquisition_year + 1)) // Age
+				this.residual_value[year] *= Math.exp(presets.restwert_constants["b2"] /12 * this.mileage)						  // Yearly mileage
+				this.residual_value[year] *= Math.pow(this.price.total["mittel"], presets.restwert_constants["b3"])				  // Initial price
+			} 
+		} else if (method == "Methode 2"){
+			// Computes residual value with Method 1
+			this.getResidualValue("Methode 1")
+			// Computes the advantage of the 2d user
+			var advantage_2d_user = 0
+			for (var year = this.acquisition_year; year <= 2025; year++) {
+				for (var year2 = year; year2 <= year + this.second_user_holding_time; year2++) {
+					if (year2 <= 2025){
+						//computes consumption
+						var elec_consumption = this.second_user_yearly_mileage * (this.electricity_consumption/100) * this.energy_prices["BEV"][year]["mittel"]
+						//computes consumption of equivalent diesel vehicle
+						this.getConsumption("diesel")
+						var fuel_consumption = this.second_user_yearly_mileage * (this.fuel_consumption/100) * this.energy_prices["diesel"][year]["mittel"]
+						
+						//computes difference
+						advantage_2d_user = (fuel_consumption - elec_consumption)
+					}
+				}
+
+				this.residual_value[year] += advantage_2d_user
+			} 
+		} else if (method == "Methode 3"){
+			// Creates temp diesel machine to get the residual value
+			temp_vehicle = new Vehicle({energy_type: "diesel", car_type: this.car_type, mileage:this.mileage})
+			this.residual_value = temp_vehicle.residual_value
+			delete temp_vehicle
+		} else if (method == "Methode 4"){
+			// like Method 1 but with the battery value separated
+			for (var year = this.acquisition_year; year <= 2025; year++) {
+				this.residual_value[year] = Math.exp(presets.restwert_constants["a"]) 										  // Constant
+				this.residual_value[year] *= Math.exp(12 * presets.restwert_constants["b1"] * (year - this.acquisition_year + 1)) // Age
+				this.residual_value[year] *= Math.exp(presets.restwert_constants["b2"] /12 * this.mileage)						  // Yearly mileage
+				this.residual_value[year] *= Math.pow(this.price.basis_price, presets.restwert_constants["b3"])				  // Initial price minus battery
+				
+				var residual_battery_value = this.price.battery_price["mittel"] - this.price.battery_price["mittel"] * (year - this.acquisition_year) / this.battery_duration
+				if (residual_battery_value < 0) { residual_battery_value = 0 }
+				this.residual_value[year] += residual_battery_value
+			}
+
+		}
 	}
 
 	this.getMaintenanceCosts = function(){
@@ -237,7 +283,7 @@ var Vehicle = function(params) {
 			this.maintenance_costs_tires = presets.reperaturkosten["benzin"][this.car_type]["reifen"] ;
 			this.maintenance_costs_inspection = presets.reperaturkosten["benzin"][this.car_type]["inspektion"];
 			this.maintenance_costs_repairs = presets.reperaturkosten["benzin"][this.car_type]["reparatur"] * presets.faktor_BEV;
-		} else if (this.energy_type == "BEV" && this.car_type.indexOf("LNF") == -1) {
+		} else if (this.energy_type == "BEV" && this.car_type.indexOf("LNF") >= 0) {
 			this.maintenance_costs_tires = presets.reperaturkosten["diesel"][this.car_type]["reifen"];
 			this.maintenance_costs_inspection = presets.reperaturkosten["diesel"][this.car_type]["inspektion"];
 			this.maintenance_costs_repairs = presets.reperaturkosten["diesel"][this.car_type]["reparatur"] * presets.faktor_BEV;
@@ -383,29 +429,7 @@ var Vehicle = function(params) {
 	}
 
 	this.getEnergyPrices = function() {
-		
-		if (this.energy_type.indexOf("hybrid") > -1) { //compute 2 sets of energy prices for hybrid vehicles
-			var energy_type = this.energy_type.split("-")[1];
-			this.energy_prices[energy_type] = {};
-			this.energy_prices["BEV"] = {};
-			for (var year = this.acquisition_year; year <= 2025; year++) {
-				this.energy_prices[energy_type][year] = {}
-				this.energy_prices[energy_type][year]["pro"] = getEnergyPrice(energy_type, year, "pro");
-				this.energy_prices[energy_type][year]["mittel"] = getEnergyPrice(energy_type, year, "mittel");
-				this.energy_prices[energy_type][year]["contra"] = getEnergyPrice(energy_type, year, "contra");
-				this.energy_prices["BEV"][year] = {}
-				this.energy_prices["BEV"][year]["pro"] = getEnergyPrice("BEV", year, "pro");
-				this.energy_prices["BEV"][year]["mittel"] = getEnergyPrice("BEV", year, "mittel");
-				this.energy_prices["BEV"][year]["contra"] = getEnergyPrice("BEV", year, "contra");
-			}
-		} else {
-			for (var year = this.acquisition_year; year <= 2025; year++) {
-				this.energy_prices[year] = {}
-				this.energy_prices[year]["pro"] = getEnergyPrice(this.energy_type, year, "pro");
-				this.energy_prices[year]["mittel"] = getEnergyPrice(this.energy_type, year, "mittel");
-				this.energy_prices[year]["contra"] = getEnergyPrice(this.energy_type, year, "contra");
-			}
-		}
+		this.energy_prices = getEnergyPrice()
 	}
 
 	this.setEnergyPrices = function(new_price) {
@@ -420,16 +444,16 @@ var Vehicle = function(params) {
 		if (this.energy_type == "benzin" || this.energy_type == "diesel") {
 			for (var year = this.acquisition_year; year <= 2025; year++) {
 				this.energy_costs[year] = {}
-				this.energy_costs[year]["pro"] = (this.mileage / 100) * this.fuel_consumption * this.energy_prices[year]["pro"];
-				this.energy_costs[year]["mittel"] = (this.mileage / 100) * this.fuel_consumption * this.energy_prices[year]["mittel"];
-				this.energy_costs[year]["contra"] = (this.mileage / 100) * this.fuel_consumption * this.energy_prices[year]["contra"];
+				this.energy_costs[year]["pro"] = (this.mileage / 100) * this.fuel_consumption * this.energy_prices[this.energy_type][year]["pro"];
+				this.energy_costs[year]["mittel"] = (this.mileage / 100) * this.fuel_consumption * this.energy_prices[this.energy_type][year]["mittel"];
+				this.energy_costs[year]["contra"] = (this.mileage / 100) * this.fuel_consumption * this.energy_prices[this.energy_type][year]["contra"];
 			}
 		} else if (this.energy_type == "BEV") {
 			for (var year = this.acquisition_year; year <= 2025; year++) {
 				this.energy_costs[year] = {}
-				this.energy_costs[year]["pro"] = (this.mileage / 100) * this.electricity_consumption * this.energy_prices[year]["pro"];
-				this.energy_costs[year]["mittel"] = (this.mileage / 100) * this.electricity_consumption * this.energy_prices[year]["mittel"];
-				this.energy_costs[year]["contra"] = (this.mileage / 100) * this.electricity_consumption * this.energy_prices[year]["contra"];
+				this.energy_costs[year]["pro"] = (this.mileage / 100) * this.electricity_consumption * this.energy_prices[this.energy_type][year]["pro"];
+				this.energy_costs[year]["mittel"] = (this.mileage / 100) * this.electricity_consumption * this.energy_prices[this.energy_type][year]["mittel"];
+				this.energy_costs[year]["contra"] = (this.mileage / 100) * this.electricity_consumption * this.energy_prices[this.energy_type][year]["contra"];
 			}
 		} else { //Hybrid vehicles
 			var energy_type = this.energy_type.split("-")[1];
@@ -527,7 +551,8 @@ var Vehicle = function(params) {
 	this.getTCOByMileage = function() {
 
 		// Saves the initial value
-		var temp_mileage = this.mileage;
+		var temp_mileage = this.mileage
+		var temp_share_electric = this.share_electric
 
 		for (var year=2014; year <= 2025; year++) {
 			
@@ -555,8 +580,10 @@ var Vehicle = function(params) {
 			
 		}
 		// Goes back to original position
-		this.mileage = temp_mileage;
-		this.computeCosts();	}
+		this.mileage = temp_mileage
+		this.share_electric = temp_share_electric
+		this.computeCosts()
+	}
 
 	this.getTCO2byHoldingTime = function() {
 
@@ -591,7 +618,8 @@ var Vehicle = function(params) {
 
 	this.getCO2byMileage = function(year) {
 		// Saves the initial value
-		var temp_mileage = this.mileage;
+		var temp_mileage = this.mileage
+		var temp_share_electric = this.share_electric
 
 		for (var year=2014; year <= 2025; year++) {	
 			this.CO2_by_mileage[year] = {}
@@ -606,8 +634,9 @@ var Vehicle = function(params) {
 			}
 		}
 		// Goes back to original position
-		this.mileage = temp_mileage;
-		this.computeCosts();
+		this.mileage = temp_mileage
+		this.share_electric = temp_share_electric
+		this.computeCosts()
 	}
 
 	this.checkMaxElecShare = function() {
@@ -643,7 +672,7 @@ var Vehicle = function(params) {
 		this.getEnergyCosts();
 		this.getAmortization();
 		this.getTrainingCosts();
-		this.getResidualValue();
+		this.getResidualValue(this.residual_value_method);
 		this.getTCOByHoldingTime();
 		this.getTCO2byHoldingTime();
 

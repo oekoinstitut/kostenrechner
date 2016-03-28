@@ -98,10 +98,10 @@ var price_per_barrel = {"2020": 117, "2030": 124, "2050": 128}	// In $-2011
 
 //Variables for electricity prices in cents per kWh in 2011 €
 var electricity_prices = {
-	"2014": { "private": 29.13/1.19, "industrie": 13.49 },		// In 2014 - €
-	"2020": { "private": 29.2/1.19, "industrie": 15.9 },		// In 2011 - €
-	"2030": { "private": 28.4/1.19, "industrie": 15.7 },		// In 2011 - €
-	"2050": { "private": 26.8/1.19, "industrie": 14.7/1.19 }	// In 2011 - €
+	"2014": { "private": .2913/1.19, "industrie": .1349 },		// In 2014 - €
+	"2020": { "private": .292/1.19, "industrie": .159 },		// In 2011 - €
+	"2030": { "private": .284/1.19, "industrie": .157 },		// In 2011 - €
+	"2050": { "private": .268/1.19, "industrie": .147/1.19 }	// In 2011 - €
 }
 
 // Variables for evolution of energy consumption in % of reduction per decade
