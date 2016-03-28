@@ -191,7 +191,7 @@ var Vehicle = function(params) {
 	this.mileage = 50000;
 	this.acquisition_year = 2014;
 	this.reichweite = 150;
-	this.energy_source = "strom_mix"; //can also be "strom_erneubar"
+	this.energy_source = "strom_mix";
 	this.charging_option = undefined;
 	this.maintenance_costs_charger = 0;
 	this.fleet_size = 1;
@@ -601,7 +601,11 @@ var Vehicle = function(params) {
 			}
 			else if (this.energy_source == "strom_mix") {
 				this.CO2[year] = (this.mileage / 100) * this.electricity_consumption * getCO2FromElectricityMix(year)
-			} else {
+			} 
+			else if (this.energy_source == "strom_erneubar") {
+				this.CO2[year] = (this.mileage / 100) * this.electricity_consumption * presets.co2_emissions[this.energy_source]
+			}
+			else {
 				this.CO2[year] = (this.mileage / 100) * this.fuel_consumption * presets.co2_emissions[this.energy_source]
 			}
 

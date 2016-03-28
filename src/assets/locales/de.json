@@ -119,5 +119,8 @@
     "Wallbox bis 22kW": "Wallbox bis 22kW",
     "welcome_description": "Der TCO Kostenrechner zeigt die Gesamtnutzungskosten und CO2 Emissionen von verschiedenen Fahrzeugen. Sie können die im Modell benutzten Variablen ändern und die Ergebnisse visualisieren.",
     "welcome_title": "Kostenrechner",
-    "years": "Jahre"
+    "years": "Jahre",
+    "Energy source": "Energiequelle",
+    "strom_mix": "Normaler Strom Mix",
+    "strom_erneubar": "Strom aus erneubare Quellen"
 }

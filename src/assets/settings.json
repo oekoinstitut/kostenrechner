@@ -10,7 +10,7 @@
     "hasslider": false,
     "canbeonxaxis": false,
     "shownonthelist": true,
-    "importancerank": 10,
+    "importancerank": 6,
     "specifictoenergytype": null,
     "preliminary": true,
     "parentid": null,
@@ -290,7 +290,7 @@
     "hasslider": false,
     "canbeonxaxis": false,
     "shownonthelist": true,
-    "importancerank": 6,
+    "importancerank": 10,
     "specifictoenergytype": null,
     "preliminary": false,
     "parentid": "11",
@@ -538,5 +538,25 @@
     "use": "TCO",
     "context": "vehicle",
     "name": "max_battery_charges"
+  },
+  {
+    "id": "28",
+    "label": "Energy source",
+    "description": "desc28",
+    "unit": null,
+    "group": "Electrical details",
+    "values": "\"strom_mix\", \"strom_erneubar\"",
+    "interval": 0,
+    "hasslider": false,
+    "canbeonxaxis": false,
+    "shownonthelist": true,
+    "importancerank": 23,
+    "specifictoenergytype": "BEV, hybrid-benzin, hybrid-diesel",
+    "preliminary": false,
+    "parentid": null,
+    "editable": true,
+    "use": "both",
+    "context": "vehicle",
+    "name": "energy_source"
   }
 ]
