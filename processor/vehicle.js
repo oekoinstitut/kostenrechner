@@ -222,9 +222,18 @@ var Vehicle = function(params) {
 	this.energy_costs = {}
 	this.amortization = {}
 
+	this.TCO = {}
 	this.TCO_by_holding_time = {}
 	this.TCO_by_acquisition_year = {}
 	this.TCO_by_mileage = {}
+	this.CO2_by_holding_time = {}
+	this.CO2_by_acquisition_year = {}
+	this.CO2_by_mileage = {}
+	for (var i in scenarios) {
+		this.TCO_by_holding_time[scenarios[i]] = {}
+		this.TCO_by_acquisition_year[scenarios[i]] = {}
+		this.TCO_by_mileage[scenarios[i]] = {}
+	}
 	
 	
 	this.getResidualValue = function(method){
@@ -533,6 +542,36 @@ var Vehicle = function(params) {
 		return costs
 	}
 
+	this.getYearlyCO2 = function(year){
+		
+		co2 = 0;
+
+		if (this.energy_type == "BEV") {
+			if (this.energy_source == "strom_mix") {
+				co2 = (this.mileage / 100) * this.electricity_consumption * getCO2FromElectricityMix(year)
+			} 
+			else if (this.energy_source == "strom_erneubar") {
+				co2 = (this.mileage / 100) * this.electricity_consumption * presets.co2_emissions[this.energy_source]
+			}
+		}
+
+		else if (this.energy_type.indexOf("hybrid") > -1) {
+			
+			if (this.energy_source == "strom_mix") {
+				co2 = (this.mileage / 100) * (this.share_electric /100) *  this.electricity_consumption * getCO2FromElectricityMix(year)
+			} else if (this.energy_source == "strom_erneubar") {
+				co2 = (this.mileage / 100) * this.electricity_consumption * presets.co2_emissions[this.energy_source]
+			}
+
+			co2 += (this.mileage / 100) * (1-this.share_electric /100) *  this.fuel_consumption * presets.co2_emissions[this.energy_type.split("-")[1]]
+		}
+		else {
+			co2 = (this.mileage / 100) * this.fuel_consumption * presets.co2_emissions[this.energy_type]
+		}
+
+		return co2
+	}
+
 	this.initCosts = function(scenario){
 		// Acquisition and one-off costs
 		costs = {}
@@ -572,11 +611,11 @@ var Vehicle = function(params) {
 		
 		for (var i in scenarios) {
 			var scenario = scenarios[i];
-			this.TCO_by_holding_time[scenario] = {};
 
-			for (var holding_time = 1; holding_time <= 10; holding_time++){
+			for (var holding_time = 1; holding_time <= 12; holding_time++){
 				
 				costs = this.initCosts(scenario)
+				co2 = 0
 				
 				for (var current_year = this.acquisition_year; current_year <= holding_time + this.acquisition_year; current_year++){
 					
@@ -584,13 +623,20 @@ var Vehicle = function(params) {
 					var yearly_costs = this.getYearlyCosts(scenario, current_year)
 					
 					costs = this.incrementCosts(costs, yearly_costs)
-					
+					co2 += this.getYearlyCO2(current_year)
+
 					// Removes the resale value 
 					costs["residual_value"] = Math.round(- this.residual_value[current_year])
 					costs["total_cost"] -= costs["residual_value"]
+
+					// Digression: Storage of the values for the stacked bar chart
+					if (holding_time == this.holding_time && current_year == holding_time + this.acquisition_year && scenario == "mittel"){
+						this.TCO = costs
+					}
 				}
 			
 				this.TCO_by_holding_time[scenario][holding_time] = costs
+				this.CO2_by_holding_time[holding_time] = co2
 
 			}
 		}
@@ -599,7 +645,6 @@ var Vehicle = function(params) {
 	this.getTCOByAcquisitionYear = function(){
 		for (var i in scenarios) {
 			var scenario = scenarios[i];
-			this.TCO_by_acquisition_year[scenario] = {};
 
 			var acquisition_year_temp = this.acquisition_year
 
@@ -610,6 +655,7 @@ var Vehicle = function(params) {
 				this.computeCosts()
 				
 				costs = this.initCosts(scenario)
+				co2 = 0
 
 				for (var current_year = acquisition_year; current_year <= acquisition_year + this.holding_time; current_year++){
 					
@@ -617,6 +663,7 @@ var Vehicle = function(params) {
 					var yearly_costs = this.getYearlyCosts(scenario, current_year)
 					
 					costs = this.incrementCosts(costs, yearly_costs)
+					co2 += this.getYearlyCO2(current_year)
 					
 					// Removes the resale value 
 					costs["residual_value"] = Math.round(- this.residual_value[current_year])
@@ -624,10 +671,12 @@ var Vehicle = function(params) {
 				}
 			
 				this.TCO_by_acquisition_year[scenario][acquisition_year] = costs
+				this.CO2_by_acquisition_year[acquisition_year] = co2
 			}
 
 			// goes back to initial positions
 			this.acquisition_year = acquisition_year_temp
+			this.computeCosts()
 
 		}
 	}
@@ -635,9 +684,8 @@ var Vehicle = function(params) {
 	this.getTCOByMileage = function(){
 		for (var i in scenarios) {
 			var scenario = scenarios[i];
-			this.TCO_by_mileage[scenario] = {};
 
-			var mileage = this.mileage
+			var mileage_temp = this.mileage
 
 			for (var mileage = 0; mileage <= 100000; mileage+=10000){
 
@@ -646,6 +694,7 @@ var Vehicle = function(params) {
 				this.computeCosts()
 				
 				costs = this.initCosts(scenario)
+				co2 = 0
 
 				for (var current_year = this.acquisition_year; current_year <= this.acquisition_year + this.holding_time; current_year++){
 					
@@ -653,6 +702,7 @@ var Vehicle = function(params) {
 					var yearly_costs = this.getYearlyCosts(scenario, current_year)
 					
 					costs = this.incrementCosts(costs, yearly_costs)
+					co2 += this.getYearlyCO2(current_year)
 					
 					// Removes the resale value 
 					costs["residual_value"] = Math.round(- this.residual_value[current_year])
@@ -660,10 +710,12 @@ var Vehicle = function(params) {
 				}
 			
 				this.TCO_by_mileage[scenario][mileage] = costs
+				this.CO2_by_mileage[mileage] = co2
 			}
 
 			// goes back to initial positions
-			this.mileage = mileage
+			this.mileage = mileage_temp
+			this.computeCosts()
 
 		}
 	}
@@ -682,15 +734,15 @@ var Vehicle = function(params) {
 			this.checkMaxElecShare();
 		}
 		
-		this.getAcquisitionPrice();
-		this.getMaintenanceCosts();
-		this.getLubricantCosts();
-		this.getConsumption(this.energy_type);
-		this.getEnergyPrices();
-		this.getEnergyCosts();
-		this.getAmortization();
-		this.getTrainingCosts();
-		this.getResidualValue(this.residual_value_method);
+		this.getAcquisitionPrice()
+		this.getMaintenanceCosts()
+		this.getLubricantCosts()
+		this.getConsumption(this.energy_type)
+		this.getEnergyPrices()
+		this.getEnergyCosts()
+		this.getAmortization()
+		this.getTrainingCosts()
+		this.getResidualValue(this.residual_value_method)
 		
 
 		//Rounds all visible values to 2 decimal places
@@ -706,13 +758,13 @@ var Vehicle = function(params) {
 	}
 
 	this.computeTotals = function(){
-		this.computeCosts();
-		this.getTCOByHoldingTime();
-		this.getTCOByAcquisitionYear();
-		this.getTCOByMileage();
+		this.computeCosts()
+		this.getTCOByHoldingTime()
+		this.getTCOByAcquisitionYear()
+		this.getTCOByMileage()
 	}
-
-	this.computeTotals();
+	this.computeCosts()
+	this.computeTotals()
 
 }
 
