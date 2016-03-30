@@ -15,7 +15,6 @@ angular.module 'oekoKostenrechner'
         @xAxis     = MAIN.CHART_XAXIS
         @yAxis     = MAIN.CHART_YAXIS
         @type      = MAIN.CHART_TYPE
-        @xAxisYear = MAIN.FLOOR_YEAR
         # Always redirect to child state
         $state.go 'main.chart.tco', type: MAIN.CHART_TYPE
         # Generate a short permalink every time the vehicle array is upddated
@@ -28,7 +27,7 @@ angular.module 'oekoKostenrechner'
         return 'expl5' if @type is 'bar'
         # For the other chart types we use the display helper
         display = processor.findDisplay xaxis: @xAxis, yaxis: @yAxis
-        display.explainer
+        display?.explainer
       getPermalink: ->
         # Generate an absolute link to the chart
         $state.href 'main.permalink', { vehicles: do @getJsonVehicles }, absolute: yes

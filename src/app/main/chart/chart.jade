@@ -13,19 +13,14 @@
   .main__chart__view(ng-view)
     .main__chart__view__workspace
       chart(x="chart.xAxis", y="chart.yAxis", type="chart.type", 
-            year="chart.xAxisYear", vehicles="main.vehicles", 
+            vehicles="main.vehicles", 
             processor="main.processor")
     
     .row.main__chart__view__options
-      .col-xs-6
+      .col-xs-12
         label Horizontal axis
         select.form-control(ng-options="opt.name as (opt.label | translate) for opt in chart.xAxisOptions", 
                             ng-model="chart.xAxis", ng-disabled="chart.type === 'bar'")
-      .col-xs-6
-        label Year
-        select.form-control(ng-options="year for year in ::chart.getXYears()",
-                            ng-model="chart.xAxisYear", 
-                            ng-disabled="chart.type !== 'bar' && chart.xAxis !== 'mileage'")
     .main__chart__view__explainer(translate="")
       | {{ chart.getExplainer() }}
   

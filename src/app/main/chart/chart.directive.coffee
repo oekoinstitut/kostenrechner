@@ -5,7 +5,6 @@ angular.module 'oekoKostenrechner'
     scope:
       x: "="
       y: "="
-      year: "="
       vehicles: "="
       type: "="
       processor: "="
@@ -15,7 +14,7 @@ angular.module 'oekoKostenrechner'
         DEFAULT_CONFIG: c3.chart.internal.fn.getDefaultConfig()
         bindWatchers: ->
           # Deep watch vehicles
-          scope.$watch '[x, y, vehicles, type, year]', @updateChart, yes
+          scope.$watch '[x, y, vehicles, type]', @updateChart, yes
           scope.$watch ( -> $translate.use() ), @updateChart
         updateChart: =>
           # New data columns
@@ -62,14 +61,11 @@ angular.module 'oekoKostenrechner'
                 # Return the new values
                 .value()
           c3.chart.internal.fn.getTooltipContent.apply(@chart.internal, arguments)
-
         getVehicleDisplay: (vehicle)->
           x = if scope.type is 'bar' then 'holding_time' else scope.x
           display = scope.processor.findDisplay xaxis: x, yaxis: scope.y
           # Extract display for this vehicle
-          value = if display? then vehicle[display.name] else {}
-          # Some value might be relative to a year
-          if display.relative then value[scope.year] or {} else value
+          if display? then vehicle[display.name] else {}
         getVehicleTranslation: (vehicle)->
           $translate.instant "vehicle_name",
             energy_type: $translate.instant vehicle.energy_type
@@ -78,9 +74,6 @@ angular.module 'oekoKostenrechner'
           if scope.type is 'bar'
             # One tick translated by vehicle
             @getVehicleTranslation vehicle for vehicle in scope.vehicles
-          # Year on x are set manually
-          else if scope.x is 'holding_time'
-            y for y in [MAIN.FLOOR_YEAR..MAIN.CEIL_YEAR]
           # Unkown range, we get it from the input value
           else
             setting = scope.processor.getSettingsBy(name: scope.x)[0]
@@ -116,7 +109,7 @@ angular.module 'oekoKostenrechner'
               refYear = year
               # Because the countBy is sorted, we stop asap
               break
-          Math.max refYear, scope.year
+          refYear
         generateColumns: =>
           series = [ _.concat(['x'], do @getXValues) ]
           # Spline chart is divided in 3 groups

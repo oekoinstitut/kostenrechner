@@ -4,7 +4,7 @@
     "xaxis": "holding_time",
     "yaxis": "TCO",
     "context": "Vehicle",
-    "name": "TCO",
+    "name": "TCO_by_holding_time",
     "relative": false,
     "explainer": "expl1"
   },
@@ -16,6 +16,15 @@
     "name": "TCO_by_mileage",
     "relative": true,
     "explainer": "expl2"
+  },
+  {
+    "id": "5",
+    "xaxis": "acquisition_year",
+    "yaxis": "TCO",
+    "context": "Vehicle",
+    "name": "TCO_by_acquisition_year",
+    "relative": false,
+    "explainer": "expl6"
   },
   {
     "id": "3",
