@@ -31,7 +31,7 @@
     "xaxis": "holding_time",
     "yaxis": "CO2",
     "context": "Vehicle",
-    "name": "CO2",
+    "name": "CO2_by_holding_time",
     "relative": false,
     "explainer": "expl3"
   },
@@ -43,5 +43,14 @@
     "name": "CO2_by_mileage",
     "relative": true,
     "explainer": "expl4"
+  },
+  {
+    "id": "6",
+    "xaxis": "acquisition_year",
+    "yaxis": "CO2",
+    "context": "Vehicle",
+    "name": "CO2_by_acquisition_year",
+    "relative": false,
+    "explainer": "expl7"
   }
 ]
