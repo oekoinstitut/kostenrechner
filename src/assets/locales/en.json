@@ -44,6 +44,7 @@
     "elec_unit": "kWh/100km",
     "Electrical details": "Electrical details",
     "Electricity consumption": "Electricity consumption",
+    "Energy source": "Energy source",
     "Energy type": "Energy type",
     "energy_costs": "Energy costs",
     "euro_per_year": "€ per year",
@@ -105,6 +106,8 @@
     "Special amortization for electric vehicles": "Special amortization for electric vehicles",
     "start_btn": "Add a new vehicle",
     "step_position": "Step {{ current }} of {{ total }}",
+    "strom_erneubar": "Renewable energy sources",
+    "strom_mix": "Normal electricity mix",
     "tco_sharing_btn": "See the repartition",
     "tco_title": "Total cost of ownership",
     "tco_trend_btn": "See the evolution",
@@ -123,8 +126,5 @@
     "Wallbox bis 22kW": "Wallbox up to 22kW",
     "welcome_description": "This calculator lets you visualize the total cost of ownership and CO2 emissions of several types of vehicles. You can choose the characteristics of the vehicles and the values of the variables used in the model.",
     "welcome_title": "Total cost of ownership calculator",
-    "years": "years",
-    "strom_mix": "Normal electricity mix",
-    "strom_erneubar": "Renewable energy sources",
-    "Energy source": "Energy source"
+    "years": "years"
 }
