@@ -175,6 +175,7 @@ angular.module 'oekoKostenrechner'
             multiline: no
         generateYAxis: (columns)=>
           # Return a configuration objects
+          min: 0
           tick:
             format: @formatNumber
           padding:
