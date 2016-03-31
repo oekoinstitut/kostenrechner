@@ -350,12 +350,22 @@ var Vehicle = function(params) {
 			var scenario = scenarios[i]
 			if (this.energy_type == "benzin" || this.energy_type == "diesel") {
 				this.price.basis_price = getRawAcquisitionPrice(this.energy_type, this.car_type, this.acquisition_year)
+				this.acquisition_price = this.price.basis_price
 				this.price.charging_option = 0
+				if (this.fixed_vars.hasOwnProperty("acquisition_price")) {
+					this.acquisition_price = this.fixed_vars["acquisition_price"]
+					this.price.basis_price = this.fixed_vars["acquisition_price"]
+				}
 				this.price.total[scenario] = this.price.basis_price
 			} else {
 				this.price.basis_price = getRawAcquisitionPrice(this.energy_type, this.car_type, this.acquisition_year)
 				this.price.battery_price[scenario] = this.getBatteryPrice(scenario)
 				this.price.charging_option = getChargingOptionPrice(this.charging_option, this.acquisition_year) / this.fleet_size
+				this.acquisition_price = this.price.basis_price + this.price.battery_price["mittel"]
+				if (this.fixed_vars.hasOwnProperty("acquisition_price")) {
+					this.acquisition_price = this.fixed_vars["acquisition_price"]
+					this.price.basis_price = this.fixed_vars["acquisition_price"] - this.price.battery_price[scenario]
+				}
 				this.price.total[scenario] = this.price.basis_price + this.price.battery_price[scenario] + this.price.charging_option
 			}
 

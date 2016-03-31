@@ -691,5 +691,26 @@
     "use": "TCO",
     "context": "vehicle",
     "name": "bev_praemie"
+  },
+  {
+    "id": "34",
+    "label": "Acquisition price",
+    "description": "desc34",
+    "unit": "€",
+    "group": "Vehicle details",
+    "values": "1000..100000",
+    "default": null,
+    "interval": 1000,
+    "hasslider": false,
+    "canbeonxaxis": false,
+    "shownonthelist": true,
+    "importancerank": 5,
+    "specifictoenergytype": null,
+    "preliminary": false,
+    "parentid": null,
+    "editable": true,
+    "use": "TCO",
+    "context": "vehicle",
+    "name": "acquisition_price"
   }
 ]
