@@ -145,7 +145,7 @@
           pointer-events: none;
           opacity: 0;
           .transition(0.6s);
-          @media print {     
+          @media print {
             display: none;
           }
         }
@@ -181,25 +181,38 @@
 
   }
 
+  &__welcome-bg {
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background: url("../assets/images/bg-simple.jpg") black top center;
+    background-size: cover;
+    z-index:-1;
+  }
+
   &__welcome-screen {
 
     margin:auto;
-    margin-top: 20px;
+    margin-top: 60px;
     max-width:@screen-sm - 20px * 2px;
-    border:1px solid @panel-default-border;
     padding:0;
+    color:white;
 
     &__body, &__heading {
-      background:@panel-bg;
-      padding:15px 20px;
       margin:0;
+      text-shadow:0 0 10px black, 0 0 10px black, 0 0 10px black;
+    }
+
+    &__heading {
+      font-size: 3em;
     }
 
     &__footer {
       border-top:0;
-      background:@brand-primary;
-      padding:15px 20px;
       margin:0;
+      padding-top:20px;
 
       &, .btn {
         font-size:1.1em;
@@ -208,6 +221,11 @@
       .btn {
         font-weight:bold;
         margin-right:10px;
+      }
+
+      a:not(.btn) {
+        color:inherit;
+        text-decoration: underline;
       }
     }
   }

@@ -44,6 +44,7 @@
     "Electricity consumption": "Stromverbrauch",
     "energ_unit": "L/100 km oder kWh/km",
     "Energy consumption": "Energieverbrauch",
+    "Energy source": "Energiequelle",
     "Energy type": "Antrieb",
     "energy_costs": "Energiekosten",
     "euro_per_year": "€ pro Jahr",
@@ -101,6 +102,8 @@
     "Special amortization for electric vehicles": "Sonder-Afa",
     "start_btn": "Neues Fahrzeug hinzufügen",
     "step_position": "Schritt {{ current }} von {{ total }}",
+    "strom_erneubar": "Strom aus erneubare Quellen",
+    "strom_mix": "Normaler Strom Mix",
     "tco_sharing_btn": "Spalten-Ansicht",
     "tco_title": "Gesamtnutzungskosten",
     "tco_trend_btn": "Linien-Ansicht",
@@ -119,8 +122,5 @@
     "Wallbox bis 22kW": "Wallbox bis 22kW",
     "welcome_description": "Der TCO Kostenrechner zeigt die Gesamtnutzungskosten und CO2 Emissionen von verschiedenen Fahrzeugen. Sie können die im Modell benutzten Variablen ändern und die Ergebnisse visualisieren.",
     "welcome_title": "Kostenrechner",
-    "years": "Jahre",
-    "Energy source": "Energiequelle",
-    "strom_mix": "Normaler Strom Mix",
-    "strom_erneubar": "Strom aus erneubare Quellen"
+    "years": "Jahre"
 }

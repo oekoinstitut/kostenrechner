@@ -1,17 +1,12 @@
 <nav class="navbar navbar-static-top navbar-default">
   <div class="container-fluid">
     <div class="navbar-header navbar__logo">
-      <img alt="{{ "app_title" | translate }}" src="assets/images/logo.png" height="60" />
+      <a ui-sref="main">
+        <img alt="{{ "app_title" | translate }}" src="assets/images/logo.png" height="60" />
+      </a>
     </div>
 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
-      <ul class="nav navbar-nav">
-        <li ui-sref-active-eq="active">
-          <a ui-sref="main">
-            {{ "home_btn" | translate }}
-          </a>
-        </li>
-      </ul>
+    <div>
       <ul class="nav navbar-nav navbar-right navbar__languages">
         <li ng-class="{ active: main.use() === 'en' }">
           <a ng-click="main.use('en')">

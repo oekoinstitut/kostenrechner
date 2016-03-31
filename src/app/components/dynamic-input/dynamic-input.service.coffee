@@ -27,7 +27,7 @@ angular.module 'oekoKostenrechner'
             floor: floor
             ceil: ceil
             step: step
-            value: (floor + ceil) / 2
+            value: @setting.default or (floor + ceil) / 2
             # And create a range
             range: _.range floor, (ceil + step), step
           # Enumerates literal values
