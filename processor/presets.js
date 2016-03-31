@@ -7,6 +7,7 @@ var exchange_rate    = 1.25; 	// How many $ for 1 €
 var abschreibungszeitraum = 6;  // amortization period
 var unternehmenssteuersatz = .3; // corporate tax
 var sonder_afa = false;			// special accounting rule to increase amortization for electro vehicles in the first year
+var bev_praemie = false 		// Cash bonus
 
 // Vehicle acquisition price
 var nettolistenpreise = {
@@ -282,3 +283,4 @@ exports.hybrid_minderverbrauch = hybrid_minderverbrauch;
 exports.hybrid_minderverbrauch_schmierstoff = hybrid_minderverbrauch_schmierstoff;
 exports.einsatztage_pro_jahr = einsatztage_pro_jahr;
 exports.restwert_constants = restwert_constants;
+exports.bev_praemie = bev_praemie;

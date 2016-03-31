@@ -188,7 +188,7 @@ var Vehicle = function(params) {
 	this.energy_type = "BEV"
 	this.car_type = "klein"
 	this.electricity_consumption = 0
-	this.mileage = 20000
+	this.mileage = 10000
 	this.acquisition_year = 2014
 	this.holding_time = 4
 	this.reichweite = 150
@@ -204,6 +204,10 @@ var Vehicle = function(params) {
 	this.second_user_holding_time = 6
 	this.second_user_yearly_mileage = 10000
 	this.max_battery_charges = 2500
+	this.bev_praemie = presets.bev_praemie
+	this.sonder_afa = presets.sonder_afa
+	this.unternehmenssteuersatz = presets.unternehmenssteuersatz
+	this.abschreibungszeitraum = presets.abschreibungszeitraum
 
 	for(var prop in params) {
     if( params.hasOwnProperty(prop) && this.hasOwnProperty(prop) ) {
@@ -246,7 +250,7 @@ var Vehicle = function(params) {
 					this.residual_value[scenario][year] = Math.exp(presets.restwert_constants["a"]) 										  // Constant
 					this.residual_value[scenario][year] *= Math.exp(12 * presets.restwert_constants["b1"] * (year - this.acquisition_year + 1)) // Age
 					this.residual_value[scenario][year] *= Math.exp(presets.restwert_constants["b2"] /12 * this.mileage)						  // Yearly mileage
-					this.residual_value[scenario][year] *= Math.pow(this.price.total[scenario], presets.restwert_constants["b3"])				  // Initial price
+					this.residual_value[scenario][year] *= Math.pow(this.price.total[scenario] - this.price.charging_option, presets.restwert_constants["b3"])				  // Initial price
 				} 
 			} else if (method == "Methode 2"){
 				
@@ -269,7 +273,7 @@ var Vehicle = function(params) {
 					this.residual_value[scenario][year] = Math.exp(presets.restwert_constants["a"]) 										  // Constant
 					this.residual_value[scenario][year] *= Math.exp(12 * presets.restwert_constants["b1"] * (year - this.acquisition_year + 1)) // Age
 					this.residual_value[scenario][year] *= Math.exp(presets.restwert_constants["b2"] /12 * this.mileage)						  // Yearly mileage
-					this.residual_value[scenario][year] *= Math.pow(this.price.total[scenario], presets.restwert_constants["b3"])	
+					this.residual_value[scenario][year] *= Math.pow(this.price.total[scenario] - this.price.charging_option, presets.restwert_constants["b3"])	
 					this.residual_value[scenario][year] += advantage_2d_user
 				} 
 			} else if (method == "Methode 3"){
@@ -283,7 +287,7 @@ var Vehicle = function(params) {
 					this.residual_value[scenario][year] = Math.exp(presets.restwert_constants["a"]) 										  // Constant
 					this.residual_value[scenario][year] *= Math.exp(12 * presets.restwert_constants["b1"] * (year - this.acquisition_year + 1)) // Age
 					this.residual_value[scenario][year] *= Math.exp(presets.restwert_constants["b2"] /12 * this.mileage)						  // Yearly mileage
-					this.residual_value[scenario][year] *= Math.pow(this.price.basis_price, presets.restwert_constants["b3"])				  // Initial price minus battery
+					this.residual_value[scenario][year] *= Math.pow(this.price.total[scenario] - this.price.charging_option, presets.restwert_constants["b3"])				  // Initial price minus battery
 					
 					var residual_battery_value = this.price.battery_price[scenario] - this.price.battery_price[scenario] * (year - this.acquisition_year) / this.battery_duration
 					if (residual_battery_value < 0) { residual_battery_value = 0 }
@@ -343,15 +347,29 @@ var Vehicle = function(params) {
 		this.price.total = {}
 		this.price.battery_price = {}
 		for (var i in scenarios) {
-			var scenario = scenarios[i];
+			var scenario = scenarios[i]
 			if (this.energy_type == "benzin" || this.energy_type == "diesel") {
-				this.price.basis_price = getRawAcquisitionPrice(this.energy_type, this.car_type, this.acquisition_year);
-				this.price.total[scenario] = this.price.basis_price;
+				this.price.basis_price = getRawAcquisitionPrice(this.energy_type, this.car_type, this.acquisition_year)
+				this.price.charging_option = 0
+				this.price.total[scenario] = this.price.basis_price
 			} else {
-				this.price.basis_price = getRawAcquisitionPrice(this.energy_type, this.car_type, this.acquisition_year);
-				this.price.battery_price[scenario] = this.getBatteryPrice(scenario);
-				this.price.charging_option = getChargingOptionPrice(this.charging_option, this.acquisition_year) / this.fleet_size;
-				this.price.total[scenario] = this.price.basis_price + this.price.battery_price[scenario] + this.price.charging_option;
+				this.price.basis_price = getRawAcquisitionPrice(this.energy_type, this.car_type, this.acquisition_year)
+				this.price.battery_price[scenario] = this.getBatteryPrice(scenario)
+				this.price.charging_option = getChargingOptionPrice(this.charging_option, this.acquisition_year) / this.fleet_size
+				this.price.total[scenario] = this.price.basis_price + this.price.battery_price[scenario] + this.price.charging_option
+			}
+
+			// Takes into accont the special cash reward of 3000€ that decreases by 500€ every year
+			if (this.bev_praemie == true) {
+				if (this.acquisition_year >= 2016) {
+					this.price.cash_bonus = 3000 - 500 * (this.acquisition_year - 2016)
+					
+					if (this.price.cash_bonus < 0){
+						this.price.cash_bonus = 0
+					}
+					this.price.total[scenario] -= this.price.cash_bonus
+					
+				}
 			}
 		}
 	}
@@ -369,31 +387,51 @@ var Vehicle = function(params) {
 
 	this.getNeededBatterySize = function() {
 		if (this.energy_type.indexOf("hybrid") > -1 ) {
-			this.reichweite = 50;
+			this.reichweite = 50
 		}
-		var capacity = this.reichweite * (this.electricity_consumption / 100) / presets.entladetiefe;
-		var actual_capacity = capacity * presets.entladetiefe;
-		return actual_capacity;
+		var capacity = this.reichweite * (this.electricity_consumption / 100) / presets.entladetiefe
+		var actual_capacity = capacity * presets.entladetiefe
+		return actual_capacity
 	}
 
 	this.getFixedCosts = function() {
 		
 		if (this.energy_type.indexOf("hybrid") > -1) {
-			energy_type = this.energy_type.split("-")[1];
+			energy_type = this.energy_type.split("-")[1]
 		} else {
 			energy_type = this.energy_type
 		}
 
-		if (this.energy_type == "BEV" && this.acquisition_year < 2021) { 
-			this.fixed_costs.car_tax = 0 
-		} else if (this.energy_type == "BEV" && this.acquisition_year >= 2021) {
-			this.fixed_costs.car_tax = presets.kfzsteuer[this.energy_type][this.car_type];
+		if (this.energy_type == "BEV" && this.acquisition_year >= 2021) {
+			this.fixed_costs_car_tax = presets.kfzsteuer[this.energy_type][this.car_type]
 		} else {
-			this.fixed_costs.car_tax = presets.kfzsteuer[this.energy_type][this.car_type];
+			this.fixed_costs_car_tax = presets.kfzsteuer[this.energy_type][this.car_type]
 		}
-		this.fixed_costs.check_up = presets.untersuchung[energy_type]["AU"] + presets.untersuchung[energy_type]["HU"]
-		this.fixed_costs.insurance = presets.versicherung[energy_type][this.car_type];
-		this.fixed_costs.total = this.fixed_costs.car_tax + this.fixed_costs.check_up + this.fixed_costs.insurance;
+		this.fixed_costs_check_up = presets.untersuchung[energy_type]["AU"] + presets.untersuchung[energy_type]["HU"]
+		this.fixed_costs_insurance = presets.versicherung[energy_type][this.car_type]
+
+
+		if (this.fixed_vars.hasOwnProperty("fixed_costs_car_tax")) {
+			this.fixed_costs_car_tax = this.fixed_vars["fixed_costs_car_tax"]
+			presets.kfzsteuer["BEV"][this.car_type] = this.fixed_vars["fixed_costs_car_tax"]
+		}
+		if (this.fixed_vars.hasOwnProperty("fixed_costs_check_up")) {
+			this.fixed_costs_check_up = this.fixed_vars["fixed_costs_check_up"]
+		}
+		if (this.fixed_vars.hasOwnProperty("fixed_costs_insurance")) {
+			this.fixed_costs_insurance = this.fixed_vars["fixed_costs_insurance"]
+		}
+
+		// Overrides user-defined tax level if year is less than 2021
+		if (this.energy_type == "BEV" && this.acquisition_year < 2021) { 
+			this.fixed_costs_car_tax = 0 
+		}
+
+		this.fixed_costs.car_tax = this.fixed_costs_car_tax
+		this.fixed_costs.check_up = this.fixed_costs_check_up
+		this.fixed_costs.insurance = this.fixed_costs_insurance
+		this.fixed_costs.total = this.fixed_costs.car_tax + this.fixed_costs.check_up + this.fixed_costs.insurance
+		this.fixed_costs_total = this.fixed_costs.car_tax + this.fixed_costs.check_up + this.fixed_costs.insurance
 	}
 
 	this.getLubricantConsumption = function() {
@@ -498,14 +536,14 @@ var Vehicle = function(params) {
 			this.amortization[scenarios[i]] = {}
 			var scenario = scenarios[i];
 			for (var year = this.acquisition_year; year <= 2035; year++) {
-				if (year < this.acquisition_year + presets.abschreibungszeitraum){
-					if (year == this.acquisition_year && presets.sonder_afa == true && this.energy_type=="BEV"){
-						this.amortization[scenario][year] = this.price.total[scenario] * .5 * presets.unternehmenssteuersatz;
-					} else if (presets.sonder_afa == true && this.energy_type=="BEV") {
-						this.amortization[scenario][year] = (1 / presets.abschreibungszeitraum) * presets.unternehmenssteuersatz * this.price.total[scenario] * .5
+				if (year < this.acquisition_year + this.abschreibungszeitraum){
+					if (year == this.acquisition_year && this.sonder_afa == true && this.energy_type=="BEV"){
+						this.amortization[scenario][year] = this.price.total[scenario] * .5 * this.unternehmenssteuersatz;
+					} else if (this.sonder_afa == true && this.energy_type=="BEV") {
+						this.amortization[scenario][year] = (1 / this.abschreibungszeitraum) * this.unternehmenssteuersatz * this.price.total[scenario] * .5
 					} else {
 						//Normal amortization
-						this.amortization[scenario][year] = (1 / presets.abschreibungszeitraum) * presets.unternehmenssteuersatz * this.price.total[scenario]
+						this.amortization[scenario][year] = (1 / this.abschreibungszeitraum) * this.unternehmenssteuersatz * this.price.total[scenario]
 					}
 				} else {
 					this.amortization[scenario][year] = 0;
@@ -587,7 +625,9 @@ var Vehicle = function(params) {
 	this.initCosts = function(scenario){
 		// Acquisition and one-off costs
 		costs = {}
-		costs["vehicle_cost"] = Math.round(this.price.total[scenario])
+		costs["vehicle_basis_cost"] = Math.round(this.price.basis_price)
+		costs["vehicle_battery"] = Math.round(this.price.battery_price[scenario])
+		costs["charging_infrastructure"] = Math.round(this.price.charging_option)
 		costs["training_costs"] = this.training_costs
 		costs["total_cost"] = Math.round(this.price.total[scenario]) + this.training_costs
 
