@@ -34,8 +34,16 @@ angular.module 'oekoKostenrechner'
             categories: _.map(do @getXValues, @formatTick)
           # Update axis
           @chart.axis.labels y: @generateYAxis(cols).label.text
+          @chart.axis.min y: @generateYAxis(cols).min
           # Groups are loaded separetaly
           @chart.groups( @generateGroups cols )
+
+        getMinBarY: (cols)=>
+          values = [0, 0]
+          for col in cols.slice(1)
+            for i in [1..2]
+              values[i - 1] = Math.min(values[i - 1], col[i])
+          _.min values
 
         getTooltipContents: =>
           # Only spline chart has special display
@@ -164,7 +172,7 @@ angular.module 'oekoKostenrechner'
           format = de: 'formatDeDe', en: 'formatEnUs'
           # Choose format according to the current language
           d3_format[ format[do $translate.use]  ].format(',') d
-        generateXAxis: (columns)=>
+        generateXAxis: (cols)=>
           # Return a configuration objects
           type: 'categories'
           categories: do @getXValues
@@ -173,17 +181,18 @@ angular.module 'oekoKostenrechner'
             centered: yes
             culling: yes
             multiline: no
-        generateYAxis: (columns)=>
+        generateYAxis: (cols)=>
           # Return a configuration objects
-          min: 0
           tick:
             format: @formatNumber
+          # Chart might be scale from 0 when they are not bar chart
+          min: if scope.type is 'bar' then @getMinBarY(cols) else 0
           padding:
             bottom: 0
           label:
             position: 'outer-middle'
             text: $translate.instant(if scope.y is 'CO2' then 'kg_unit' else 'cost_unit')
-        generateColors: (columns)=>
+        generateColors: (cols)=>
           colors = {}
           if scope.y is 'CO2'
             for v in scope.vehicles
@@ -194,20 +203,20 @@ angular.module 'oekoKostenrechner'
                 colors[v.id + '-' + c] = v.color
               colors[v.id + '-mittel'] = d3.rgb(v.color).toString()
           else
-            # Do we received data columns?
-            columns = do @generateColumns unless columns?
-            columns = angular.copy columns
+            # Do we received data cols?
+            cols = do @generateColumns unless cols?
+            cols = angular.copy cols
             # One color by key
-            for key, idx in _.map(columns.splice(1), 0)
+            for key, idx in _.map(cols.splice(1), 0)
               colors[key] = MAIN.COLORS[idx % MAIN.COLORS.length]
           colors
-        generateGroups: (columns)=>
+        generateGroups: (cols)=>
           if scope.type is 'bar'
-            # Do we received data columns?
-            columns = do @generateColumns unless columns?
-            columns = angular.copy columns
+            # Do we received data cols?
+            cols = do @generateColumns unless cols?
+            cols = angular.copy cols
             # Every dataset but 'x'
-            [ _.map(columns.splice(1), 0) ]
+            [ _.map(cols.splice(1), 0) ]
           else
             []
         generateTooltip: =>
