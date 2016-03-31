@@ -6,7 +6,7 @@ var exchange_rate    = 1.25; 	// How many $ for 1 €
 // Variables to compute the amortization costs
 var abschreibungszeitraum = 6;  // amortization period
 var unternehmenssteuersatz = .3; // corporate tax
-var sonder_afa = true;			// special accounting rule to increase amortization for electro vehicles in the first year
+var sonder_afa = false;			// special accounting rule to increase amortization for electro vehicles in the first year
 
 // Vehicle acquisition price
 var nettolistenpreise = {

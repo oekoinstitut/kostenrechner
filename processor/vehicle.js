@@ -200,9 +200,9 @@ var Vehicle = function(params) {
 	this.training_option = "keine Schulung"
 	this.share_electric = 55
 	this.second_charge = false
-	this.residual_value_method = "Methode 1"
+	this.residual_value_method = "Methode 2"
 	this.second_user_holding_time = 6
-	this.second_user_yearly_mileage = 20000
+	this.second_user_yearly_mileage = 10000
 	this.max_battery_charges = 2500
 
 	for(var prop in params) {
@@ -233,56 +233,64 @@ var Vehicle = function(params) {
 		this.TCO_by_holding_time[scenarios[i]] = {}
 		this.TCO_by_acquisition_year[scenarios[i]] = {}
 		this.TCO_by_mileage[scenarios[i]] = {}
+		this.residual_value[scenarios[i]] = {}
 	}
 	
 	
 	this.getResidualValue = function(method){
-		if (method == "Methode 1"){
-			for (var year = this.acquisition_year; year <= 2035; year++) {
-				this.residual_value[year] = Math.exp(presets.restwert_constants["a"]) 										  // Constant
-				this.residual_value[year] *= Math.exp(12 * presets.restwert_constants["b1"] * (year - this.acquisition_year + 1)) // Age
-				this.residual_value[year] *= Math.exp(presets.restwert_constants["b2"] /12 * this.mileage)						  // Yearly mileage
-				this.residual_value[year] *= Math.pow(this.price.total["mittel"], presets.restwert_constants["b3"])				  // Initial price
-			} 
-		} else if (method == "Methode 2"){
-			// Computes residual value with Method 1
-			this.getResidualValue("Methode 1")
-			// Computes the advantage of the 2d user
-			var advantage_2d_user = 0
-			for (var year = this.acquisition_year; year <= 2035; year++) {
-				for (var year2 = year; year2 <= year + this.second_user_holding_time; year2++) {
-					if (year2 <= 2025){
+		for (var i in scenarios) {
+			var scenario = scenarios[i]
+
+			if (method == "Methode 1" || this.energy_type != "BEV"){
+				for (var year = this.acquisition_year; year <= 2035; year++) {
+					this.residual_value[scenario][year] = Math.exp(presets.restwert_constants["a"]) 										  // Constant
+					this.residual_value[scenario][year] *= Math.exp(12 * presets.restwert_constants["b1"] * (year - this.acquisition_year + 1)) // Age
+					this.residual_value[scenario][year] *= Math.exp(presets.restwert_constants["b2"] /12 * this.mileage)						  // Yearly mileage
+					this.residual_value[scenario][year] *= Math.pow(this.price.total[scenario], presets.restwert_constants["b3"])				  // Initial price
+				} 
+			} else if (method == "Methode 2"){
+				
+				for (var year = this.acquisition_year; year <= 2035; year++) {
+					
+					// Computes the advantage of the 2d user
+					var elec_consumption = fuel_consumption = advantage_2d_user = 0
+					this.getConsumption("diesel")
+
+					for (var year2 = year + this.holding_time; year2 <= year + this.holding_time + this.second_user_holding_time; year2++) {
 						//computes consumption
-						var elec_consumption = this.second_user_yearly_mileage * (this.electricity_consumption/100) * this.energy_prices["BEV"][year]["mittel"]
+						elec_consumption += this.second_user_yearly_mileage * (this.electricity_consumption/100) * this.energy_prices["BEV"][year2][scenario]
 						//computes consumption of equivalent diesel vehicle
-						this.getConsumption("diesel")
-						var fuel_consumption = this.second_user_yearly_mileage * (this.fuel_consumption/100) * this.energy_prices["diesel"][year]["mittel"]
+						fuel_consumption += this.second_user_yearly_mileage * (this.fuel_consumption/100) * this.energy_prices["diesel"][year2][scenario]	
 						
-						//computes difference
-						advantage_2d_user = (fuel_consumption - elec_consumption)
 					}
+					//computes difference
+					advantage_2d_user = fuel_consumption - elec_consumption
+
+					this.residual_value[scenario][year] = Math.exp(presets.restwert_constants["a"]) 										  // Constant
+					this.residual_value[scenario][year] *= Math.exp(12 * presets.restwert_constants["b1"] * (year - this.acquisition_year + 1)) // Age
+					this.residual_value[scenario][year] *= Math.exp(presets.restwert_constants["b2"] /12 * this.mileage)						  // Yearly mileage
+					this.residual_value[scenario][year] *= Math.pow(this.price.total[scenario], presets.restwert_constants["b3"])	
+					this.residual_value[scenario][year] += advantage_2d_user
+				} 
+			} else if (method == "Methode 3"){
+				// Creates temp diesel machine to get the residual value
+				temp_vehicle = new Vehicle({energy_type: "diesel", car_type: this.car_type, mileage:this.mileage})
+				this.residual_value[scenario] = temp_vehicle.residual_value[scenario]
+
+			} else if (method == "Methode 4"){
+				// like Method 1 but with the battery value separated
+				for (var year = this.acquisition_year; year <= 2025; year++) {
+					this.residual_value[scenario][year] = Math.exp(presets.restwert_constants["a"]) 										  // Constant
+					this.residual_value[scenario][year] *= Math.exp(12 * presets.restwert_constants["b1"] * (year - this.acquisition_year + 1)) // Age
+					this.residual_value[scenario][year] *= Math.exp(presets.restwert_constants["b2"] /12 * this.mileage)						  // Yearly mileage
+					this.residual_value[scenario][year] *= Math.pow(this.price.basis_price, presets.restwert_constants["b3"])				  // Initial price minus battery
+					
+					var residual_battery_value = this.price.battery_price[scenario] - this.price.battery_price[scenario] * (year - this.acquisition_year) / this.battery_duration
+					if (residual_battery_value < 0) { residual_battery_value = 0 }
+					this.residual_value[scenario][year] += residual_battery_value
 				}
 
-				this.residual_value[year] += advantage_2d_user
-			} 
-		} else if (method == "Methode 3"){
-			// Creates temp diesel machine to get the residual value
-			temp_vehicle = new Vehicle({energy_type: "diesel", car_type: this.car_type, mileage:this.mileage})
-			this.residual_value = temp_vehicle.residual_value
-			delete temp_vehicle
-		} else if (method == "Methode 4"){
-			// like Method 1 but with the battery value separated
-			for (var year = this.acquisition_year; year <= 2025; year++) {
-				this.residual_value[year] = Math.exp(presets.restwert_constants["a"]) 										  // Constant
-				this.residual_value[year] *= Math.exp(12 * presets.restwert_constants["b1"] * (year - this.acquisition_year + 1)) // Age
-				this.residual_value[year] *= Math.exp(presets.restwert_constants["b2"] /12 * this.mileage)						  // Yearly mileage
-				this.residual_value[year] *= Math.pow(this.price.basis_price, presets.restwert_constants["b3"])				  // Initial price minus battery
-				
-				var residual_battery_value = this.price.battery_price["mittel"] - this.price.battery_price["mittel"] * (year - this.acquisition_year) / this.battery_duration
-				if (residual_battery_value < 0) { residual_battery_value = 0 }
-				this.residual_value[year] += residual_battery_value
 			}
-
 		}
 	}
 
@@ -376,9 +384,11 @@ var Vehicle = function(params) {
 			energy_type = this.energy_type
 		}
 
-		this.fixed_costs.car_tax = presets.kfzsteuer[this.energy_type][this.car_type];
-		if (this.energy_type == "BEV") { this.fixed_costs.car_tax = 0 }
-		if (this.energy_type == "BEV" && this.acquisition_year >= 2021) {
+		if (this.energy_type == "BEV" && this.acquisition_year < 2021) { 
+			this.fixed_costs.car_tax = 0 
+		} else if (this.energy_type == "BEV" && this.acquisition_year >= 2021) {
+			this.fixed_costs.car_tax = presets.kfzsteuer[this.energy_type][this.car_type];
+		} else {
 			this.fixed_costs.car_tax = presets.kfzsteuer[this.energy_type][this.car_type];
 		}
 		this.fixed_costs.check_up = presets.untersuchung[energy_type]["AU"] + presets.untersuchung[energy_type]["HU"]
@@ -535,9 +545,11 @@ var Vehicle = function(params) {
 		// Special case for BEV vehicles older than 6 years
 		if (this.energy_type == "BEV" && (year - this.acquisition_year) >= 6) {
 			costs["fixed_costs"]["car_tax"] = presets.kfzsteuer[this.energy_type][this.car_type];
+		} else if (this.energy_type == "BEV" && (year - this.acquisition_year) < 6) {
+			costs["fixed_costs"]["car_tax"] = 0
 		}
 
-		costs["total_cost"] = Math.round(this.fixed_costs.total + this.energy_costs[year][scenario] + this.lubricant_costs + this.maintenance_costs_total + this.price.total[scenario] - this.amortization[scenario][year] - this.residual_value[year])
+		costs["total_cost"] = Math.round(this.fixed_costs.total + this.energy_costs[year][scenario] + this.lubricant_costs + this.maintenance_costs_total - this.amortization[scenario][year])
 
 		return costs
 	}
@@ -586,7 +598,6 @@ var Vehicle = function(params) {
 		costs["variable_costs"]["lubricant_costs"] = 0
 		costs["variable_costs"]["maintenance_costs"] = 0
 		costs["amortization"] = 0
-		costs["total_cost"] = 0
 		costs["fixed_costs"]["check_up"] = 0
 		costs["fixed_costs"]["insurance"] = 0
 		costs["fixed_costs"]["car_tax"] = 0
@@ -607,6 +618,12 @@ var Vehicle = function(params) {
 		return costs
 	}
 
+	this.getTCO = function() {
+
+		this.TCO = this.TCO_by_mileage["mittel"][this.mileage]
+
+	}
+
 	this.getTCOByHoldingTime = function(){
 		
 		for (var i in scenarios) {
@@ -621,19 +638,15 @@ var Vehicle = function(params) {
 					
 					//Yearly costs
 					var yearly_costs = this.getYearlyCosts(scenario, current_year)
-					
+
 					costs = this.incrementCosts(costs, yearly_costs)
 					co2 += this.getYearlyCO2(current_year)
 
-					// Removes the resale value 
-					costs["residual_value"] = Math.round(- this.residual_value[current_year])
-					costs["total_cost"] -= costs["residual_value"]
-
-					// Digression: Storage of the values for the stacked bar chart
-					if (holding_time == this.holding_time && current_year == holding_time + this.acquisition_year && scenario == "mittel"){
-						this.TCO = costs
-					}
 				}
+
+				// Removes the resale value 
+				costs["residual_value"] = Math.round(- this.residual_value[scenario][current_year])
+				costs["total_cost"] += costs["residual_value"]
 			
 				this.TCO_by_holding_time[scenario][holding_time] = costs
 				this.CO2_by_holding_time[holding_time] = co2
@@ -665,10 +678,11 @@ var Vehicle = function(params) {
 					costs = this.incrementCosts(costs, yearly_costs)
 					co2 += this.getYearlyCO2(current_year)
 					
-					// Removes the resale value 
-					costs["residual_value"] = Math.round(- this.residual_value[current_year])
-					costs["total_cost"] -= costs["residual_value"]
 				}
+
+				// Removes the resale value 
+				costs["residual_value"] = Math.round(- this.residual_value[scenario][current_year])
+				costs["total_cost"] += costs["residual_value"]
 			
 				this.TCO_by_acquisition_year[scenario][acquisition_year] = costs
 				this.CO2_by_acquisition_year[acquisition_year] = co2
@@ -703,11 +717,12 @@ var Vehicle = function(params) {
 					
 					costs = this.incrementCosts(costs, yearly_costs)
 					co2 += this.getYearlyCO2(current_year)
-					
-					// Removes the resale value 
-					costs["residual_value"] = Math.round(- this.residual_value[current_year])
-					costs["total_cost"] -= costs["residual_value"]
+
 				}
+
+				// Removes the resale value 
+				costs["residual_value"] = Math.round(- this.residual_value[scenario][current_year])
+				costs["total_cost"] += costs["residual_value"]
 			
 				this.TCO_by_mileage[scenario][mileage] = costs
 				this.CO2_by_mileage[mileage] = co2
@@ -762,6 +777,7 @@ var Vehicle = function(params) {
 		this.getTCOByHoldingTime()
 		this.getTCOByAcquisitionYear()
 		this.getTCOByMileage()
+		this.getTCO()
 	}
 	this.computeCosts()
 	this.computeTotals()
@@ -771,3 +787,4 @@ var Vehicle = function(params) {
 module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
+
