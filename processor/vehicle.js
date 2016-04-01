@@ -3,8 +3,29 @@ var extend = require("xtend")
 var scenarios = ["pro", "mittel", "contra"]
 
 // Corrects amounts for inflation
-function getCurrentPrice(amount, originalYear, wishedYear){
-	return amount * Math.pow(1+presets.inflationsrate, wishedYear - originalYear)
+function getCurrentPrice(amount, originalYear, wishedYear, inflation, rounded){
+	if (inflation == undefined) { inflation = presets.inflationsrate }
+	
+	if (rounded == true) {
+		return Math.round(amount * Math.pow(1+inflation, wishedYear - originalYear))
+	} else {
+		return amount * Math.pow(1+inflation, wishedYear - originalYear)
+	}
+}
+
+// gets prices in the future after inflation
+function getInflatedPrice(amount, period, inflation, rounded){
+	if (inflation == undefined) { inflation = presets.inflationsrate }
+	
+	for (var i = 0; i <= period; i++) {
+		amount *= (1 + inflation)
+	}
+
+	if (rounded == true) {
+		return Math.round(amount)
+	} else {
+		return amount
+	}
 }
 
 // Returns the basis price for all vehicles
@@ -51,7 +72,7 @@ function getPriceSurcharge(energy_type, car_type, year) {
 				surcharge[type][i] = surcharge[type][i - 1] * (1 + yearly_surcharge_deacrease);
 			}
 		}
-		for (var i = 2021; i<=2035; i++){ // Automates the fill out of surcharge
+		for (var i = 2021; i<=2049; i++){ // Automates the fill out of surcharge
 			for (type in surcharge) {
 				surcharge[type][i] = surcharge[type]["2020"];
 			}
@@ -75,91 +96,12 @@ function getChargingOptionMaintenancePrice(option) {
 
 // Returns the price of the battery in E/kwh
 function getBatteryPricePerKWh (year, scenario) {
-	for (var i = 2019; i<=2035; i++) {
+	for (var i = 2019; i<=2025; i++) {
 		presets.batteriepreise[i] = presets.batteriepreise[i-1] - 5
 	}
 	if (scenario == "pro") { return presets.batteriepreise[year] * 0.9}
 	else if (scenario == "contra") { return presets.batteriepreise[year] * 1.1}
 	else { return presets.batteriepreise[year]; }
-}
-
-function getEnergyPrice() {
-	var estimates = {};
-	var energy_types = ["diesel", "benzin"]
-	for (var energy_type_index in energy_types) {  
-		energy_type = energy_types[energy_type_index]
-		estimates[energy_type] = {}
-
-	    // Fills out the known prices
-	    for (var year in presets.price_per_barrel) {
-	    	estimates[energy_type][year] = {}
-	    	// Converts barrels to liters and to euros
-	    	var ppb_eur = presets.price_per_barrel[year] / presets.exchange_rate
-	    	var ppl_eur = ppb_eur / 158
-	    	estimates[energy_type][year]["mittel"] = getCurrentPrice(ppl_eur, 2011, 2014)
-	    	estimates[energy_type][year]["mittel"] += presets.mineralölsteuer[energy_type] + presets.deckungsbeitrag[energy_type]
-	    }
-	    // Computes the price for 2040 to make it easier below
-	    estimates[energy_type]["2040"] = {}
-	    estimates[energy_type]["2040"]["mittel"] = estimates[energy_type]["2030"]["mittel"] + ((estimates[energy_type]["2050"]["mittel"] - estimates[energy_type]["2030"]["mittel"]) / 2)
-
-        for (var year = 2014; year <2050; year++) {
-        	if (!(year in estimates[energy_type])){
-        		estimates[energy_type][year] = {}
-		        if (year < 2020) {
-		        	estimates[energy_type][year]["mittel"] = presets.oil_price_2014[energy_type] + ((estimates[energy_type]["2020"]["mittel"] - presets.oil_price_2014[energy_type]) / 6) * (year - 2014)
-		        } else if ((year % 10) != 0) {
-		        	// Computes the linear growth rate of the price between 2 decades
-		        	var decade_start = Math.floor(year / 10) * 10
-		        	var decade_end = Math.ceil(year / 10) * 10
-		        	estimates[energy_type][year]["mittel"] = estimates[energy_type][decade_start]["mittel"] + ((estimates[energy_type][decade_end]["mittel"] - estimates[energy_type][decade_start]["mittel"]) / 10) * (year - decade_start)
-		        }
-		    }
-
-	    	estimates[energy_type][year]["pro"] = estimates[energy_type][year]["mittel"] * 1.1
-	    	estimates[energy_type][year]["contra"] = estimates[energy_type][year]["mittel"] * .9
-
-        }
-	}
-	
-	//Computes electricity prices
-	energy_type = "BEV"
-	estimates[energy_type] = {}
-    for (var year in presets.electricity_prices) {
-    	estimates[energy_type][year] = {}
-    	if (year != "2014"){
-        	estimates[energy_type][year]["pro"] = presets.electricity_prices[year]["private"] * .9
-        	estimates[energy_type][year]["contra"] = presets.electricity_prices[year]["private"] * 1.1
-        	estimates[energy_type][year]["mittel"] = presets.electricity_prices[year]["private"]
-        	estimates[energy_type][year]["mittel"] = getCurrentPrice(estimates[energy_type][year]["mittel"], 2011, 2014)
-    	} else {
-    		estimates[energy_type][year]["mittel"] = presets.electricity_prices[year]["private"]
-    	}
-    }
-    // Computes the price for 2040 to make it easier below
-    estimates[energy_type]["2040"] = {}
-    estimates[energy_type]["2040"]["mittel"] = estimates[energy_type]["2030"]["mittel"] + ((estimates[energy_type]["2050"]["mittel"] - estimates[energy_type]["2030"]["mittel"]) / 2)
-  
-    for (var year = 2014; year <2050; year++) {
-    	if (!(year in estimates[energy_type])){
-    		estimates[energy_type][year] = {}
-    		
-	        if (year < 2020) {
-	        	estimates[energy_type][year]["mittel"] = estimates[energy_type]["2014"]["mittel"] + ((estimates[energy_type]["2020"]["mittel"] - estimates[energy_type]["2014"]["mittel"]) / 6) * (year - 2014)
-	        } else if ((year % 10) != 0) {
-	        	// Computes the linear growth rate of the price between 2 decades
-	        	var decade_start = Math.floor(year / 10) * 10
-	        	var decade_end = Math.ceil(year / 10) * 10
-	        	estimates[energy_type][year]["mittel"] = estimates[energy_type][decade_start]["mittel"] + ((estimates[energy_type][decade_end]["mittel"] - estimates[energy_type][decade_start]["mittel"]) / 10) * (year - decade_start)
-	        }
-    	}
-
-    	estimates[energy_type][year]["pro"] = estimates[energy_type][year]["mittel"] * 1.1
-	    estimates[energy_type][year]["contra"] = estimates[energy_type][year]["mittel"] * .9
-	}
-
-	return estimates
-	
 }
 
 // Returns the estimated kg of CO2 per kWh based on the data points we have
@@ -186,7 +128,7 @@ function getCO2FromElectricityMix(estimation_year) {
 
 var Vehicle = function(params) {
 	this.energy_type = "BEV"
-	this.car_type = "klein"
+	this.car_type = "mittel"
 	this.electricity_consumption = 0
 	this.mileage = 10000
 	this.acquisition_year = 2014
@@ -208,6 +150,10 @@ var Vehicle = function(params) {
 	this.sonder_afa = presets.sonder_afa
 	this.unternehmenssteuersatz = presets.unternehmenssteuersatz
 	this.abschreibungszeitraum = presets.abschreibungszeitraum
+	this.inflationsrate = presets.inflationsrate * 100
+	this.discount_rate = presets.discount_rate
+	this.energy_known_prices = presets.energy_known_prices
+	this.energy_prices_evolution = presets.energy_prices_evolution
 
 	for(var prop in params) {
     if( params.hasOwnProperty(prop) && this.hasOwnProperty(prop) ) {
@@ -240,7 +186,82 @@ var Vehicle = function(params) {
 		this.residual_value[scenarios[i]] = {}
 	}
 	
+	this.getEnergyPrices = function() {
+		var energy_types = [{"name": "diesel", "source": "hydrocarbon"}, {"name": "benzin", "source": "hydrocarbon"}, {"name": "BEV", "source": "strom"}]
+		var estimates = {}
+
+		this.evolution_elec_price_until_2020 = this.energy_prices_evolution["strom"][0]["rate"] * 100
+		this.evolution_elec_price_until_2030 = this.energy_prices_evolution["strom"][1]["rate"] * 100
+		this.evolution_elec_price_until_2050 = this.energy_prices_evolution["strom"][2]["rate"] * 100
+		this.evolution_hydrocarbon_price_until_2050 = this.energy_prices_evolution["hydrocarbon"][0]["rate"] * 100
+
+		// Finds out if the evolution rate has been changed by the user
+		if (this.fixed_vars.hasOwnProperty("evolution_elec_price_until_2020")) {
+			this.evolution_elec_price_until_2020 = this.fixed_vars["evolution_elec_price_until_2020"]
+			this.energy_prices_evolution["strom"][0]["rate"] = this.fixed_vars["evolution_elec_price_until_2020"] / 100
+		}
+		if (this.fixed_vars.hasOwnProperty("evolution_elec_price_until_2030")) {
+			this.evolution_elec_price_until_2030 = this.fixed_vars["evolution_elec_price_until_2030"]
+			this.energy_prices_evolution["strom"][1]["rate"] = this.fixed_vars["evolution_elec_price_until_2030"] / 100
+		}
+		if (this.fixed_vars.hasOwnProperty("evolution_elec_price_until_2050")) {
+			this.evolution_elec_price_until_2050 = this.fixed_vars["evolution_elec_price_until_2050"]
+			this.energy_prices_evolution["strom"][2]["rate"] = this.fixed_vars["evolution_elec_price_until_2050"] / 100
+		}
+		if (this.fixed_vars.hasOwnProperty("evolution_hydrocarbon_price_until_2050")) {
+			this.evolution_hydrocarbon_price_until_2050 = this.fixed_vars["evolution_hydrocarbon_price_until_2050"]
+			this.energy_prices_evolution["hydrocarbon"][0]["rate"] = this.fixed_vars["evolution_hydrocarbon_price_until_2050"] / 100
+		}
+		if (this.fixed_vars.hasOwnProperty("_2016_elec_price")) {
+			this._2016_elec_price = this.fixed_vars["_2016_elec_price"]
+			this.energy_known_prices["BEV"][2016] = this.fixed_vars["_2016_elec_price"]
+		}
+		if (this.fixed_vars.hasOwnProperty("_2016_diesel_price")) {
+			this._2016_diesel_price = this.fixed_vars["_2016_diesel_price"]
+			this.energy_known_prices["diesel"][2016] = this.fixed_vars["_2016_diesel_price"]
+		}
+		if (this.fixed_vars.hasOwnProperty("_2016_benzin_price")) {
+			this._2016_benzin_price = this.fixed_vars["_2016_benzin_price"]
+			this.energy_known_prices["benzin"][2016] = this.fixed_vars["_2016_benzin_price"]
+		}
+
+
+		for (var i in energy_types) {
+			var energy_type = energy_types[i]["name"]
+			var energy_source = energy_types[i]["source"]
+			estimates[energy_type] = {}
+
+			for (var year = 2014; year <= 2050; year++) {
+				
+				estimates[energy_type][year] = {}
+
+				// Checks if the value exists for the given year
+				if (this.energy_known_prices[energy_type].hasOwnProperty(year)) {
+					estimates[energy_type][year]["mittel"] = this.energy_known_prices[energy_type][year]
+				} else {
+					// Computes the estimate by finding the growth rate to use
+					var evolution_rate = 0
+					for (var j in this.energy_prices_evolution[energy_source]) {
+						if (this.energy_prices_evolution[energy_source][j]["start_year"] <= year && this.energy_prices_evolution[energy_source][j]["end_year"] >= year){
+							evolution_rate = this.energy_prices_evolution[energy_source][j]["rate"]
+						}
+					}
+					// Applies the growth rate to get the price for the current year
+					estimates[energy_type][year]["mittel"] = Math.round(estimates[energy_type][year - 1]["mittel"] * (1 + evolution_rate) * 100) / 100
+				}
+
+				estimates[energy_type][year]["pro"] = estimates[energy_type][year]["mittel"] * 1.1
+		    	estimates[energy_type][year]["contra"] = estimates[energy_type][year]["mittel"] * .9
+			}
+		}
+
+		this.energy_prices = estimates
+		this._2016_elec_price = this.energy_prices["BEV"][2016]["mittel"]
+		this._2016_diesel_price = this.energy_prices["diesel"][2016]["mittel"]
+		this._2016_benzin_price = this.energy_prices["benzin"][2016]["mittel"]
 	
+	}
+
 	this.getResidualValue = function(method){
 		for (var i in scenarios) {
 			var scenario = scenarios[i]
@@ -280,19 +301,6 @@ var Vehicle = function(params) {
 				// Creates temp diesel machine to get the residual value
 				temp_vehicle = new Vehicle({energy_type: "diesel", car_type: this.car_type, mileage:this.mileage})
 				this.residual_value[scenario] = temp_vehicle.residual_value[scenario]
-
-			} else if (method == "Methode 4"){
-				// like Method 1 but with the battery value separated
-				for (var year = this.acquisition_year; year <= 2025; year++) {
-					this.residual_value[scenario][year] = Math.exp(presets.restwert_constants["a"]) 										  // Constant
-					this.residual_value[scenario][year] *= Math.exp(12 * presets.restwert_constants["b1"] * (year - this.acquisition_year + 1)) // Age
-					this.residual_value[scenario][year] *= Math.exp(presets.restwert_constants["b2"] /12 * this.mileage)						  // Yearly mileage
-					this.residual_value[scenario][year] *= Math.pow(this.price.total[scenario] - this.price.charging_option, presets.restwert_constants["b3"])				  // Initial price minus battery
-					
-					var residual_battery_value = this.price.battery_price[scenario] - this.price.battery_price[scenario] * (year - this.acquisition_year) / this.battery_duration
-					if (residual_battery_value < 0) { residual_battery_value = 0 }
-					this.residual_value[scenario][year] += residual_battery_value
-				}
 
 			}
 		}
@@ -500,12 +508,8 @@ var Vehicle = function(params) {
 
 	}
 
-	this.getEnergyPrices = function() {
-		this.energy_prices = getEnergyPrice()
-	}
-
 	this.setEnergyPrices = function(new_price) {
-		for (var year = this.acquisition_year; year <= 2035; year++) {
+		for (var year = this.acquisition_year; year <= 2049; year++) {
 			this.energy_prices[year]["pro"] = new_price;
 			this.energy_prices[year]["mittel"] = new_price;
 			this.energy_prices[year]["contra"] = new_price;
@@ -514,14 +518,14 @@ var Vehicle = function(params) {
 
 	this.getEnergyCosts = function(){
 		if (this.energy_type == "benzin" || this.energy_type == "diesel") {
-			for (var year = this.acquisition_year; year <= 2035; year++) {
+			for (var year = this.acquisition_year; year <= 2049; year++) {
 				this.energy_costs[year] = {}
 				this.energy_costs[year]["pro"] = (this.mileage / 100) * this.fuel_consumption * this.energy_prices[this.energy_type][year]["pro"];
 				this.energy_costs[year]["mittel"] = (this.mileage / 100) * this.fuel_consumption * this.energy_prices[this.energy_type][year]["mittel"];
 				this.energy_costs[year]["contra"] = (this.mileage / 100) * this.fuel_consumption * this.energy_prices[this.energy_type][year]["contra"];
 			}
 		} else if (this.energy_type == "BEV") {
-			for (var year = this.acquisition_year; year <= 2035; year++) {
+			for (var year = this.acquisition_year; year <= 2049; year++) {
 				this.energy_costs[year] = {}
 				this.energy_costs[year]["pro"] = (this.mileage / 100) * this.electricity_consumption * this.energy_prices[this.energy_type][year]["pro"];
 				this.energy_costs[year]["mittel"] = (this.mileage / 100) * this.electricity_consumption * this.energy_prices[this.energy_type][year]["mittel"];
@@ -529,7 +533,7 @@ var Vehicle = function(params) {
 			}
 		} else { //Hybrid vehicles
 			var energy_type = this.energy_type.split("-")[1];
-			for (var year = this.acquisition_year; year <= 2035; year++) {
+			for (var year = this.acquisition_year; year <= 2049; year++) {
 				this.energy_costs[year] = {}
 				this.energy_costs[year]["pro"] = (this.mileage / 100) * this.share_electric / 100 * this.electricity_consumption * this.energy_prices["BEV"][year]["pro"];
 				this.energy_costs[year]["pro"] += (this.mileage / 100) * (1 - this.share_electric / 100) * this.fuel_consumption * this.energy_prices[energy_type][year]["pro"];
@@ -581,23 +585,32 @@ var Vehicle = function(params) {
 	this.getYearlyCosts = function(scenario, year){
 		var costs = {}
 
-		costs["fixed_costs"] = this.fixed_costs
-		costs["energy_costs"] = Math.round(this.energy_costs[year][scenario])
+		if (this.fixed_vars.hasOwnProperty("inflationsrate")) {
+			this.inflationsrate = this.fixed_vars["inflationsrate"]
+		}
+
+		costs["fixed_costs"] = {
+			"check_up" : getInflatedPrice(this.fixed_costs.check_up, year - 2014, this.inflationsrate/100, true),
+			"insurance" : getInflatedPrice(this.fixed_costs.insurance, year - 2014, this.inflationsrate/100, true),
+			"car_tax" : getInflatedPrice(this.fixed_costs.car_tax, year - 2014, this.inflationsrate/100, true)
+		}
+		costs["energy_costs"] = getInflatedPrice(this.energy_costs[year][scenario], year - 2014, this.inflationsrate/100, true)
+
 		costs["variable_costs"] = {
-			"lubricant_costs": this.lubricant_costs,
-			"maintenance_costs": this.maintenance_costs_total
+			"lubricant_costs": getInflatedPrice(this.lubricant_costs, year - 2014, this.inflationsrate/100, true),
+			"maintenance_costs": getInflatedPrice(this.maintenance_costs_total, year - 2014, this.inflationsrate/100, true)
 		}
 		
 		costs["amortization"] = Math.round(- this.amortization[scenario][year])
 		
 		// Special case for BEV vehicles older than 6 years
 		if (this.energy_type == "BEV" && (year - this.acquisition_year) >= 6) {
-			costs["fixed_costs"]["car_tax"] = presets.kfzsteuer[this.energy_type][this.car_type];
+			costs["fixed_costs"]["car_tax"] = getInflatedPrice(presets.kfzsteuer[this.energy_type][this.car_type], year - 2014, this.inflationsrate/100, true)
 		} else if (this.energy_type == "BEV" && (year - this.acquisition_year) < 6) {
 			costs["fixed_costs"]["car_tax"] = 0
 		}
 
-		costs["total_cost"] = Math.round(this.fixed_costs.total + this.energy_costs[year][scenario] + this.lubricant_costs + this.maintenance_costs_total - this.amortization[scenario][year])
+		costs["total_cost"] = Math.round(costs["fixed_costs"]["check_up"] + costs["fixed_costs"]["insurance"] + costs["fixed_costs"]["car_tax"] + costs["energy_costs"] + costs["variable_costs"]["lubricant_costs"] + costs["variable_costs"]["maintenance_costs"] - this.amortization[scenario][year])
 
 		return costs
 	}
@@ -668,6 +681,22 @@ var Vehicle = function(params) {
 		return costs
 	}
 
+	this.discountCosts = function(costs, period) {
+		// discounts all positions
+		for (var i in costs) {
+			if (Object.keys(costs[i]).length > 0){
+
+				for (var j in costs[i]) {
+					costs[i][j] = getCurrentPrice(costs[i][j], 0, period, - this.discount_rate, true)
+				}
+			} else {
+				costs[i] = getCurrentPrice(costs[i], 0, period, - this.discount_rate, true)
+			}
+		}
+
+		return costs
+	}
+
 	this.getTCO = function() {
 
 		this.TCO = this.TCO_by_mileage["mittel"][this.mileage]
@@ -697,6 +726,8 @@ var Vehicle = function(params) {
 				// Removes the resale value 
 				costs["residual_value"] = Math.round(- this.residual_value[scenario][current_year])
 				costs["total_cost"] += costs["residual_value"]
+
+				costs = this.discountCosts(costs, holding_time)
 			
 				this.TCO_by_holding_time[scenario][holding_time] = costs
 				this.CO2_by_holding_time[holding_time] = co2
@@ -838,3 +869,5 @@ module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
 
+vehicle = new Vehicle()
+console.log(vehicle.TCO_by_acquisition_year["mittel"])

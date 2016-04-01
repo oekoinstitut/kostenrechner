@@ -1,13 +1,55 @@
 
 // Financial variables
-var inflationsrate   = 0.017;	// That's 1.7% per year
-var exchange_rate    = 1.25; 	// How many $ for 1 €
+var inflationsrate   = 0.017		// That's 1.7% per year
+var exchange_rate    = 1.25 		// How many $ for 1 €
+var discount_rate    = 0.05			// 5% per year
+var abschreibungszeitraum = 6  	// amortization period
+var unternehmenssteuersatz = .3 	// corporate tax
+var sonder_afa = false				// special accounting rule to increase amortization for electro vehicles in the first year
+var bev_praemie = false 			// Cash bonus
 
-// Variables to compute the amortization costs
-var abschreibungszeitraum = 6;  // amortization period
-var unternehmenssteuersatz = .3; // corporate tax
-var sonder_afa = false;			// special accounting rule to increase amortization for electro vehicles in the first year
-var bev_praemie = false 		// Cash bonus
+// Energy prices in € per Liter and cents per kWh
+var energy_known_prices = {
+	"diesel": {
+		"2014": 1.135,
+		"2015": .984
+	},
+	"benzin": {
+		"2014": 1.284,
+		"2015": 1.171
+	},
+	"BEV": {
+		"2014": .2449,
+		"2015": .2410
+	}
+}
+
+var energy_prices_evolution = {
+	"hydrocarbon": [
+		{
+			"start_year": 2014,
+			"end_year": 2050,
+			"rate": .02
+		}
+	],
+	"strom": [
+		{
+			"start_year": 2014,
+			"end_year": 2020,
+			"rate": .013
+		},
+		{
+			"start_year": 2021,
+			"end_year": 2030,
+			"rate": -.0028
+		},
+		{
+			"start_year": 2031,
+			"end_year": 2050,
+			"rate": -.0058
+		},	
+	]
+}
 
 // Vehicle acquisition price
 var nettolistenpreise = {
@@ -141,7 +183,7 @@ var hybrid_minderverbrauch = {
 var hybrid_minderverbrauch_schmierstoff = .45
 
 //Number of days in the year when the vehicle is in use
-var einsatztage_pro_jahr = 250;
+var einsatztage_pro_jahr = 250
 
 // Insurance in €/year
 var versicherung = {
@@ -249,38 +291,41 @@ var restwert_constants = {
 	"b3": 0.91569
 }
 
-exports.inflationsrate = inflationsrate;
-exports.exchange_rate = exchange_rate;
-exports.abschreibungszeitraum = abschreibungszeitraum;
-exports.unternehmenssteuersatz = unternehmenssteuersatz;
-exports.sonder_afa = sonder_afa;
-exports.nettolistenpreise = nettolistenpreise;
-exports.kostensteigerung20102030 = kostensteigerung20102030;
-exports.aufpreis = aufpreis;
-exports.entladetiefe = entladetiefe;
-exports.reichweite = reichweite;
-exports.batteriepreise = batteriepreise;
-exports.lademöglichkeiten = lademöglichkeiten;
-exports.oil_price_2014 = oil_price_2014;
-exports.mineralölsteuer = mineralölsteuer;
-exports.deckungsbeitrag = deckungsbeitrag;
-exports.mehrwertsteuer = mehrwertsteuer;
-exports.price_per_barrel = price_per_barrel;
-exports.electricity_prices = electricity_prices;
-exports.verbrauchsentwicklung = verbrauchsentwicklung;
-exports.price_of_lubricant = price_of_lubricant;
-exports.hubraum = hubraum;
-exports.verbrauch = verbrauch;
-exports.versicherung = versicherung;
-exports.kfzsteuer = kfzsteuer;
-exports.untersuchung = untersuchung;
-exports.faktor_BEV = faktor_BEV;
-exports.reperaturkosten = reperaturkosten;
-exports.co2_emissions = co2_emissions;
-exports.traffic_multiplicator = traffic_multiplicator;
-exports.schulungskosten = schulungskosten;
-exports.hybrid_minderverbrauch = hybrid_minderverbrauch;
-exports.hybrid_minderverbrauch_schmierstoff = hybrid_minderverbrauch_schmierstoff;
-exports.einsatztage_pro_jahr = einsatztage_pro_jahr;
-exports.restwert_constants = restwert_constants;
-exports.bev_praemie = bev_praemie;
+exports.inflationsrate = inflationsrate
+exports.exchange_rate = exchange_rate
+exports.abschreibungszeitraum = abschreibungszeitraum
+exports.unternehmenssteuersatz = unternehmenssteuersatz
+exports.sonder_afa = sonder_afa
+exports.nettolistenpreise = nettolistenpreise
+exports.kostensteigerung20102030 = kostensteigerung20102030
+exports.aufpreis = aufpreis
+exports.entladetiefe = entladetiefe
+exports.reichweite = reichweite
+exports.batteriepreise = batteriepreise
+exports.lademöglichkeiten = lademöglichkeiten
+exports.oil_price_2014 = oil_price_2014
+exports.mineralölsteuer = mineralölsteuer
+exports.deckungsbeitrag = deckungsbeitrag
+exports.mehrwertsteuer = mehrwertsteuer
+exports.price_per_barrel = price_per_barrel
+exports.electricity_prices = electricity_prices
+exports.verbrauchsentwicklung = verbrauchsentwicklung
+exports.price_of_lubricant = price_of_lubricant
+exports.hubraum = hubraum
+exports.verbrauch = verbrauch
+exports.versicherung = versicherung
+exports.kfzsteuer = kfzsteuer
+exports.untersuchung = untersuchung
+exports.faktor_BEV = faktor_BEV
+exports.reperaturkosten = reperaturkosten
+exports.co2_emissions = co2_emissions
+exports.traffic_multiplicator = traffic_multiplicator
+exports.schulungskosten = schulungskosten
+exports.hybrid_minderverbrauch = hybrid_minderverbrauch
+exports.hybrid_minderverbrauch_schmierstoff = hybrid_minderverbrauch_schmierstoff
+exports.einsatztage_pro_jahr = einsatztage_pro_jahr
+exports.restwert_constants = restwert_constants
+exports.bev_praemie = bev_praemie
+exports.discount_rate = discount_rate
+exports.energy_prices_evolution = energy_prices_evolution
+exports.energy_known_prices = energy_known_prices
