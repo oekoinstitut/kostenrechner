@@ -1,7 +1,7 @@
 angular.module 'oekoKostenrechner'
   .service 'DynamicInput', (DYNAMIC_INPUT)->
     class DynamicInput
-      FIELD_INTERVAL = /(\w+)\.\.(\w+)/
+      FIELD_INTERVAL = /(-?\w+)\.\.(-?\w+)/
       FIELD_ENUM = /,\w?/g
       FIELD_BOOLEAN = /boolean/
       constructor: (setting, subset)->
