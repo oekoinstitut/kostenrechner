@@ -75,8 +75,8 @@
     "hydrocarbon_unit": "L/100 km",
     "Inflation rate": "Inflation rate",
     "Inpection costs": "Inpection costs",
-    "Insurance": "Insurance",
     "insurance": "Insurance costs",
+    "Insurance": "Insurance",
     "keine Schulung": "No training",
     "kg_unit": "Kg of CO2",
     "klein": "Small",
@@ -144,5 +144,6 @@
     "welcome_title": "Total cost of ownership calculator",
     "years": "years",
     "€_per_kwh": "€ per kWh",
-    "€_per_liter": "€ per liter"
+    "€_per_liter": "€ per liter",
+    "Residual value calculation method": "Residual value calculation method"
 }
