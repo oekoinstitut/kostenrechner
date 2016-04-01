@@ -128,7 +128,7 @@ function getCO2FromElectricityMix(estimation_year) {
 
 var Vehicle = function(params) {
 	this.energy_type = "BEV"
-	this.car_type = "mittel"
+	this.car_type = "klein"
 	this.electricity_consumption = 0
 	this.mileage = 10000
 	this.acquisition_year = 2014
@@ -146,6 +146,7 @@ var Vehicle = function(params) {
 	this.second_user_holding_time = 6
 	this.second_user_yearly_mileage = 10000
 	this.max_battery_charges = 2500
+	this.battery_price = 0
 	this.bev_praemie = presets.bev_praemie
 	this.sonder_afa = presets.sonder_afa
 	this.unternehmenssteuersatz = presets.unternehmenssteuersatz
@@ -250,8 +251,13 @@ var Vehicle = function(params) {
 					estimates[energy_type][year]["mittel"] = Math.round(estimates[energy_type][year - 1]["mittel"] * (1 + evolution_rate) * 100) / 100
 				}
 
-				estimates[energy_type][year]["pro"] = estimates[energy_type][year]["mittel"] * 1.1
-		    	estimates[energy_type][year]["contra"] = estimates[energy_type][year]["mittel"] * .9
+				if (energy_type == "BEV"){
+					estimates[energy_type][year]["pro"] = estimates[energy_type][year]["mittel"] * .9
+		    		estimates[energy_type][year]["contra"] = estimates[energy_type][year]["mittel"] * 1.1
+				} else {
+					estimates[energy_type][year]["pro"] = estimates[energy_type][year]["mittel"] * 1.1
+		    		estimates[energy_type][year]["contra"] = estimates[energy_type][year]["mittel"] * .9
+				}
 			}
 		}
 
@@ -281,7 +287,7 @@ var Vehicle = function(params) {
 					var elec_consumption = fuel_consumption = advantage_2d_user = 0
 					this.getConsumption("diesel")
 
-					for (var year2 = year + this.holding_time; year2 <= year + this.holding_time + this.second_user_holding_time; year2++) {
+					for (var year2 = year + this.holding_time; year2 < year + this.holding_time + this.second_user_holding_time; year2++) {
 						//computes consumption
 						elec_consumption += this.second_user_yearly_mileage * (this.electricity_consumption/100) * this.energy_prices["BEV"][year2][scenario]
 						//computes consumption of equivalent diesel vehicle
@@ -365,6 +371,7 @@ var Vehicle = function(params) {
 					this.price.basis_price = this.fixed_vars["acquisition_price"]
 				}
 				this.price.total[scenario] = this.price.basis_price
+				this.price.battery_price[scenario] = 0
 			} else {
 				this.price.basis_price = getRawAcquisitionPrice(this.energy_type, this.car_type, this.acquisition_year)
 				this.price.battery_price[scenario] = this.getBatteryPrice(scenario)
@@ -400,7 +407,7 @@ var Vehicle = function(params) {
 	}
 
 	this.getBatteryPrice = function(scenario) {
-		return this.getNeededBatterySize() * getBatteryPricePerKWh(this.acquisition_year, scenario);
+		return this.battery_size * getBatteryPricePerKWh(this.acquisition_year, scenario);
 	}
 
 	this.getNeededBatterySize = function() {
@@ -409,7 +416,7 @@ var Vehicle = function(params) {
 		}
 		var capacity = this.reichweite * (this.electricity_consumption / 100) / presets.entladetiefe
 		var actual_capacity = capacity * presets.entladetiefe
-		return actual_capacity
+		this.battery_size = actual_capacity
 	}
 
 	this.getFixedCosts = function() {
@@ -548,20 +555,28 @@ var Vehicle = function(params) {
 	this.getAmortization = function() {
 		for (var i in scenarios) {
 			this.amortization[scenarios[i]] = {}
-			var scenario = scenarios[i];
+			var scenario = scenarios[i]
+
 			for (var year = this.acquisition_year; year <= 2035; year++) {
+
+				// Computes the amortization of the vehicle
 				if (year < this.acquisition_year + this.abschreibungszeitraum){
 					if (year == this.acquisition_year && this.sonder_afa == true && this.energy_type=="BEV"){
-						this.amortization[scenario][year] = this.price.total[scenario] * .5 * this.unternehmenssteuersatz;
+						this.amortization[scenario][year] = (this.price.basis_price + this.price.battery_price[scenario]) * .5 * this.unternehmenssteuersatz
 					} else if (this.sonder_afa == true && this.energy_type=="BEV") {
-						this.amortization[scenario][year] = (1 / this.abschreibungszeitraum) * this.unternehmenssteuersatz * this.price.total[scenario] * .5
+						this.amortization[scenario][year] = (1 / this.abschreibungszeitraum) * this.unternehmenssteuersatz * (this.price.basis_price + this.price.battery_price[scenario]) * .5
 					} else {
 						//Normal amortization
-						this.amortization[scenario][year] = (1 / this.abschreibungszeitraum) * this.unternehmenssteuersatz * this.price.total[scenario]
-					}
+						this.amortization[scenario][year] = (1 / this.abschreibungszeitraum) * this.unternehmenssteuersatz * (this.price.basis_price + this.price.battery_price[scenario])
+					}	
 				} else {
-					this.amortization[scenario][year] = 0;
+					this.amortization[scenario][year] = 0
 				}
+				
+				// Computes the amortization of the variable costs
+				this.amortization[scenario][year] += this.maintenance_costs_total * this.unternehmenssteuersatz
+				this.amortization[scenario][year] += this.lubricant_costs * this.unternehmenssteuersatz
+
 			}
 		}
 	}
@@ -713,7 +728,7 @@ var Vehicle = function(params) {
 				costs = this.initCosts(scenario)
 				co2 = 0
 				
-				for (var current_year = this.acquisition_year; current_year <= holding_time + this.acquisition_year; current_year++){
+				for (var current_year = this.acquisition_year; current_year < holding_time + this.acquisition_year; current_year++){
 					
 					//Yearly costs
 					var yearly_costs = this.getYearlyCosts(scenario, current_year)
@@ -751,7 +766,7 @@ var Vehicle = function(params) {
 				costs = this.initCosts(scenario)
 				co2 = 0
 
-				for (var current_year = acquisition_year; current_year <= acquisition_year + this.holding_time; current_year++){
+				for (var current_year = acquisition_year; current_year < acquisition_year + this.holding_time; current_year++){
 					
 					//Yearly costs
 					var yearly_costs = this.getYearlyCosts(scenario, current_year)
@@ -791,7 +806,7 @@ var Vehicle = function(params) {
 				costs = this.initCosts(scenario)
 				co2 = 0
 
-				for (var current_year = this.acquisition_year; current_year <= this.acquisition_year + this.holding_time; current_year++){
+				for (var current_year = this.acquisition_year; current_year < this.acquisition_year + this.holding_time; current_year++){
 					
 					//Yearly costs
 					var yearly_costs = this.getYearlyCosts(scenario, current_year)
@@ -830,6 +845,7 @@ var Vehicle = function(params) {
 			this.checkMaxElecShare();
 		}
 		
+		this.getNeededBatterySize()
 		this.getAcquisitionPrice()
 		this.getMaintenanceCosts()
 		this.getLubricantCosts()
@@ -868,6 +884,3 @@ var Vehicle = function(params) {
 module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
-
-vehicle = new Vehicle()
-console.log(vehicle.TCO_by_acquisition_year["mittel"])

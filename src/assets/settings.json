@@ -716,7 +716,7 @@
   {
     "id": "35",
     "label": "Inflation rate",
-    "description": "desc35",
+    "description": null,
     "unit": "pc_per_year",
     "group": "Financials",
     "values": "0..20",
@@ -737,7 +737,7 @@
   {
     "id": "36",
     "label": "2016 benzin price",
-    "description": "desc36",
+    "description": null,
     "unit": "€_per_liter",
     "group": "Energy costs",
     "values": "0..5",
@@ -758,7 +758,7 @@
   {
     "id": "37",
     "label": "2016 diesel price",
-    "description": "desc37",
+    "description": null,
     "unit": "€_per_liter",
     "group": "Energy costs",
     "values": "0..5",
@@ -779,7 +779,7 @@
   {
     "id": "38",
     "label": "2016 electricity price",
-    "description": "desc38",
+    "description": null,
     "unit": "€_per_kwh",
     "group": "Energy costs",
     "values": "0..5",
@@ -800,7 +800,7 @@
   {
     "id": "39",
     "label": "evolution petrol price",
-    "description": "desc39",
+    "description": null,
     "unit": "pc_per_year",
     "group": "Energy costs",
     "values": "-50..50",
@@ -821,7 +821,7 @@
   {
     "id": "40",
     "label": "evolution electricity 2010-2020",
-    "description": "desc40",
+    "description": null,
     "unit": "pc_per_year",
     "group": "Energy costs",
     "values": "-50..50",
@@ -842,7 +842,7 @@
   {
     "id": "41",
     "label": "evolution electricity 2020-2030",
-    "description": "desc41",
+    "description": null,
     "unit": "pc_per_year",
     "group": "Energy costs",
     "values": "-50..50",
@@ -863,7 +863,7 @@
   {
     "id": "42",
     "label": "evolution electricity 2030-2050",
-    "description": "desc42",
+    "description": null,
     "unit": "pc_per_year",
     "group": "Energy costs",
     "values": "-50..50",
