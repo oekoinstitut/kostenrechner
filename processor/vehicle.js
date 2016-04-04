@@ -713,7 +713,7 @@ var Vehicle = function(params) {
 	}
 
 	this.getTCO = function() {
-
+		this.getTCOByMileage()
 		this.TCO = this.TCO_by_mileage["mittel"][this.mileage]
 
 	}
@@ -835,7 +835,12 @@ var Vehicle = function(params) {
 
 		if (this.fixed_vars != fixed_vars && fixed_vars != undefined){
 			this.fixed_vars = extend(this.fixed_vars, fixed_vars);
-			this.computeTotals();
+			for(var prop in fixed_vars) {
+			    if(fixed_vars.hasOwnProperty(prop) && this.hasOwnProperty(prop) ) {
+						this[prop] = fixed_vars[prop]
+				}
+			}
+			this.computeTotals()
 		}
 
 		this.traffic_multiplicator = presets.traffic_multiplicator[this.traffic];
@@ -856,7 +861,6 @@ var Vehicle = function(params) {
 		this.getTrainingCosts()
 		this.getResidualValue(this.residual_value_method)
 		
-
 		//Rounds all visible values to 2 decimal places
 		this.fuel_consumption = Math.round(this.fuel_consumption * 100)/100
 		this.electricity_consumption = Math.round(this.electricity_consumption * 100)/100
