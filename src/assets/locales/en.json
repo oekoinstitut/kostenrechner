@@ -107,6 +107,7 @@
     "print": "print",
     "remove_btn": "Remove",
     "Repair costs": "Repair costs",
+    "Residual value calculation method": "Residual value calculation method",
     "residual_value": "Residual value",
     "residual_vehicle_value": "Residual vehicle value",
     "save_modal": "Save",
@@ -144,6 +145,5 @@
     "welcome_title": "Total cost of ownership calculator",
     "years": "years",
     "€_per_kwh": "€ per kWh",
-    "€_per_liter": "€ per liter",
-    "Residual value calculation method": "Residual value calculation method"
+    "€_per_liter": "€ per liter"
 }
