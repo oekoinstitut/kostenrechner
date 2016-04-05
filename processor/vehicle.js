@@ -663,8 +663,9 @@ var Vehicle = function(params) {
 	this.initCosts = function(scenario){
 		// Acquisition and one-off costs
 		costs = {}
-		costs["vehicle_basis_cost"] = Math.round(this.price.basis_price)
-		costs["vehicle_battery"] = Math.round(this.price.battery_price[scenario])
+		costs["vehicle_basis_cost"] = Math.round(this.price.basis_price + this.price.battery_price[scenario])
+		// Line removed following email from Apr 5
+		//costs["vehicle_battery"] = Math.round(this.price.battery_price[scenario])
 		costs["charging_infrastructure"] = Math.round(this.price.charging_option)
 		costs["training_costs"] = this.training_costs
 		costs["total_cost"] = Math.round(this.price.total[scenario]) + this.training_costs
