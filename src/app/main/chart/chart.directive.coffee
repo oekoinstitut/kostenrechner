@@ -38,7 +38,7 @@ angular.module 'oekoKostenrechner'
           # Groups are loaded separetaly
           @chart.groups( @generateGroups cols )
 
-        getMinBarY: (cols)=>
+        getMinBarY: (cols)->
           values = [0, 0]
           for col in cols.slice(1)
             for i in [1..2]
@@ -70,10 +70,12 @@ angular.module 'oekoKostenrechner'
                 .value()
           c3.chart.internal.fn.getTooltipContent.apply(@chart.internal, arguments)
         getVehicleDisplay: (vehicle)->
-          x = if scope.type is 'bar' then 'holding_time' else scope.x
-          display = scope.processor.findDisplay xaxis: x, yaxis: scope.y
-          # Extract display for this vehicle
-          if display? then vehicle[display.name] else {}
+          if scope.type is 'bar'
+            vehicle.TCO
+          else
+            display = scope.processor.findDisplay xaxis: scope.x, yaxis: scope.y
+            # Extract display for this vehicle
+            if display? then vehicle[display.name] else {}
         getVehicleTranslation: (vehicle)->
           $translate.instant "vehicle_name",
             energy_type: $translate.instant vehicle.energy_type
@@ -141,8 +143,7 @@ angular.module 'oekoKostenrechner'
             values  = {}
             # For this year, we collect variables for each vehicles
             for vehicle in scope.vehicles
-              # Target 'mittel' component
-              if mittel = @getVehicleDisplay(vehicle).mittel
+              if display = @getVehicleDisplay(vehicle)
                 # We enclose this part of the code to be able to
                 # call it recursivly with variable within an object
                 fn = (obj)->
@@ -157,7 +158,7 @@ angular.module 'oekoKostenrechner'
                       values[n].push obj[n]
                     # Recursive lookup to flatten variable object
                     else fn obj[n]
-                fn mittel[refYear]
+                fn display
             # Create a serie line for each value
             series = series.concat( _.concat [n], values[n] for n of values)
           series
@@ -167,7 +168,7 @@ angular.module 'oekoKostenrechner'
             return d
           else
             return @formatNumber d
-        formatNumber: (d)=>
+        formatNumber: (d)->
           # Available format method
           format = de: 'formatDeDe', en: 'formatEnUs'
           # Choose format according to the current language
@@ -222,7 +223,7 @@ angular.module 'oekoKostenrechner'
         generateTooltip: =>
           format:
             # Translate labels
-            name: (v)=> $translate.instant v
+            name: (v)-> $translate.instant v
             # Format numbers and add units
             value: (v)=>
               units = TCO: '€', CO2: 'kg CO<sub>2</sub>'

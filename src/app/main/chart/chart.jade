@@ -16,7 +16,7 @@
             vehicles="main.vehicles", 
             processor="main.processor")
     
-    .row.main__chart__view__options
+    .row.main__chart__view__options.slide(ng-hide="chart.type === 'bar'")
       .col-xs-12
         label Horizontal axis
         select.form-control(ng-options="opt.name as (opt.label | translate) for opt in chart.xAxisOptions", 
