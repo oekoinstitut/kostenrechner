@@ -298,10 +298,6 @@ var Vehicle = function(params) {
 											residual_value_method: this.residual_value_method,
 											second_user_holding_time: this.second_user_holding_time,
 											second_user_yearly_mileage: this.second_user_yearly_mileage,
-											max_battery_charges: this.max_battery_charges,
-											battery_price: this.battery_price,
-											bev_praemie: this.bev_praemie,
-											sonder_afa: this.sonder_afa,
 											unternehmenssteuersatz: this.unternehmenssteuersatz,
 											abschreibungszeitraum: this.abschreibungszeitraum,
 											inflationsrate: this.inflationsrate,
@@ -336,9 +332,6 @@ var Vehicle = function(params) {
 				}
 				//computes difference
 				advantage_2d_user = fuel_consumption/2 - elec_consumption
-				// if (this.holding_time == 4 && this.mileage == 0 && this.acquisition_year == 2014 && scenario == "mittel"){
-				// 	console.log(this.energy_type, this.residual_value_method, advantage_2d_user)
-				// }
 				temp_vehicle = new Vehicle({energy_type: "benzin",
 										car_type: this.car_type,
 										electricity_consumption: this.electricity_consumption,
@@ -357,10 +350,6 @@ var Vehicle = function(params) {
 										residual_value_method: this.residual_value_method,
 										second_user_holding_time: this.second_user_holding_time,
 										second_user_yearly_mileage: this.second_user_yearly_mileage,
-										max_battery_charges: this.max_battery_charges,
-										battery_price: this.battery_price,
-										bev_praemie: this.bev_praemie,
-										sonder_afa: this.sonder_afa,
 										unternehmenssteuersatz: this.unternehmenssteuersatz,
 										abschreibungszeitraum: this.abschreibungszeitraum,
 										inflationsrate: this.inflationsrate,
@@ -373,8 +362,33 @@ var Vehicle = function(params) {
 			
 			} else if (method == "Methode 3"){
 				// Creates temp diesel machine to get the residual value
-				temp_vehicle = new Vehicle({energy_type: "diesel", car_type: this.car_type, mileage:this.mileage})
-				this.residual_value[scenario] = temp_vehicle.residual_value[scenario]
+				temp_vehicle = new Vehicle({energy_type: "benzin",
+										car_type: this.car_type,
+										electricity_consumption: this.electricity_consumption,
+										mileage: this.mileage,
+										acquisition_year: this.acquisition_year,
+										holding_time: this.holding_time,
+										reichweite: this.reichweite,
+										energy_source: this.energy_source,
+										charging_option: this.charging_option,
+										maintenance_costs_charger: this.maintenance_costs_charger,
+										fleet_size: this.fleet_size,
+										traffic: this.traffic,
+										training_option: this.training_option,
+										share_electric: this.share_electric,
+										second_charge: this.second_charge,
+										residual_value_method: this.residual_value_method,
+										second_user_holding_time: this.second_user_holding_time,
+										second_user_yearly_mileage: this.second_user_yearly_mileage,
+										unternehmenssteuersatz: this.unternehmenssteuersatz,
+										abschreibungszeitraum: this.abschreibungszeitraum,
+										inflationsrate: this.inflationsrate,
+										discount_rate: this.discount_rate,
+										energy_known_prices: this.energy_known_prices,
+										energy_prices_evolution: this.energy_prices_evolution,
+										limited: true})
+				this.residual_value[scenario] = temp_vehicle.residual_value["mittel"]
+				delete temp_vehicle
 
 			}
 		}
@@ -964,6 +978,6 @@ module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
 
-vehicle = new Vehicle({car_type:"klein", energy_type:"BEV", mileage:0, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
-console.log(vehicle.TCO)
-console.log(vehicle.residual_value["mittel"])
+// vehicle = new Vehicle({car_type:"klein", energy_type:"BEV", mileage:0, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
+// console.log(vehicle.TCO)
+// console.log(vehicle.residual_value["mittel"])
