@@ -52,7 +52,7 @@ function getRawAcquisitionPrice(energy_type, car_type, year) {
 		}
 	} else { // Elektro car
 		if (car_type.indexOf("LNF") > -1) {
-			return getRawAcquisitionPrice("diesel", car_type, year) + getPriceSurcharge(energy_type, car_type, year);
+			return getRawAcquisitionPrice("diesel", car_type, year) - getPriceSurcharge("diesel", "groß", year) + getPriceSurcharge(energy_type, car_type, year);
 		} else {
 			return getRawAcquisitionPrice("benzin", car_type, year) + getPriceSurcharge(energy_type, car_type, year);
 		}
@@ -162,6 +162,10 @@ var Vehicle = function(params) {
     if( params.hasOwnProperty(prop) && this.hasOwnProperty(prop) ) {
 			this[prop] = params[prop]
 		}
+	}
+
+	if (this.car_type.indexOf("LNF") >= 0 && this.energy_type == "BEV"){
+		this.reichweite = 130
 	}
 
 	this.charges_per_year = this.mileage / this.reichweite
@@ -312,7 +316,7 @@ var Vehicle = function(params) {
 				this.residual_value[scenario] = this.acquisition_price * residual_value_ratio
 			
 			}else if (method == "Methode 2"){
-			
+				
 				// Computes the advantage of the 2d user
 				var elec_consumption = fuel_consumption = advantage_2d_user = 0
 				this.getConsumption("diesel")
@@ -324,15 +328,29 @@ var Vehicle = function(params) {
 					fuel_consumption += this.second_user_yearly_mileage * (this.fuel_consumption/100) * this.energy_prices["diesel"][year2][scenario]	
 					
 				}
-				this.getConsumption("benzin")
-				for (var year2 = this.acquisition_year + this.holding_time; year2 < this.acquisition_year + this.holding_time + this.second_user_holding_time; year2++) {
-					//computes consumption of equivalent diesel vehicle
-					fuel_consumption += this.second_user_yearly_mileage * (this.fuel_consumption/100) * this.energy_prices["benzin"][year2][scenario]	
-					
+
+				// Not for LNF
+				if (this.car_type.indexOf("LNF") < 0){
+					this.getConsumption("benzin")
+					for (var year2 = this.acquisition_year + this.holding_time; year2 < this.acquisition_year + this.holding_time + this.second_user_holding_time; year2++) {
+						//computes consumption of equivalent diesel vehicle
+						fuel_consumption += this.second_user_yearly_mileage * (this.fuel_consumption/100) * this.energy_prices["benzin"][year2][scenario]	
+						
+					}
+
+					fuel_consumption = fuel_consumption/2
 				}
+
 				//computes difference
-				advantage_2d_user = fuel_consumption/2 - elec_consumption
-				temp_vehicle = new Vehicle({energy_type: "benzin",
+				advantage_2d_user = fuel_consumption - elec_consumption
+				
+				// Adds residual value of a Benzin vehicle or Diesel if LNF
+				if (this.car_type.indexOf("LNF") == false){
+					energy_type_temp = "diesel"
+				} else {
+					energy_type_temp = "benzin"
+				}
+				temp_vehicle = new Vehicle({energy_type: energy_type_temp,
 										car_type: this.car_type,
 										electricity_consumption: this.electricity_consumption,
 										mileage: this.mileage,
@@ -362,7 +380,7 @@ var Vehicle = function(params) {
 			
 			} else if (method == "Methode 3"){
 				// Creates temp diesel machine to get the residual value
-				temp_vehicle = new Vehicle({energy_type: "benzin",
+				temp_vehicle = new Vehicle({energy_type: "diesel",
 										car_type: this.car_type,
 										electricity_consumption: this.electricity_consumption,
 										mileage: this.mileage,
@@ -978,6 +996,6 @@ module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
 
-// vehicle = new Vehicle({car_type:"klein", energy_type:"BEV", mileage:0, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
-// console.log(vehicle.TCO)
-// console.log(vehicle.residual_value["mittel"])
+vehicle = new Vehicle({car_type:"LNF2", energy_type:"BEV", mileage:0, charging_option:"Wallbox bis 22kW", second_user_yearly_mileage:15000, residual_value_method: "Methode 2"})
+console.log(vehicle.TCO)
+console.log(vehicle.residual_value["mittel"])
