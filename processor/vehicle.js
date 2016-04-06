@@ -156,6 +156,7 @@ var Vehicle = function(params) {
 	this.discount_rate = presets.discount_rate
 	this.energy_known_prices = presets.energy_known_prices
 	this.energy_prices_evolution = presets.energy_prices_evolution
+	this.limited = false
 
 	for(var prop in params) {
     if( params.hasOwnProperty(prop) && this.hasOwnProperty(prop) ) {
@@ -306,7 +307,8 @@ var Vehicle = function(params) {
 											inflationsrate: this.inflationsrate,
 											discount_rate: this.discount_rate,
 											energy_known_prices: this.energy_known_prices,
-											energy_prices_evolution: this.energy_prices_evolution})
+											energy_prices_evolution: this.energy_prices_evolution,
+											limited: true})
 				var residual_value_ratio = temp_vehicle.residual_value["mittel"] / temp_vehicle.acquisition_price
 				
 				delete temp_vehicle
@@ -364,7 +366,8 @@ var Vehicle = function(params) {
 										inflationsrate: this.inflationsrate,
 										discount_rate: this.discount_rate,
 										energy_known_prices: this.energy_known_prices,
-										energy_prices_evolution: this.energy_prices_evolution})
+										energy_prices_evolution: this.energy_prices_evolution,
+										limited: true})
 				this.residual_value[scenario] = temp_vehicle.residual_value["mittel"] + advantage_2d_user
 				delete temp_vehicle
 			
@@ -950,7 +953,10 @@ var Vehicle = function(params) {
 		this.getTCO()
 	}
 	this.computeCosts()
-	this.computeTotals()
+
+	if (this.limited == false){
+		this.computeTotals()
+	}
 
 }
 
