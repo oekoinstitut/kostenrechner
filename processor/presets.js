@@ -11,12 +11,12 @@ var bev_praemie = false 			// Cash bonus
 // Energy prices in € per Liter and cents per kWh
 var energy_known_prices = {
 	"diesel": {
-		"2014": 1.135,
-		"2015": .984
+		"2014": 1.1349,
+		"2015": 0.9841
 	},
 	"benzin": {
-		"2014": 1.284,
-		"2015": 1.171
+		"2014": 1.2843,
+		"2015": 1.1711
 	},
 	"BEV": {
 		"2014": .2449,
@@ -210,6 +210,7 @@ var untersuchung = {
 
 // Variables for repairs
 var faktor_BEV = 0.82 	// Discount for repairs of electro vehicles
+var faktor_HEV = 0.96 	// Discount for repairs of hybrid vehicles
 var traffic_multiplicator = {
 	"normaler Verkehr" : 1,
 	"schwerer Verkehr" : 1.2,
@@ -317,6 +318,7 @@ exports.versicherung = versicherung
 exports.kfzsteuer = kfzsteuer
 exports.untersuchung = untersuchung
 exports.faktor_BEV = faktor_BEV
+exports.faktor_HEV = faktor_HEV
 exports.reperaturkosten = reperaturkosten
 exports.co2_emissions = co2_emissions
 exports.traffic_multiplicator = traffic_multiplicator
