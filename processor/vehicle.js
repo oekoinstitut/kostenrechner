@@ -320,8 +320,8 @@ var Vehicle = function(params) {
 					// Hybrid vehicles
 					if (this.energy_type == "hybrid-benzin" || this.energy_type == "hybrid-diesel"){
 						var energy_type = this.energy_type.split("-")[1]
-						my_consumption += (this.mileage / 100) * this.share_electric / 100 * this.electricity_consumption * this.energy_prices["BEV"][year2]["mittel"];
-						my_consumption += (this.mileage / 100) * (1 - this.share_electric / 100) * this.fuel_consumption * this.energy_prices[energy_type][year2]["mittel"];
+						my_consumption += (this.second_user_yearly_mileage / 100) * this.share_electric / 100 * this.electricity_consumption * this.energy_prices["BEV"][year2]["mittel"];
+						my_consumption += (this.second_user_yearly_mileage / 100) * (1 - this.share_electric / 100) * this.fuel_consumption * this.energy_prices[energy_type][year2]["mittel"];
 						
 					} else {
 						//computes consumption
@@ -348,7 +348,6 @@ var Vehicle = function(params) {
 
 				//computes difference
 				advantage_2d_user = fuel_consumption - my_consumption
-
 				
 				temp_vehicle_diesel = new Vehicle({energy_type: "diesel",
 										car_type: this.car_type,
@@ -870,7 +869,6 @@ var Vehicle = function(params) {
 				// Removes the resale value 
 				costs["total_cost"] += costs["residual_value"]
 
-			
 				this.TCO_by_holding_time[scenario][holding_time] = costs
 				this.CO2_by_holding_time[holding_time] = co2
 
@@ -1023,7 +1021,7 @@ module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
 
-// vehicle = new Vehicle({car_type:"groß", energy_type:"hybrid-benzin", mileage:15000, charging_option:"Wallbox bis 22kW", second_user_yearly_mileage:15000, residual_value_method: "Methode 2"})
-// console.log(vehicle.fuel_consumption)
-// console.log(vehicle.TCO)
+//vehicle = new Vehicle({car_type:"klein", energy_type:"hybrid-diesel", mileage:50000, charging_option:"Wallbox bis 22kW", second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
+//console.log(vehicle.fuel_consumption)
+//console.log(vehicle.TCO)
 // console.log(vehicle.residual_value["mittel"])
