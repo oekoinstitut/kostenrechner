@@ -281,8 +281,8 @@ var Vehicle = function(params) {
 
 			if (this.energy_type == "diesel" || this.energy_type == "benzin"){
 				this.residual_value[scenario] = Math.exp(presets.restwert_constants["a"]) 										  // Constant
-				this.residual_value[scenario] *= Math.exp(12 * presets.restwert_constants["b1"] * (this.holding_time)) // Age
-				this.residual_value[scenario] *= Math.exp(presets.restwert_constants["b2"] /12 * this.mileage)						  // Yearly mileage
+				this.residual_value[scenario] *= Math.exp(12 * presets.restwert_constants["b1"] * (this.holding_time)) 			  // Age
+				this.residual_value[scenario] *= Math.exp(presets.restwert_constants["b2"] /12 * this.mileage)					 // Yearly mileage
 				this.residual_value[scenario] *= Math.pow(this.price.total[scenario] - this.price.charging_option, presets.restwert_constants["b3"])				  // Initial price
 			} else if (method == "Methode 1" && this.energy_type == "BEV"){ 
 				temp_vehicle = new Vehicle({energy_type: "diesel",
@@ -651,14 +651,15 @@ var Vehicle = function(params) {
 			}
 		} else { //Hybrid vehicles
 			var energy_type = this.energy_type.split("-")[1];
+
 			for (var year = this.acquisition_year; year <= 2049; year++) {
 				this.energy_costs[year] = {}
 				this.energy_costs[year]["pro"] = (this.mileage / 100) * this.share_electric / 100 * this.electricity_consumption * this.energy_prices["BEV"][year]["pro"];
-				this.energy_costs[year]["pro"] += (this.mileage / 100) * (1 - this.share_electric / 100) * this.fuel_consumption * this.energy_prices[energy_type][year]["pro"];
+				this.energy_costs[year]["pro"] += (this.mileage / 100) * (1 - this.share_electric / 100) * this.fuel_consumption * this.energy_prices[energy_type][year]["mittel"];
 				this.energy_costs[year]["mittel"] = (this.mileage / 100) * this.share_electric / 100 * this.electricity_consumption * this.energy_prices["BEV"][year]["mittel"];
 				this.energy_costs[year]["mittel"] += (this.mileage / 100) * (1 - this.share_electric / 100) * this.fuel_consumption * this.energy_prices[energy_type][year]["mittel"];
 				this.energy_costs[year]["contra"] = (this.mileage / 100) * this.share_electric / 100 * this.electricity_consumption * this.energy_prices["BEV"][year]["contra"];
-				this.energy_costs[year]["contra"] += (this.mileage / 100) * (1 - this.share_electric / 100) * this.fuel_consumption * this.energy_prices[energy_type][year]["contra"];
+				this.energy_costs[year]["contra"] += (this.mileage / 100) * (1 - this.share_electric / 100) * this.fuel_consumption * this.energy_prices[energy_type][year]["mittel"];
 			}
 		}
 	}
@@ -693,6 +694,7 @@ var Vehicle = function(params) {
 	}
 
 	this.checkMaxElecShare = function() {
+
 		// Checks that the max elec share input by the user is right. If not, set it to max
 		var daily_mileage = this.mileage / presets.einsatztage_pro_jahr;
 		
@@ -702,18 +704,20 @@ var Vehicle = function(params) {
 			max_elec_share = ((this.reichweite * 2) / daily_mileage) * 100; 
 		}
 
+		
 		if (max_elec_share > 100){ max_elec_share = 100 }
-		if (this.share_electric > max_elec_share) { 
+		if (this.share_electric >= max_elec_share) { 
 			this.share_electric = max_elec_share 
 		} else {
 			if (this.fixed_vars.hasOwnProperty("share_electric")) {
 				this.share_electric = this.fixed_vars["share_electric"]
+
 			} else {
 				this.share_electric = this.share_electric_temp
+
 			}
 		}
 
-		this.share_electric = Math.round(this.share_electric)
 	}
 
 	this.getYearlyCosts = function(scenario, year){
@@ -794,7 +798,7 @@ var Vehicle = function(params) {
 		costs["total_cost"] = Math.round(this.price.total[scenario]) + this.training_costs
 
 		costs["residual_value"] = - this.residual_value[scenario]
-		costs["residual_value"] = getInflatedPrice(costs["residual_value"], this.holding_time, this.inflationsrate/100, false)
+		costs["residual_value"] = getInflatedPrice(costs["residual_value"], this.holding_time - 1, this.inflationsrate/100, false)
 		costs["residual_value"] = Math.round(costs["residual_value"] / Math.pow(1 + this.discount_rate, this.holding_time - 1))
 
 		// Init vars
@@ -969,6 +973,7 @@ var Vehicle = function(params) {
 						this[prop] = fixed_vars[prop]
 				}
 			}
+
 			this.computeTotals()
 		}
 
@@ -1021,7 +1026,8 @@ module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
 
-//vehicle = new Vehicle({car_type:"klein", energy_type:"hybrid-diesel", mileage:50000, charging_option:"Wallbox bis 22kW", second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
-//console.log(vehicle.fuel_consumption)
-//console.log(vehicle.TCO)
+// vehicle = new Vehicle({car_type:"klein", energy_type:"hybrid-diesel", holding_time: 4, mileage:40000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
+// console.log(vehicle.fuel_consumption)
+// console.log(vehicle.TCO)
+// console.log(vehicle.TCO_by_acquisition_year["mittel"])
 // console.log(vehicle.residual_value["mittel"])
