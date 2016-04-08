@@ -53,19 +53,21 @@ angular.module 'oekoKostenrechner'
                 # TCO display must only show mittel value
                 .filter (datum)-> datum.id.indexOf('-mittel') > -1
                 .each (datum)=>
-                  # Find vehicle idx from row id
-                  idx = 1 * datum.id.replace('-mittel', '') - 1
+                  # Find vehicle id from row id
+                  id = datum.id.replace('-mittel', '')
+                  vehicle = _.find scope.vehicles, id: id
                   # Extract vehicle name
-                  datum.name = @getVehicleTranslation scope.vehicles[idx]
+                  datum.name = @getVehicleTranslation vehicle
                 # Return the new values
                 .value()
             else if scope.y is 'CO2'
               arguments[0] = _.chain(arguments[0])
                 .each (datum)=>
-                  # Find vehicle idx from row id
-                  idx = 1 * datum.id.replace('vehicle-', '') - 1
+                  # Find vehicle id from row id
+                  id = datum.id.replace('vehicle-', '')
+                  vehicle = _.find scope.vehicles, id: id
                   # Extract vehicle name
-                  datum.name = @getVehicleTranslation scope.vehicles[idx]
+                  datum.name = @getVehicleTranslation vehicle
                 # Return the new values
                 .value()
           c3.chart.internal.fn.getTooltipContent.apply(@chart.internal, arguments)
