@@ -157,6 +157,7 @@ var Vehicle = function(params) {
 	this.energy_known_prices = presets.energy_known_prices
 	this.energy_prices_evolution = presets.energy_prices_evolution
 	this.limited = false
+	this.residual_value_fixed = 0 // the residual value to be displayed and input by the user
 
 	for(var prop in params) {
     if( params.hasOwnProperty(prop) && this.hasOwnProperty(prop) ) {
@@ -421,6 +422,14 @@ var Vehicle = function(params) {
 
 			}
 		}
+
+		this.residual_value_fixed = this.residual_value["mittel"]
+		if (this.fixed_vars.hasOwnProperty("residual_value_fixed")) {
+			this.residual_value_fixed = this.fixed_vars["residual_value_fixed"]
+			this.residual_value["mittel"] = this.fixed_vars["residual_value_fixed"]
+			this.residual_value["pro"] = this.fixed_vars["residual_value_fixed"]
+			this.residual_value["contra"] = this.fixed_vars["residual_value_fixed"]
+		}
 	}
 
 	this.getMaintenanceCosts = function(){
@@ -674,12 +683,12 @@ var Vehicle = function(params) {
 				// Computes the amortization of the vehicle
 				if (year < this.acquisition_year + this.abschreibungszeitraum){
 					if (year == this.acquisition_year && this.sonder_afa == true && this.energy_type=="BEV"){
-						this.amortization[scenario][year] = (this.price.basis_price + this.price.battery_price[scenario]) * .5 * this.unternehmenssteuersatz
+						this.amortization[scenario][year] = (this.price.basis_price + this.price.battery_price[scenario]) * .5 * (this.unternehmenssteuersatz / 100)
 					} else if (this.sonder_afa == true && this.energy_type=="BEV") {
-						this.amortization[scenario][year] = (1 / this.abschreibungszeitraum) * this.unternehmenssteuersatz * (this.price.basis_price + this.price.battery_price[scenario]) * .5
+						this.amortization[scenario][year] = (1 / this.abschreibungszeitraum) * (this.unternehmenssteuersatz / 100) * (this.price.basis_price + this.price.battery_price[scenario]) * .5
 					} else {
 						//Normal amortization
-						this.amortization[scenario][year] = (1 / this.abschreibungszeitraum) * this.unternehmenssteuersatz * (this.price.basis_price + this.price.battery_price[scenario])
+						this.amortization[scenario][year] = (1 / this.abschreibungszeitraum) * (this.unternehmenssteuersatz / 100) * (this.price.basis_price + this.price.battery_price[scenario])
 					}	
 				} else {
 					this.amortization[scenario][year] = 0
@@ -738,10 +747,10 @@ var Vehicle = function(params) {
 		costs["variable_costs"] = {
 			"lubricant_costs": getInflatedPrice(this.lubricant_costs, year - this.acquisition_year, this.inflationsrate/100, true),
 			"maintenance_costs": getInflatedPrice(this.maintenance_costs_total, year - this.acquisition_year, this.inflationsrate/100, true),
-			"amortization": - getInflatedPrice((this.maintenance_costs_total - this.maintenance_costs_charger + this.lubricant_costs) * this.unternehmenssteuersatz, year - this.acquisition_year, this.inflationsrate/100, true)
+			"amortization": - getInflatedPrice((this.maintenance_costs_total - this.maintenance_costs_charger + this.lubricant_costs) * (this.unternehmenssteuersatz / 100), year - this.acquisition_year, this.inflationsrate/100, true)
 		}
 		
-		costs["amortization"] = Math.round(- this.amortization[scenario][year])
+		costs["amortization_vehicle"] = Math.round(- this.amortization[scenario][year])
 		
 		// Special case for BEV vehicles older than 6 years
 		if (this.energy_type == "BEV" && (year - this.acquisition_year) >= 6) {
@@ -808,7 +817,7 @@ var Vehicle = function(params) {
 		costs["variable_costs"]["lubricant_costs"] = 0
 		costs["variable_costs"]["maintenance_costs"] = 0
 		costs["variable_costs"]["amortization"] = 0
-		costs["amortization"] = 0
+		costs["amortization_vehicle"] = 0
 		costs["fixed_costs"]["check_up"] = 0
 		costs["fixed_costs"]["insurance"] = 0
 		costs["fixed_costs"]["car_tax"] = 0
@@ -821,7 +830,7 @@ var Vehicle = function(params) {
 		costs["variable_costs"]["lubricant_costs"] += yearly_costs["variable_costs"]["lubricant_costs"]
 		costs["variable_costs"]["maintenance_costs"] += yearly_costs["variable_costs"]["maintenance_costs"]
 		costs["variable_costs"]["amortization"] += yearly_costs["variable_costs"]["amortization"]
-		costs["amortization"] += yearly_costs["amortization"]
+		costs["amortization_vehicle"] += yearly_costs["amortization_vehicle"]
 		costs["total_cost"] += yearly_costs["total_cost"]
 		costs["fixed_costs"]["check_up"] += yearly_costs["fixed_costs"]["check_up"]
 		costs["fixed_costs"]["insurance"] += yearly_costs["fixed_costs"]["insurance"]
@@ -926,7 +935,7 @@ var Vehicle = function(params) {
 
 			var mileage_temp = this.mileage
 
-			for (var mileage = 0; mileage <= 100000; mileage+=5000){
+			for (var mileage = 0; mileage <= 50000; mileage+=5000){
 
 				this.mileage = mileage
 
@@ -1004,6 +1013,12 @@ var Vehicle = function(params) {
 		this.maintenance_costs_tires = Math.round(this.maintenance_costs_tires * 100)/100
 		this.maintenance_costs_charger = Math.round(this.maintenance_costs_charger * 100)/100
 		this.lubricant_costs = Math.round(this.lubricant_costs * 100)/100
+		this._2016_elec_price = Math.round(this._2016_elec_price * 100)/100
+		this._2016_diesel_price = Math.round(this._2016_diesel_price * 100)/100
+		this._2016_benzin_price = Math.round(this._2016_benzin_price * 100)/100
+		this.residual_value_fixed = Math.round(this.residual_value_fixed * 100)/100
+		this.fuel_consumption = Math.round(this.fuel_consumption * 100)/100
+		this. electricity_consumption = Math.round(this.electricity_consumption * 100)/100
 		
 	}
 
@@ -1026,8 +1041,8 @@ module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
 
-// vehicle = new Vehicle({car_type:"klein", energy_type:"hybrid-diesel", holding_time: 4, mileage:40000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
+vehicle = new Vehicle({car_type:"klein", energy_type:"BEV", holding_time: 4, mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
 // console.log(vehicle.fuel_consumption)
-// console.log(vehicle.TCO)
+console.log(vehicle.TCO)
 // console.log(vehicle.TCO_by_acquisition_year["mittel"])
 // console.log(vehicle.residual_value["mittel"])
