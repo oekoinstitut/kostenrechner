@@ -4,7 +4,7 @@ angular.module 'oekoKostenrechner'
     SHORTENER_PROVIDER: 'goo.gl',
     CHART_TYPE: 'spline'
     CHART_YAXIS: 'TCO'
-    CHART_XAXIS: 'holding_time'
+    CHART_XAXIS: 'mileage'
     FLOOR_YEAR: 2014
     CEIL_YEAR: 2025
     COLORS: do ->
