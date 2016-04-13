@@ -182,7 +182,7 @@
   }
 
   &__welcome-bg {
-    position: absolute;
+    position: fixed;
     top:0;
     left:0;
     right:0;
@@ -222,11 +222,13 @@
       .btn {
         font-weight:bold;
         margin-right:10px;
+        margin-bottom:10px;
       }
 
       a:not(.btn) {
         color:inherit;
         text-decoration: underline;
+        white-space: nowrap;
       }
     }
 
