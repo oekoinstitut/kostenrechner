@@ -17,7 +17,9 @@
   }
 
   .navbar-header {
-    border-bottom:1px solid @navbar-default-border;    
+    @media (max-width: @screen-xs-max) {
+      border-bottom:1px solid @navbar-default-border;
+    }
   }
 
   &__languages {
