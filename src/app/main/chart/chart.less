@@ -10,9 +10,12 @@
     @media print {
       display: none !important;
     }
+  }
 
-    @media (max-width: @screen-md-max) {
+  @media (max-width: @screen-md-max) {
+    & &__nav {
       float:none;
+      padding:0;
     }
   }
 

@@ -80,7 +80,7 @@ angular.module 'oekoKostenrechner'
             # Extract display for this vehicle
             if display? then vehicle[display.name] else {}
         getVehicleTranslation: (vehicle)->
-          $translate.instant "vehicle_name",
+          $translate.instant "vehicle_name_striped",
             energy_type: $translate.instant vehicle.energy_type
             car_type: $translate.instant vehicle.car_type
         getXValues: =>

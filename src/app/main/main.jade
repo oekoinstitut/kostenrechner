@@ -36,7 +36,7 @@
             button.btn.btn-xs.btn-link(ng-click="main.removeVehicle($index)")
               i.fa.fa-trash
               span.sr-only {{ "remove_btn" | translate }}
-          | {{ "vehicle_name" | translate:{ energy_type:(vehicle.energy_type|translate), car_type:(vehicle.car_type|translate) } }}
+          span(ng-bind-html="'vehicle_name' | translate:{ energy_type:(vehicle.energy_type|translate), car_type:(vehicle.car_type|translate) }")
         table.table.table-condensed.table-striped.main__vehicles__wrapper__item__body
           tbody
             tr(ng-repeat="setting in main.listedSettings | orderBy:'importancerank' | filter:main.filterSetting(vehicle) | limitTo:5")
@@ -46,4 +46,4 @@
                 span &nbsp;{{ setting.unit | translate }}
       a.main__vehicles__wrapper__add-item(ng-show="('main.chart.*' | includedByState) && main.vehicles.length < 2", ui-sref="main.form")
         i.fa.fa-plus
-        div {{ "add_vehicle_btn" | translate }}
+        span <br class="hidden-xs" /> {{ "add_vehicle_btn" | translate }}
