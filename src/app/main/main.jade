@@ -19,6 +19,9 @@
           a.btn.btn-default.btn-md(ui-sref="main.chart")
             i.fa.fa-line-chart.fa-fw
             | &nbsp{{ "see_visulization" | translate }}
+        p.main__welcome-screen__foot-notes
+          | {{ "welcome_description_sub" | translate }}
+        
   
   .main__vehicles(ng-show="('main.form.*' | includedByState) && main.vehicles.length || ('main.chart.*' | includedByState)")
     .main__vehicles__wrapper
