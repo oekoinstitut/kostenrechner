@@ -242,6 +242,8 @@ angular.module 'oekoKostenrechner'
             # Enhance the chart with d3
             onrendered: @enhanceChart
             bindto: element[0]
+            size:
+              height: 400
             interaction:
               enabled: yes
             padding:
