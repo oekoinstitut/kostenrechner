@@ -140,7 +140,7 @@
   "vehicle_net_cost": "Netto-Investitonskosten",
   "Wallbox 3.7kW": "Wallbox 3,7kW",
   "Wallbox bis 22kW": "Wallbox bis 22kW",
-  "welcome_description": "Wie hoch sind die Gesamtkosten eines gewerblich genutzten Elektrofahrzeuges im Vergleich zu einem Diesel- oder Benzin-Fahrzeug? Wie könnten sich die Gesamtkosten in den nächsten Jahren entwickeln und welchen Einfluss haben Haltedauer und jährliche Fahrleistung? Welche Treibhausgasemissionen werden eingespart? <br/>Diese und weitere Fragen beantwortet der Online-Rechner* des Öko-Instituts. Er analysiert die Gesamtkosten für gewerblich genutzte Elektro- und Plug-In-Hybridfahrzeuge – also Kosten für die Anschaffung von Fahrzeugen und Ladeinfrastruktur, Kraftstoffen und Strom, Werkstattbesuche, Steuer und Versicherung, Abschreibung für Abnutzung sowie Fahrzeugrestwert.  <br/>Der Nutzer kann auf plausible Voreinstellungen zurückgreifen oder die einzelnen Eingangsgrößen manuell an die eigenen Vorstellungen anpassen. ",
+  "welcome_description": "<p>Von den 1,9 Millionen Pkw, die in Deutschland im Jahr durch gewerbliche Halter neu zugelassen werden, entfallen ungefähr 800.000 Pkw auf die deutschen Unternehmensflotten– hier liegt ein großes Potenzial für Elektromobilität. Im Vergleich zum privaten Einsatz von Elektrofahrzeugen bieten Unternehmensflotten Vorteile. Die beschränkte Reichweite ist weniger problematisch, wenn man auf andere Poolfahrzeuge ausweichen kann. Auch der Aufbau und eine hohe Auslastung von Lademöglichkeiten sind auf dem eigenen Betriebsgelände tendenziell leichter. Wenn die Fahrzeuge planbar und regelmäßig eingesetzt werden, kann dies Nutzungskonflikte vermeiden und die Wirtschaftlichkeit der Fahrzeuge erhöhen. </p><p>Doch wie hoch sind die Gesamtkosten eines gewerblich genutzten Elektrofahrzeuges im Vergleich zu einem Diesel- oder Benzin-Fahrzeug? Wie könnten sich die Gesamtkosten in den nächsten Jahren entwickeln und welchen Einfluss haben Haltedauer und jährliche Fahrleistung? Welche Treibhausgasemissionen werden eingespart? </p><p>Diese und weitere Fragen beantwortet der Online-Rechner* des Öko-Instituts. Er analysiert die Gesamtkosten für gewerblich genutzte Elektro- und Plug-In-Hybridfahrzeuge – also Kosten für die Anschaffung von Fahrzeugen und Ladeinfrastruktur, Kraftstoffen und Strom, Werkstattbesuche, Steuer und Versicherung, Abschreibung für Abnutzung sowie Fahrzeugrestwert. </p><p>Der Nutzer kann auf plausible Voreinstellungen zurückgreifen oder die einzelnen Eingangsgrößen manuell an die eigenen Vorstellungen anpassen.</p>",
   "welcome_title": "Kostenrechner für gewerblich genutzte Elektrofahrzeuge",
   "years": "Jahre",
   "€_per_kwh": "€ pro kWh",
@@ -165,5 +165,4 @@
   "LNF2-desc": "Leichtes Nutzfahrzeug – groß",
   "LNF2-tooltip": "z.B. VW Crafter, Mercedes Sprinter",
   "welcome_description_sub": "* TCO-Rechner – Total Cost of Ownership"
-
 }
