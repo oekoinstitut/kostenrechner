@@ -42,7 +42,8 @@ angular.module 'oekoKostenrechner'
           values = [0, 0]
           for col in cols.slice(1)
             for i in [1..2]
-              values[i - 1] = Math.min(values[i - 1], col[i])
+              if col[i] < 0
+                values[i - 1] += col[i]
           _.min values
 
         getTooltipContents: =>
