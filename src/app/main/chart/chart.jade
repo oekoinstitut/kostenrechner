@@ -18,7 +18,7 @@
     
     .row.main__chart__view__options.slide(ng-hide="chart.type === 'bar'")
       .col-xs-12
-        label Horizontal axis
+        label {{ 'horizontal_axis' | translate }}
         select.form-control(ng-options="opt.name as (opt.label | translate) for opt in chart.xAxisOptions", 
                             ng-model="chart.xAxis", ng-disabled="chart.type === 'bar'")
     .main__chart__view__explainer(translate="")
