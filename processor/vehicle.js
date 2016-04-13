@@ -1042,8 +1042,8 @@ module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
 
-vehicle = new Vehicle({car_type:"klein", energy_type:"BEV", holding_time: 4, mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
+//vehicle = new Vehicle({car_type:"klein", energy_type:"BEV", holding_time: 4, mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
 // console.log(vehicle.fuel_consumption)
-console.log(vehicle.TCO)
+//console.log(vehicle.TCO)
 // console.log(vehicle.TCO_by_acquisition_year["mittel"])
 // console.log(vehicle.residual_value["mittel"])

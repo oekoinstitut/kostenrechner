@@ -164,5 +164,6 @@
   "LNF1-tooltip": "z.B. VW Caddy, Mercedes Vito",
   "LNF2-desc": "Leichtes Nutzfahrzeug – groß",
   "LNF2-tooltip": "z.B. VW Crafter, Mercedes Sprinter",
-  "welcome_description_sub": "* TCO-Rechner – Total Cost of Ownership"
+  "welcome_description_sub": "* TCO-Rechner – Total Cost of Ownership",
+  "horizontal_axis":"x-Achse"
 }
