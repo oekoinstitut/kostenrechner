@@ -228,7 +228,7 @@ angular.module 'oekoKostenrechner'
             name: (v)-> $translate.instant v
             # Format numbers and add units
             value: (v)=>
-              units = TCO: '€', CO2: 'kg CO<sub>2</sub>'
+              units = TCO: '€', CO2: ' kg CO₂'
               @formatNumber(v) + units[scope.y]
           # Special function to generate tooltip contents
           contents: @getTooltipContents
