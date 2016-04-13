@@ -152,5 +152,16 @@
   "expl4": "Dieses Diagramm zeigt die Treibhausgasemissionen abhängig von der jährlichen Fahrleistung. Die Emissionen von Treibhausgasen werden entsprechend ihrer Klimawirksamkeit bewertet und als CO2-Äquivalente dargestellt.",
   "expl3": "Dieses Diagramm zeigt die Treibhausgasemissionen abhängig von der Haltedauer. Die Emissionen von Treibhausgasen werden entsprechend ihrer Klimawirksamkeit bewertet und als CO2-Äquivalente dargestellt.",
   "expl7": "Dieses Diagramm zeigt die Treibhausgasemissionen abhängig vom Jahr der Fahrzeuganschaffung. Die Emissionen von Treibhausgasen werden entsprechend ihrer Klimawirksamkeit bewertet und als CO2-Äquivalente dargestellt. ",
-  "cost_unit": "Gesamtkosten in €<sub>2014</sub>"
+  "cost_unit": "Gesamtkosten in €<sub>2014</sub>",
+  "klein-desc": "Pkw – klein (Mini, Kleinwagen)",
+  "klein-tooltip": "z.B. smart fortwo, VW Polo",
+  "mittel-desc": "Pkw – mittel (Kompaktklasse, Mini-Van)",
+  "mittel-tooltip": "z.B. VW Golf, Mercedes A-Klasse",
+  "groß-desc": "Pkw – groß (Mittelklasse, Oberklasse, Geländewagen)",
+  "groß-tooltip": "z.B. Audi A5, Mercedes S-Klasse, VW Tiguan",
+  "LNF1-desc": "Leichtes Nutzfahrzeug – klein",
+  "LNF1-tooltip": "z.B. VW Caddy, Mercedes Vito",
+  "LNF2-desc": "Leichtes Nutzfahrzeug – groß",
+  "LNF2-tooltip": "z.B. VW Crafter, Mercedes Sprinter",
+  "welcome_description_sub": "* TCO-Rechner – Total Cost of Ownership"
 }
