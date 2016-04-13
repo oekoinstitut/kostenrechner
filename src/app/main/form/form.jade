@@ -11,14 +11,20 @@
             label.main__form__step__body__radio.radio(ng-repeat="value in form.getStepValues(step).range track by $index",
               ng-class="{ 'active': form.newVehicle[step.name] === value }")
               input(type="radio", required, name="{{ step.name }}", ng-value="value", ng-model="form.newVehicle[step.name]")
-              {{ value | translate }}            
+              {{ value | translate }}                          
+              span.text-muted.small.main__form__step__body__radio__help(
+                uib-tooltip="{{ value + '-tooltip' | translate }}", ng-show="form.inputs[step.id].setting.hashelp")
+                i.fa.fa-info
         div(ng-switch-when="interval")
           div(ng-if=":: !form.inputs[step.id].setting.hasslider")
             p.main__form__step__body.main__form__step__body--select
               label.main__form__step__body__radio.radio(ng-repeat="value in form.getStepValues(step).range track by $index",
-                ng-class="{ 'active': form.newVehicle[step.name] === value }")
+                ng-class="{ 'active': form.newVehicle[step.name] === value }")}}
                 input(type="radio", required, name="{{ step.name }}" ng-value="value" ng-model="form.newVehicle[step.name]")
-                {{ value | translate }}
+                {{ value | translate }}                        
+                span.text-muted.small.main__form__step__body__radio__help(
+                  uib-tooltip="{{ value + '-tooltip' | translate }}", ng-show="form.inputs[step.id].setting.hashelp")
+                  i.fa.fa-info
           div(ng-if=":: form.inputs[step.id].setting.hasslider")  
             div(ng-init="form.newVehicle[step.name] = form.getStepValues(step).value")
               p.main__form__step__body.main__form__step__body--slider

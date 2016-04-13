@@ -42,7 +42,8 @@ angular.module 'oekoKostenrechner'
           values = [0, 0]
           for col in cols.slice(1)
             for i in [1..2]
-              values[i - 1] = Math.min(values[i - 1], col[i])
+              if col[i] < 0
+                values[i - 1] += col[i]
           _.min values
 
         getTooltipContents: =>
@@ -182,7 +183,7 @@ angular.module 'oekoKostenrechner'
           tick:
             outer: false
             centered: yes
-            culling: yes
+            culling: no
             multiline: no
         generateYAxis: (cols)=>
           # Return a configuration objects
@@ -228,7 +229,7 @@ angular.module 'oekoKostenrechner'
             name: (v)-> $translate.instant v
             # Format numbers and add units
             value: (v)=>
-              units = TCO: '€', CO2: 'kg CO<sub>2</sub>'
+              units = TCO: '€', CO2: ' kg CO₂'
               @formatNumber(v) + units[scope.y]
           # Special function to generate tooltip contents
           contents: @getTooltipContents
@@ -242,6 +243,8 @@ angular.module 'oekoKostenrechner'
             # Enhance the chart with d3
             onrendered: @enhanceChart
             bindto: element[0]
+            size:
+              height: 400
             interaction:
               enabled: yes
             padding:

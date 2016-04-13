@@ -30,7 +30,7 @@
 
     &__wrapper {
 
-      max-width:@screen-sm - 20px * 2px;
+      max-width:@screen-md - 20px * 2px;
       margin:auto;
       border:1px solid @panel-default-border;
       .box-shadow(0 0 2px 2px fade(@panel-default-border, 30));
@@ -196,7 +196,7 @@
 
     margin:auto;
     margin-top: 60px;
-    max-width:@screen-sm - 20px * 2px;
+    max-width:@screen-md - 20px * 2px;
     padding:0;
     color:white;
 
@@ -207,6 +207,7 @@
 
     &__heading {
       font-size: 3em;
+      margin-bottom:.5em;
     }
 
     &__footer {
@@ -227,6 +228,10 @@
         color:inherit;
         text-decoration: underline;
       }
+    }
+
+    &__foot-notes {
+      margin-top:5em;
     }
   }
 

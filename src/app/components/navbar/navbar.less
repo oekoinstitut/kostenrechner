@@ -2,12 +2,32 @@
   border-width:1px;
   border-bottom-width:2px;
   border-top-width:0;
-  max-width:@screen-sm - 20px * 2px;
+  max-width:@screen-md - 20px * 2px;
   left:50%;
   .translate(-50%, 0);
 
-  &__logo {
+  &__home {
     padding-right:20px;
+    margin-right:20px;
+    border-right:1px solid @navbar-default-border;
+    display: block;
+    float:left;
+    height:@navbar-height;
+    line-height:@navbar-height;
+    overflow: hidden;
+    .transition(0.6s);
+
+    &.ng-hide {
+      width:0;
+      border-right:0; 
+      padding:0;
+    }
+  }
+
+  .navbar-header {
+    @media (max-width: @screen-xs-max) {
+      border-bottom:1px solid @navbar-default-border;
+    }
   }
 
   &__languages {
