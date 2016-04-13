@@ -793,7 +793,7 @@ var Vehicle = function(params) {
 			co2 = (this.mileage / 100) * this.fuel_consumption * presets.co2_emissions[this.energy_type]
 		}
 
-		return co2
+		return Math.round(co2)
 	}
 
 	this.initCosts = function(scenario){
@@ -803,8 +803,9 @@ var Vehicle = function(params) {
 		// Line removed following email from Apr 5
 		//costs["vehicle_battery"] = Math.round(this.price.battery_price[scenario])
 		costs["charging_infrastructure"] = Math.round(this.price.charging_option)
-		costs["training_costs"] = this.training_costs
-		costs["total_cost"] = Math.round(this.price.total[scenario]) + this.training_costs
+		// Removed training costs 13 Apr as per client request
+		//costs["training_costs"] = this.training_costs
+		costs["total_cost"] = Math.round(this.price.total[scenario]) //+ this.training_costs
 
 		costs["residual_value"] = - this.residual_value[scenario]
 		costs["residual_value"] = getInflatedPrice(costs["residual_value"], this.holding_time - 1, this.inflationsrate/100, false)
