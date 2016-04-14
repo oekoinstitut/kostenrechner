@@ -44,3 +44,5 @@ form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm", novalida
       | {{ 'cancel_modal' | translate }}
     button.btn.btn-primary.btn-lg(type="submit", ng-disabled="vehicleForm.$invalid")
       | {{ 'save_modal' | translate }}
+  //.modal-footer
+    pre.text-left {{ vehicleForm | json }}
