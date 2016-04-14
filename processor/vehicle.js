@@ -1,6 +1,6 @@
 var presets = require('./presets');
 var extend = require("xtend")
-var scenarios = ["pro", "mittel", "contra"]
+var scenarios = ["mittel","pro", "contra"]
 
 // Corrects amounts for inflation
 function getCurrentPrice(amount, originalYear, wishedYear, inflation, rounded){
@@ -173,6 +173,7 @@ var Vehicle = function(params) {
 	this.charges_per_year = this.mileage / this.reichweite
 	this.battery_duration = this.max_battery_charges / this.charges_per_year
 	this.fixed_vars = {}
+	//this.fixed_vars = {acquisition_price:25000}
 	this.residual_value = {}
 	this.price = {}
 	this.maintenance_costs_total = this.maintenance_costs_repairs = this.maintenance_costs_tires = this.maintenance_costs_inspection = 0
@@ -499,7 +500,7 @@ var Vehicle = function(params) {
 				this.acquisition_price = this.price.basis_price + this.price.battery_price["mittel"]
 				if (this.fixed_vars.hasOwnProperty("acquisition_price")) {
 					this.acquisition_price = this.fixed_vars["acquisition_price"]
-					this.price.basis_price = this.fixed_vars["acquisition_price"] - this.price.battery_price[scenario]
+					this.price.basis_price = this.fixed_vars["acquisition_price"] - this.price.battery_price["mittel"]
 				}
 				this.price.total[scenario] = this.price.basis_price + this.price.battery_price[scenario] + this.price.charging_option
 			}
@@ -1019,7 +1020,7 @@ var Vehicle = function(params) {
 		this._2016_benzin_price = Math.round(this._2016_benzin_price * 100)/100
 		this.residual_value_fixed = Math.round(this.residual_value_fixed * 100)/100
 		this.fuel_consumption = Math.round(this.fuel_consumption * 100)/100
-		this. electricity_consumption = Math.round(this.electricity_consumption * 100)/100
+		this.acquisition_price = Math.round(this.acquisition_price * 100)/100
 		
 	}
 
@@ -1043,7 +1044,7 @@ module.exports = Vehicle
 module.exports.presets = presets
 
 //vehicle = new Vehicle({car_type:"klein", energy_type:"BEV", holding_time: 4, mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
-// console.log(vehicle.fuel_consumption)
+//console.log(vehicle.price)
 //console.log(vehicle.TCO)
-// console.log(vehicle.TCO_by_acquisition_year["mittel"])
+//console.log(vehicle.TCO_by_acquisition_year)
 // console.log(vehicle.residual_value["mittel"])
