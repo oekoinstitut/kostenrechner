@@ -86,8 +86,8 @@
     "hydrocarbon_unit": "l/100 km",
     "Inflation rate": "Inflationsrate",
     "Inpection costs": "Inspektionskosten",
-    "insurance": "Versicherung",
     "Insurance": "Versicherung",
+    "insurance": "Versicherung",
     "Is the vehicle charged a second time during the day?": "Wird das Fahrzeug im Tagesverlauf Zwischengeladen?",
     "kg_unit": "Treibhausgasemissionen in kg CO₂-Äquivalenten",
     "klein": "Klein",
@@ -167,5 +167,6 @@
     "welcome_title": "Kostenrechner für gewerblich genutzte Elektrofahrzeuge",
     "years": "Jahre",
     "€_per_kwh": "€ pro kWh",
-    "€_per_liter": "€ pro Liter"
+    "€_per_liter": "€ pro Liter",
+    "Keine": "Keine"
 }

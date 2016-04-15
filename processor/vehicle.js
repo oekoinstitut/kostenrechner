@@ -85,13 +85,13 @@ function getPriceSurcharge(energy_type, car_type, year) {
 }
 
 function getChargingOptionPrice(option, year) {
-	if (option == undefined) {return 0}
+	if (option == "Keine") {return 0}
 	// Decrease in price is 5%/year
 	return presets.lademöglichkeiten[option]["acquisition"] * Math.pow(1 - 0.05, year - 2014);
 }
 
 function getChargingOptionMaintenancePrice(option) {
-	if (option == undefined) {return 0}
+	if (option == "Keine") {return 0}
 	return presets.lademöglichkeiten[option]["maintenance"];
 }
 
@@ -136,7 +136,7 @@ var Vehicle = function(params) {
 	this.holding_time = 4
 	this.reichweite = 150
 	this.energy_source = "strom_mix"
-	this.charging_option = undefined
+	this.charging_option = "Keine"
 	this.maintenance_costs_charger = 0
 	this.fleet_size = 1
 	this.traffic = "normaler Verkehr"
@@ -434,7 +434,7 @@ var Vehicle = function(params) {
 	}
 
 	this.getMaintenanceCosts = function(){
-		if ((this.energy_type =="BEV" || this.energy_type.indexOf("hybrid") > -1) && this.charging_option != undefined) {
+		if ((this.energy_type =="BEV" || this.energy_type.indexOf("hybrid") > -1) && this.charging_option != "Keine") {
 			this.maintenance_costs_charger = presets.lademöglichkeiten[this.charging_option]["maintenance"] / this.fleet_size;
 		}
 		if (this.energy_type == "BEV" && this.car_type.indexOf("LNF") == -1) {

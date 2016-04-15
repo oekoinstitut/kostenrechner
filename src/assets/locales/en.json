@@ -66,7 +66,7 @@
     "expl4": "This diagram shows the greenhouse gas emissions depending on the annual mileage driven. Greenhouse gas emissions are measured according to their climate impact and shown as CO₂ equivalents.",
     "expl5": "This graph shows the breakdown of the cost positions for a vehicle.",
     "expl6": "This diagram shows the total cost of vehicle depending on the the time the company holds it for. The bands on each side of the line represent variations of the scenario assumptions for fuel prices, electricity prices and battery prices shown (in each case ± 10%).",
-    "expl7":"This diagram shows the greenhouse gas emissions depending on the year the vehicle is acquired. Greenhouse gas emissions are measured according to their climate impact and shown as CO₂ equivalents.",
+    "expl7": "This diagram shows the greenhouse gas emissions depending on the year the vehicle is acquired. Greenhouse gas emissions are measured according to their climate impact and shown as CO₂ equivalents.",
     "Financials": "Contextual variables",
     "Fixed costs": "Fixed costs",
     "go_back": "Go Back",
@@ -83,8 +83,8 @@
     "hydrocarbon_unit": "L/100 km",
     "Inflation rate": "Inflation rate",
     "Inpection costs": "Inpection costs",
-    "insurance": "Insurance costs",
     "Insurance": "Insurance",
+    "insurance": "Insurance costs",
     "keine Schulung": "No training",
     "kg_unit": "Kg of CO₂",
     "klein": "Small",
@@ -163,5 +163,6 @@
     "welcome_title": "Total cost of ownership calculator",
     "years": "years",
     "€_per_kwh": "€ per kWh",
-    "€_per_liter": "€ per liter"
+    "€_per_liter": "€ per liter",
+    "Keine": "None"
 }
