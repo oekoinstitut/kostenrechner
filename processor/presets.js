@@ -117,6 +117,7 @@ var batteriepreise = {			// in € per kWh
 
 // Charging options costs in EUR
 var lademöglichkeiten = { 
+	"Keine": { "acquisition": 0, "maintenance": 0},
 	"Wallbox 3.7kW": { "acquisition": 350, "maintenance": 15},
 	"Wallbox bis 22kW": { "acquisition": 800, "maintenance": 50},
 	"Ladesäule 22kW": { "acquisition": 2600, "maintenance": 330},

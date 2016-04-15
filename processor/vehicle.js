@@ -85,13 +85,11 @@ function getPriceSurcharge(energy_type, car_type, year) {
 }
 
 function getChargingOptionPrice(option, year) {
-	if (option == "Keine") {return 0}
 	// Decrease in price is 5%/year
 	return presets.lademöglichkeiten[option]["acquisition"] * Math.pow(1 - 0.05, year - 2014);
 }
 
 function getChargingOptionMaintenancePrice(option) {
-	if (option == "Keine") {return 0}
 	return presets.lademöglichkeiten[option]["maintenance"];
 }
 
@@ -137,6 +135,7 @@ var Vehicle = function(params) {
 	this.reichweite = 150
 	this.energy_source = "strom_mix"
 	this.charging_option = "Keine"
+	this.charging_option_cost = 0
 	this.maintenance_costs_charger = 0
 	this.fleet_size = 1
 	this.traffic = "normaler Verkehr"
@@ -285,7 +284,7 @@ var Vehicle = function(params) {
 				this.residual_value[scenario] = Math.exp(presets.restwert_constants["a"]) 										  // Constant
 				this.residual_value[scenario] *= Math.exp(12 * presets.restwert_constants["b1"] * (this.holding_time)) 			  // Age
 				this.residual_value[scenario] *= Math.exp(presets.restwert_constants["b2"] /12 * this.mileage)					 // Yearly mileage
-				this.residual_value[scenario] *= Math.pow(this.price.total[scenario] - this.price.charging_option, presets.restwert_constants["b3"])				  // Initial price
+				this.residual_value[scenario] *= Math.pow(this.price.total[scenario] - this.charging_option_cost, presets.restwert_constants["b3"])				  // Initial price
 			} else if (method == "Methode 1" && this.energy_type == "BEV"){ 
 				temp_vehicle = new Vehicle({energy_type: "diesel",
 											car_type: this.car_type,
@@ -434,7 +433,7 @@ var Vehicle = function(params) {
 	}
 
 	this.getMaintenanceCosts = function(){
-		if ((this.energy_type =="BEV" || this.energy_type.indexOf("hybrid") > -1) && this.charging_option != "Keine") {
+		if (this.energy_type =="BEV" || this.energy_type.indexOf("hybrid") > -1) {
 			this.maintenance_costs_charger = presets.lademöglichkeiten[this.charging_option]["maintenance"] / this.fleet_size;
 		}
 		if (this.energy_type == "BEV" && this.car_type.indexOf("LNF") == -1) {
@@ -486,7 +485,7 @@ var Vehicle = function(params) {
 			if (this.energy_type == "benzin" || this.energy_type == "diesel") {
 				this.price.basis_price = getRawAcquisitionPrice(this.energy_type, this.car_type, this.acquisition_year)
 				this.acquisition_price = this.price.basis_price
-				this.price.charging_option = 0
+				this.charging_option_cost = 0
 				if (this.fixed_vars.hasOwnProperty("acquisition_price")) {
 					this.acquisition_price = this.fixed_vars["acquisition_price"]
 					this.price.basis_price = this.fixed_vars["acquisition_price"]
@@ -496,13 +495,16 @@ var Vehicle = function(params) {
 			} else {
 				this.price.basis_price = getRawAcquisitionPrice(this.energy_type, this.car_type, this.acquisition_year)
 				this.price.battery_price[scenario] = this.getBatteryPrice(scenario)
-				this.price.charging_option = getChargingOptionPrice(this.charging_option, this.acquisition_year) / this.fleet_size
+				this.charging_option_cost = getChargingOptionPrice(this.charging_option, this.acquisition_year) / this.fleet_size
+				if (this.fixed_vars.hasOwnProperty("charging_option_cost")) {
+					this.charging_option_cost = this.fixed_vars["charging_option_cost"]
+				}
 				this.acquisition_price = this.price.basis_price + this.price.battery_price["mittel"]
 				if (this.fixed_vars.hasOwnProperty("acquisition_price")) {
 					this.acquisition_price = this.fixed_vars["acquisition_price"]
 					this.price.basis_price = this.fixed_vars["acquisition_price"] - this.price.battery_price["mittel"]
 				}
-				this.price.total[scenario] = this.price.basis_price + this.price.battery_price[scenario] + this.price.charging_option
+				this.price.total[scenario] = this.price.basis_price + this.price.battery_price[scenario] + this.charging_option_cost
 			}
 
 			// Takes into accont the special cash reward of 3000€ that decreases by 500€ every year
@@ -803,7 +805,7 @@ var Vehicle = function(params) {
 		costs["vehicle_basis_cost"] = Math.round(this.price.basis_price + this.price.battery_price[scenario])
 		// Line removed following email from Apr 5
 		//costs["vehicle_battery"] = Math.round(this.price.battery_price[scenario])
-		costs["charging_infrastructure"] = Math.round(this.price.charging_option)
+		costs["charging_infrastructure"] = Math.round(this.charging_option_cost)
 		// Removed training costs 13 Apr as per client request
 		//costs["training_costs"] = this.training_costs
 		costs["total_cost"] = Math.round(this.price.total[scenario]) //+ this.training_costs
@@ -1021,6 +1023,7 @@ var Vehicle = function(params) {
 		this.residual_value_fixed = Math.round(this.residual_value_fixed * 100)/100
 		this.fuel_consumption = Math.round(this.fuel_consumption * 100)/100
 		this.acquisition_price = Math.round(this.acquisition_price * 100)/100
+		this.charging_option_cost = Math.round(this.charging_option_cost * 100)/100
 		
 	}
 

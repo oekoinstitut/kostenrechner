@@ -115,7 +115,7 @@
     "description": "desc6",
     "unit": null,
     "group": "Charging option",
-    "values": "\"Wallbox 3.7kW\",\"Wallbox bis 22kW\",\"Ladesäule 22kW\"",
+    "values": "\"Keine\",\"Wallbox 3.7kW\",\"Wallbox bis 22kW\",\"Ladesäule 22kW\"",
     "default": null,
     "hashelp": false,
     "interval": 0,
@@ -944,5 +944,27 @@
     "use": "TCO",
     "context": "vehicle",
     "name": "residual_value_fixed"
+  },
+  {
+    "id": "44",
+    "label": "Charging infrastructure cost",
+    "description": null,
+    "unit": "€",
+    "group": "Charging option",
+    "values": "0..30000",
+    "default": null,
+    "hashelp": false,
+    "interval": 100,
+    "hasslider": false,
+    "canbeonxaxis": false,
+    "shownonthelist": true,
+    "importancerank": 37,
+    "specifictoenergytype": "BEV, hybrid-benzin, hybrid-diesel",
+    "preliminary": false,
+    "parentid": null,
+    "editable": true,
+    "use": "TCO",
+    "context": "vehicle",
+    "name": "charging_option_cost"
   }
 ]

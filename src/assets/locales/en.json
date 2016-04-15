@@ -164,5 +164,6 @@
     "years": "years",
     "€_per_kwh": "€ per kWh",
     "€_per_liter": "€ per liter",
-    "Keine": "None"
+    "Keine": "None",
+    "Charging infrastructure cost": "Charging infrastructure cost"
 }
