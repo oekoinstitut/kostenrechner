@@ -28,7 +28,7 @@ Install the dependencies
 
 You might need to install npm and gulp with
 
-`sudo apt-get install npm && apt-get install gulp`
+`sudo apt-get install npm && apt-get install gulp` or `brew install npm && brew install gulp` on MacOS
 
 Launch the app with
 
