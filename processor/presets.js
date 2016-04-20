@@ -3,10 +3,10 @@
 var inflationsrate   = 0.017		// That's 1.7% per year
 var exchange_rate    = 1.25 		// How many $ for 1 €
 var discount_rate    = 0.05			// 5% per year
-var abschreibungszeitraum = 6  	// amortization period
-var unternehmenssteuersatz = 30 	// corporate tax * 100
-var sonder_afa = false				// special accounting rule to increase amortization for electro vehicles in the first year
-var bev_praemie = false 			// Cash bonus
+var abschreibungszeitraum = 6  	    // amortization period
+var unternehmenssteuersatz = 30 	// corporate tax
+var sonder_afa = false				// special accounting rule to increase amortization for electro vehicles in the first year deactivated by default
+var bev_praemie = false 			// Cash bonus deactivated by default
 
 // Energy prices in € per Liter and cents per kWh
 var energy_known_prices = {
@@ -24,6 +24,7 @@ var energy_known_prices = {
 	}
 }
 
+// Evolution of energy prices
 var energy_prices_evolution = {
 	"hydrocarbon": [
 		{
@@ -125,29 +126,6 @@ var lademöglichkeiten = {
 	"Ladesäule 100 kW DC": { "acquisition": 48500, "maintenance": 4600}	
 }
 
-//Training costs for electrical cars in 2014
-
-var schulungskosten = {
-	"keine Schulung": 0,
-	"Schulung intern": 30,
-	"Schulung externer Dienstleister": 1000
-}
-
-// Variables for oil prices
-var oil_price_2014   = {"diesel": 1.217/1.19, "benzin":1.546/1.19} 		// € per L
-var mineralölsteuer  = {"diesel": 0.4704, "benzin":0.6545} 		// € per L
-var deckungsbeitrag  = {"diesel": 0.1563, "benzin":0.1227}		// € per L
-var mehrwertsteuer   = 0										// No VAT for professionals
-var price_per_barrel = {"2020": 117, "2030": 124, "2050": 128}	// In $-2011
-
-//Variables for electricity prices in cents per kWh in 2011 €
-var electricity_prices = {
-	"2014": { "private": .2913/1.19, "industrie": .1349 },		// In 2014 - €
-	"2020": { "private": .292/1.19, "industrie": .159 },		// In 2011 - €
-	"2030": { "private": .284/1.19, "industrie": .157 },		// In 2011 - €
-	"2050": { "private": .268/1.19, "industrie": .147/1.19 }	// In 2011 - €
-}
-
 // Variables for evolution of energy consumption in % of reduction per decade
 var verbrauchsentwicklung = {
 	"benzin":  {"2010": -.3,  "2020": -.12},
@@ -164,7 +142,7 @@ var hubraum = {
 	"diesel": {"klein": 1383, "mittel": 1618,"groß": 1929, "LNF1": 1722, "LNF2": 2140}
 }
 
-// Liters or kWh per 100 km
+// Consumption in liters or kWh per 100 km
 var verbrauch = {
 	"benzin": {"klein": 6.94, "mittel": 8.08,"groß": 8.86},
 	"diesel": {"klein": 4.99, "mittel": 6,"groß": 6.39, "LNF1": 8.4, "LNF2": 9.8},
@@ -172,15 +150,14 @@ var verbrauch = {
 	"hybrid": {"klein": 5.21, "mittel": 6.06,"groß": 6.64}
 				}
 
-// Hybrid consume less fuel
+// Hybrid fuel consumption discount
 var hybrid_minderverbrauch = {
 	"klein" : .918,
 	"mittel" : .9211,
 	"groß" : .8725
 }
 
-// Hybrid consumes less lubricant
-
+// Hybrid lubricant consumption discount
 var hybrid_minderverbrauch_schmierstoff = .45
 
 //Number of days in the year when the vehicle is in use
@@ -217,6 +194,7 @@ var traffic_multiplicator = {
 	"schwerer Verkehr" : 1.2,
 	"sehr schwerer Verkehr" : 2
 }
+
 var reperaturkosten = {
 	"benzin": {
 		"klein": {
@@ -284,13 +262,36 @@ var co2_emissions = {
 	"diesel": 3.15
 }
 
-// Calculation of the Restwert
-
+// Calculation of the residual values
 var restwert_constants = {
 	"a": 0.97948,
 	"b1": -0.01437,
 	"b2": -0.000117,
 	"b3": 0.91569
+}
+
+/* Disused variables */
+
+//Training costs for electrical cars in 2014
+var schulungskosten = {
+	"keine Schulung": 0,
+	"Schulung intern": 30,
+	"Schulung externer Dienstleister": 1000
+}
+
+// Variables for oil prices
+var oil_price_2014   = {"diesel": 1.217/1.19, "benzin":1.546/1.19} 		// € per L
+var mineralölsteuer  = {"diesel": 0.4704, "benzin":0.6545} 		// € per L
+var deckungsbeitrag  = {"diesel": 0.1563, "benzin":0.1227}		// € per L
+var mehrwertsteuer   = 0										// No VAT for professionals
+var price_per_barrel = {"2020": 117, "2030": 124, "2050": 128}	// In $-2011
+
+//Variables for electricity prices in cents per kWh in 2011 €
+var electricity_prices = {
+	"2014": { "private": .2913/1.19, "industrie": .1349 },		// In 2014 - €
+	"2020": { "private": .292/1.19, "industrie": .159 },		// In 2011 - €
+	"2030": { "private": .284/1.19, "industrie": .157 },		// In 2011 - €
+	"2050": { "private": .268/1.19, "industrie": .147/1.19 }	// In 2011 - €
 }
 
 exports.inflationsrate = inflationsrate
