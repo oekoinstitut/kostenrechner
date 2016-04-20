@@ -46,6 +46,14 @@ Update the app with
 
 `gulp vehicle`
 
+It's recommended to push your changes to the git repository by doing
+
+`git add processor/presets.js`
+
+`git commit -m "changed preset variables"`
+
+`git push origin master`
+
 ## Change the variables in the interface
 
 Variables for the interface are in the following Google Spreadsheet: [https://docs.google.com/spreadsheets/d...](https://docs.google.com/spreadsheets/d/1-BxTbzc5z-04-0-3Q4KJTJtLKmmjAOE5s8X8bzEdv5Q/edit#gid=0)
