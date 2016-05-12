@@ -37,9 +37,16 @@ angular.module 'oekoKostenrechner'
       # A setting has been edited
       editSetting: (setting, value)=>
         @frozenSettings[setting] = value
-      gs: (context, name)=>
+      gs: (context, name, id)=>
         (value)=>
           if value?
+            # Input values
+            values = @values[id]
+            # Value not in interval!
+            if values.step? and parseInt(values.step) is values.step and not (value%values.step is 0)
+              # Reset initial value
+              value = @[context][name]
+            # if input.getType() is 'interval' and
             @frozenSettings[name] = @[context][name] = value
           @[context][name]
       # If the given setting is visible

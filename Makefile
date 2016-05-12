@@ -7,3 +7,4 @@ deploy:
 install:
 	npm install
 	bower install
+	gulp vehicle

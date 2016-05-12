@@ -18,12 +18,12 @@ form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm", novalida
               div(ng-switch, on=":: modal.inputs[setting.id].getType()", ng-if="setting.context === context")
                 div(ng-switch-when="boolean")
                   input(type="checkbox", 
-                    ng-model="modal.gs(context, setting.name)", 
+                    ng-model="modal.gs(context, setting.name, setting.id)", 
                     ng-model-options="{ getterSetter: true }")
                 div(ng-switch-when="enum", ng-class="{ 'input-group': setting.unit }")
                   select.form-control(
                     ng-options="val as (val | translate) for val in modal.values[setting.id].range",
-                    ng-model="modal.gs(context, setting.name)", 
+                    ng-model="modal.gs(context, setting.name, setting.id)", 
                     ng-model-options="{ getterSetter: true }")
                   span.input-group-addon(ng-show="setting.unit") 
                     | {{ setting.unit | translate }}
@@ -32,7 +32,7 @@ form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm", novalida
                     min="{{ modal.values[setting.id].floor }}",
                     max="{{ modal.values[setting.id].ceil }}",
                     step="{{ modal.values[setting.id].step != 1 ? modal.values[setting.id].step : 'any' }}",
-                    ng-model="modal.gs(context, setting.name)", 
+                    ng-model="modal.gs(context, setting.name, setting.id)", 
                     ng-model-options="{ getterSetter: true, updateOn: 'blur' }")
                   span.input-group-addon(ng-show="setting.unit") 
                     | {{ setting.unit | translate }}
