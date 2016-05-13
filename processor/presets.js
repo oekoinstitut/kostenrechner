@@ -6,7 +6,7 @@ var discount_rate    = 0.05			// 5% per year
 var abschreibungszeitraum = 6  	    // amortization period
 var unternehmenssteuersatz = 30 	// corporate tax
 var sonder_afa = false				// special accounting rule to increase amortization for electro vehicles in the first year deactivated by default
-var bev_praemie = false 			// Cash bonus deactivated by default
+var bev_praemie = true 			// Cash bonus deactivated by default
 
 // Energy prices in € per Liter and cents per kWh
 var energy_known_prices = {

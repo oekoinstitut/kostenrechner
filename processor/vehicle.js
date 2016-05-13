@@ -147,6 +147,7 @@ var Vehicle = function(params) {
 	this.second_user_yearly_mileage = 10000
 	this.max_battery_charges = 2500
 	this.battery_price = 0
+	this.cash_bonus_amount = 4000
 	this.bev_praemie = presets.bev_praemie
 	this.sonder_afa = presets.sonder_afa
 	this.unternehmenssteuersatz = presets.unternehmenssteuersatz
@@ -167,6 +168,13 @@ var Vehicle = function(params) {
 	if (this.car_type.indexOf("LNF") >= 0 && this.energy_type == "BEV"){
 		this.reichweite = 130
 	}
+
+	// Cash bonus is less for hybrid vehicles
+	if (this.acquisition_year > 2019){
+		this.cash_bonus_amount = 0
+	}
+
+	// Cash bonus is nil after 2019
 
 	this.share_electric_temp = this.share_electric
 	this.charges_per_year = this.mileage / this.reichweite
@@ -510,7 +518,7 @@ var Vehicle = function(params) {
 			// Takes into accont the special cash reward of 3000€ that decreases by 500€ every year
 			if (this.bev_praemie == true) {
 				if (this.acquisition_year >= 2016) {
-					this.price.cash_bonus = 3000 - 500 * (this.acquisition_year - 2016)
+					this.price.cash_bonus = this.cash_bonus_amount - 500 * (this.acquisition_year - 2016)
 					
 					if (this.price.cash_bonus < 0){
 						this.price.cash_bonus = 0
@@ -756,9 +764,9 @@ var Vehicle = function(params) {
 		costs["amortization_vehicle"] = Math.round(- this.amortization[scenario][year])
 		
 		// Special case for BEV vehicles older than 6 years
-		if (this.energy_type == "BEV" && (year - this.acquisition_year) >= 6) {
+		if (this.energy_type == "BEV" && (year - 2014) >= 6) {
 			costs["fixed_costs"]["car_tax"] = getInflatedPrice(presets.kfzsteuer[this.energy_type][this.car_type], year - this.acquisition_year, this.inflationsrate/100, true)
-		} else if (this.energy_type == "BEV" && (year - this.acquisition_year) < 6) {
+		} else if (this.energy_type == "BEV" && (year - 2014) < 6) {
 			costs["fixed_costs"]["car_tax"] = 0
 		}
 
@@ -826,6 +834,9 @@ var Vehicle = function(params) {
 		costs["fixed_costs"]["insurance"] = 0
 		costs["fixed_costs"]["car_tax"] = 0
 
+		// Costs are in € of the year of acquisition
+		//costs = this.discountCosts(costs, this.acquisition_year - 2014)
+
 		return costs
 	}
 
@@ -868,8 +879,11 @@ var Vehicle = function(params) {
 		for (var i in scenarios) {
 			var scenario = scenarios[i];
 
+			var holding_time_temp = this.holding_time
+
 			for (var holding_time = 1; holding_time <= 12; holding_time++){
-				
+				this.holding_time = holding_time
+				this.computeCosts()
 				costs = this.initCosts(scenario)
 				co2 = 0
 				
@@ -890,6 +904,10 @@ var Vehicle = function(params) {
 				this.CO2_by_holding_time[holding_time] = co2
 
 			}
+
+			// goes back to initial positions
+			this.holding_time = holding_time_temp
+			this.computeCosts()
 		}
 	}
 

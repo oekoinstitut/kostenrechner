@@ -15,6 +15,7 @@
     "Car tax": "Car tax",
     "Car type": "Car type",
     "car_tax": "Car tax",
+    "Charging infrastructure cost": "Charging infrastructure cost",
     "Charging infrastructure maintenance": "Charging infrastructure maintenance",
     "Charging option": "Charging option",
     "charging_infrastructure": "Charging infrastructure",
@@ -83,8 +84,9 @@
     "hydrocarbon_unit": "L/100 km",
     "Inflation rate": "Inflation rate",
     "Inpection costs": "Inpection costs",
-    "Insurance": "Insurance",
     "insurance": "Insurance costs",
+    "Insurance": "Insurance",
+    "Keine": "None",
     "keine Schulung": "No training",
     "kg_unit": "Kg of CO₂",
     "klein": "Small",
@@ -164,6 +166,7 @@
     "years": "years",
     "€_per_kwh": "€ per kWh",
     "€_per_liter": "€ per liter",
-    "Keine": "None",
-    "Charging infrastructure cost": "Charging infrastructure cost"
+    "Vehicle costs": "Vehicle costs",
+    "Energy costs": "Energy costs",
+    "Autonomy": "Autonomy"
 }

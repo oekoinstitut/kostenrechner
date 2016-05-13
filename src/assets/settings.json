@@ -657,7 +657,7 @@
     "editable": true,
     "use": "TCO",
     "context": "vehicle",
-    "name": "fixed_costs_check_up"
+    "name": "fixed_costs_insurance"
   },
   {
     "id": "31",
@@ -679,7 +679,7 @@
     "editable": true,
     "use": "TCO",
     "context": "vehicle",
-    "name": "fixed_costs_insurance"
+    "name": "fixed_costs_check_up"
   },
   {
     "id": "32",
@@ -717,7 +717,7 @@
     "canbeonxaxis": false,
     "shownonthelist": true,
     "importancerank": 44,
-    "specifictoenergytype": "BEV",
+    "specifictoenergytype": "BEV, hybrid-benzin, hybrid-diesel",
     "preliminary": false,
     "parentid": null,
     "editable": true,
@@ -966,5 +966,27 @@
     "use": "TCO",
     "context": "vehicle",
     "name": "charging_option_cost"
+  },
+  {
+    "id": "45",
+    "label": "Cash bonus amount",
+    "description": null,
+    "unit": "€",
+    "group": "Financials",
+    "values": "0..5000",
+    "default": null,
+    "hashelp": false,
+    "interval": 500,
+    "hasslider": false,
+    "canbeonxaxis": false,
+    "shownonthelist": true,
+    "importancerank": 44,
+    "specifictoenergytype": "BEV, hybrid-benzin, hybrid-diesel",
+    "preliminary": false,
+    "parentid": null,
+    "editable": true,
+    "use": "TCO",
+    "context": "vehicle",
+    "name": "cash_bonus_amount"
   }
 ]
