@@ -190,6 +190,8 @@ var Vehicle = function(params) {
 	this.amortization = {}
 
 	this.TCO = {}
+	this.TCO_simplified = {}
+	this.CO2 = 0
 	this.TCO_by_holding_time = {}
 	this.TCO_by_acquisition_year = {}
 	this.TCO_by_mileage = {}
@@ -872,6 +874,13 @@ var Vehicle = function(params) {
 
 	this.getTCO = function() {
 		this.TCO = this.TCO_by_mileage["mittel"][this.mileage]
+		this.CO2 = this.CO2_by_mileage[this.mileage]
+
+		this.TCO_simplified["net_cost"] = this.TCO.vehicle_basis_cost + this.TCO.residual_value + this.TCO.amortization_vehicle
+		this.TCO_simplified["charging_infrastructure"] = this.TCO.charging_infrastructure
+		this.TCO_simplified["fixed_costs"] = this.TCO.fixed_costs.check_up + this.TCO.fixed_costs.insurance + this.TCO.fixed_costs.car_tax
+		this.TCO_simplified["variable_costs"] = this.TCO.variable_costs.lubricant_costs + this.TCO.variable_costs.maintenance_costs + this.TCO.variable_costs.amortization
+		this.TCO_simplified["energy_costs"] = this.TCO.energy_costs
 	}
 
 	this.getTCOByHoldingTime = function(){
@@ -1066,6 +1075,6 @@ module.exports.presets = presets
 
 //vehicle = new Vehicle({car_type:"klein", energy_type:"BEV", holding_time: 4, mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
 //console.log(vehicle.price)
-//console.log(vehicle.TCO)
+//console.log(vehicle.CO2)
 //console.log(vehicle.TCO_by_acquisition_year)
 // console.log(vehicle.residual_value["mittel"])
