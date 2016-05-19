@@ -8,8 +8,12 @@
         | {{ "tco_sharing_btn" | translate }}
     li(ui-sref-active="active")
       a(ui-sref="main.chart.co2" ng-bind-html="'co2_btn' | translate")
+    li(ui-sref-active="active")
+      a(ui-sref="main.chart.table" ng-bind-html="'table_btn' | translate")
+      
   h2.main__chart__heading {{ "tco_title" | translate }}    
-  .main__chart__view(ng-view)
+  
+  .main__chart__view(ui-view)
     .main__chart__view__workspace
       chart(x="chart.xAxis", y="chart.yAxis", type="chart.type", 
             vehicles="main.vehicles", 
