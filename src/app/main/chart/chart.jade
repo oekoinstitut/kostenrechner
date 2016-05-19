@@ -15,7 +15,7 @@
   
   .main__chart__view(class="main__chart__view--{{ chart.type }}")
     div(ui-view)
-    div(ng-hide="'main.chart.table' | isState")
+    div(ng-if="!('main.chart.table' | isState)")
       .main__chart__view__workspace
         chart(x="chart.xAxis", y="chart.yAxis", type="chart.type", 
               vehicles="main.vehicles", 
