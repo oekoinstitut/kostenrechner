@@ -25,6 +25,18 @@
     border:1px solid @panel-default-border;
     border-bottom-width:2px;
 
+    &--bar .c3 svg .c3-chart-texts {
+
+      text {
+        fill: white !important;
+      }
+    }
+
+    &--bar .c3 svg .c3-legend-item,
+    &--bar .c3 svg .c3-chart {
+      pointer-events: none;
+    }
+
     &__workspace {
       background:@panel-bg;
       border-bottom: 2px solid @panel-default-border;
@@ -37,9 +49,10 @@
 
       .c3 svg {
 
-        font-family: @font-family-base;
-        font-size:1em;
-
+        &, .c3-legend-item {
+          font-family: @font-family-base;
+          font-size:1em;
+        }
 
         .c3-lines[class*="-pro"],
         .c3-lines[class*="-contra"] {

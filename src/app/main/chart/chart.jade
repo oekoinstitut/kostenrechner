@@ -13,19 +13,21 @@
       
   h2.main__chart__heading {{ "tco_title" | translate }}    
   
-  .main__chart__view(ui-view)
-    .main__chart__view__workspace
-      chart(x="chart.xAxis", y="chart.yAxis", type="chart.type", 
-            vehicles="main.vehicles", 
-            processor="main.processor")
-    
-    .row.main__chart__view__options.slide(ng-hide="chart.type === 'bar'")
-      .col-xs-12
-        label {{ 'horizontal_axis' | translate }}
-        select.form-control(ng-options="opt.name as (opt.label | translate) for opt in chart.xAxisOptions", 
-                            ng-model="chart.xAxis", ng-disabled="chart.type === 'bar'")
-    .main__chart__view__explainer(translate="")
-      | {{ chart.getExplainer() }}
+  .main__chart__view(class="main__chart__view--{{ chart.type }}")
+    div(ui-view)
+    div(ng-hide="'main.chart.table' | isState")
+      .main__chart__view__workspace
+        chart(x="chart.xAxis", y="chart.yAxis", type="chart.type", 
+              vehicles="main.vehicles", 
+              processor="main.processor")
+      
+      .row.main__chart__view__options.slide(ng-hide="chart.type === 'bar'")
+        .col-xs-12
+          label {{ 'horizontal_axis' | translate }}
+          select.form-control(ng-options="opt.name as (opt.label | translate) for opt in chart.xAxisOptions", 
+                              ng-model="chart.xAxis", ng-disabled="chart.type === 'bar'")
+      .main__chart__view__explainer(translate="")
+        | {{ chart.getExplainer() }}
   
   a.main__chart__print(ng-click="chart.print()")
     i.fa.fa-print.fa-3x
