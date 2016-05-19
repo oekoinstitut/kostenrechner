@@ -7,6 +7,9 @@ angular.module 'oekoKostenrechner'
         controller: 'MainController'
         controllerAs: 'main'
         resolve:
+          language: ($translate)->
+            'ngInject'
+            $translate.onReady()
           settings: ($http)->
             'ngInject'
             # Get processor settings

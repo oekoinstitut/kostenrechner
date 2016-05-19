@@ -18,9 +18,10 @@
     "angularjs-slider": "~2.8.0",
     "c3": "0.4.11-rc4",
     "d3-format": "https://d3js.org/d3-format.v0.5.min.js",
-    "angular-translate": "~2.9.1",
-    "angular-translate-loader-static-files": "~2.9.1",
-    "angular-translate-storage-cookie": "~2.9.1"
+    "angular-translate": "2.11.0",
+    "angular-translate-loader-static-files": "2.11.0",
+    "angular-translate-storage-cookie": "2.11.0",
+    "angular-markdown-directive": "^0.3.1"
   },
   "devDependencies": {
     "angular-mocks": "~1.5.*"
@@ -39,6 +40,7 @@
   },
   "resolutions": {
     "jquery": "~2.1.4",
-    "angular": "~1.5.*"
+    "angular": "~1.5.*",
+    "angular-translate": "2.11.0"
   }
 }

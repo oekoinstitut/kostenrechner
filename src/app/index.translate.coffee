@@ -18,6 +18,6 @@ angular.module 'oekoKostenrechner'
           'de_DE', 'de-DE', 'de'
         ]
         if avalaibleKeys.indexOf(lang) is -1 then 'en' else lang
-      .fallbackLanguage ['en', 'de']
+      .fallbackLanguage 'en'
       .useCookieStorage()
       .useSanitizeValueStrategy null
