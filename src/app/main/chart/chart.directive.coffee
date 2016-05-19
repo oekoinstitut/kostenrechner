@@ -32,6 +32,9 @@ angular.module 'oekoKostenrechner'
             # Enhance the chart with d3
             done: @enhanceChart
             categories: _.map(do @getXValues, @formatTick)
+          # Show or hide the legend
+          do @chart.legend[ if @hasLegend() then 'show' else 'hide' ]
+          do @chart.tooltip[ if @hasTooltip() then 'show' else 'hide' ]
           # Update axis
           @chart.axis.labels y: @generateYAxis(cols).label.text
           @chart.axis.min y: @generateYAxis(cols).min
@@ -74,7 +77,7 @@ angular.module 'oekoKostenrechner'
           c3.chart.internal.fn.getTooltipContent.apply(@chart.internal, arguments)
         getVehicleDisplay: (vehicle)->
           if scope.type is 'bar'
-            vehicle.TCO
+            vehicle.TCO_simplified
           else
             display = scope.processor.findDisplay xaxis: scope.x, yaxis: scope.y
             # Extract display for this vehicle
@@ -164,6 +167,11 @@ angular.module 'oekoKostenrechner'
                 fn display
             # Create a serie line for each value
             series = series.concat( _.concat [n], values[n] for n of values)
+            # Change series order
+            order = ['x', 'net_cost', 'charging_infrastructure', 'fixed_costs', 'variable_costs', 'energy_costs']
+            series = _.sortBy series, (s)-> order.indexOf(s[0])
+            # Translate series names
+            series = _.each series, (s)-> s[0] = $translate.instant(s[0])
           series
         formatTick: (d)=>
           # Format function according to the current chart type and x axis
@@ -224,6 +232,7 @@ angular.module 'oekoKostenrechner'
           else
             []
         generateTooltip: =>
+          show: do @hasTooltip
           format:
             # Translate labels
             name: (v)-> $translate.instant v
@@ -237,6 +246,8 @@ angular.module 'oekoKostenrechner'
           position: (data, width)=>
             maxLeft = element.width() - width
             top: 0, left: Math.min(@chart.internal.x(data[0].x), maxLeft)
+        hasLegend: -> scope.type is 'bar'
+        hasTooltip: -> scope.type isnt 'bar'
         generateChart: =>
           columns = do @generateColumns
           window.c = @chart = c3.generate
@@ -251,7 +262,7 @@ angular.module 'oekoKostenrechner'
               right: 20
               top: 20
             legend:
-              show: no
+              show: @hasLegend()
             point:
               show: no
             line:
@@ -269,6 +280,7 @@ angular.module 'oekoKostenrechner'
               x: 'x'
               type: scope.type
               columns: columns
+              order: null
               # We generate those options according to the columns
               colors: @generateColors columns
               groups: @generateGroups columns
