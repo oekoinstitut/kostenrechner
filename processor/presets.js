@@ -1,6 +1,6 @@
 
 // Financial variables
-var inflationsrate   = 0.017		// That's 1.7% per year
+var inflationsrate   = 0.015		// That's 1.5% per year
 var exchange_rate    = 1.25 		// How many $ for 1 €
 var discount_rate    = 0.05			// 5% per year
 var abschreibungszeitraum = 6  	    // amortization period
