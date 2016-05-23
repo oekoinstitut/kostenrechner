@@ -153,7 +153,7 @@ var Vehicle = function(params) {
 	this.unternehmenssteuersatz = presets.unternehmenssteuersatz
 	this.abschreibungszeitraum = presets.abschreibungszeitraum
 	this.inflationsrate = presets.inflationsrate * 100
-	this.discount_rate = presets.discount_rate
+	this.discount_rate = presets.discount_rate * 100
 	this.energy_known_prices = presets.energy_known_prices
 	this.energy_prices_evolution = presets.energy_prices_evolution
 	this.limited = false
@@ -749,6 +749,10 @@ var Vehicle = function(params) {
 			this.inflationsrate = this.fixed_vars["inflationsrate"]
 		}
 
+		if (this.fixed_vars.hasOwnProperty("discount_rate")) {
+			this.discount_rate = this.fixed_vars["discount_rate"]
+		}
+
 		costs["fixed_costs"] = {
 			"check_up" : getInflatedPrice(this.fixed_costs.check_up, year - this.acquisition_year, this.inflationsrate/100, true),
 			"insurance" : getInflatedPrice(this.fixed_costs.insurance, year - this.acquisition_year, this.inflationsrate/100, true),
@@ -822,7 +826,7 @@ var Vehicle = function(params) {
 
 		costs["residual_value"] = - this.residual_value[scenario]
 		costs["residual_value"] = getInflatedPrice(costs["residual_value"], this.holding_time - 1, this.inflationsrate/100, false)
-		costs["residual_value"] = Math.round(costs["residual_value"] / Math.pow(1 + this.discount_rate, this.holding_time - 1))
+		costs["residual_value"] = Math.round(costs["residual_value"] / Math.pow(1 + this.discount_rate/100, this.holding_time - 1))
 
 		// Init vars
 		costs["variable_costs"] = {}
@@ -862,10 +866,10 @@ var Vehicle = function(params) {
 			if (Object.keys(costs[i]).length > 0){
 
 				for (var j in costs[i]) {
-					costs[i][j] = Math.round(costs[i][j] / Math.pow(1 + this.discount_rate, period))
+					costs[i][j] = Math.round(costs[i][j] / Math.pow(1 + this.discount_rate/100, period))
 				}
 			} else {
-				costs[i] = Math.round(costs[i] / Math.pow(1 + this.discount_rate, period))
+				costs[i] = Math.round(costs[i] / Math.pow(1 + this.discount_rate/100, period))
 			}
 		}
 
