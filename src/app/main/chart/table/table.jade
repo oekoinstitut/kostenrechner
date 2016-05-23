@@ -2,66 +2,75 @@
   table.table.table-striped
     thead
        tr
-        th 
+        th(translate) totals
+        th(ng-repeat="vehicle in main.vehicles", style="width: 35%")     
           i.fa.fa-car
-        th(ng-repeat="vehicle in main.vehicles")
+          span &nbsp;
           span(ng-bind-html="'vehicle_name' | translate:main.getVehicleOpts(vehicle)")
     tbody
       tr
         td(translate) tco_title
         td(ng-repeat="vehicle in main.vehicles")
-          | {{ vehicle.TCO.total_cost }}€
+          | {{ vehicle.TCO.total_cost | number }}€
       tr
         td(translate) co2_title
         td(ng-repeat="vehicle in main.vehicles")
-          | {{ vehicle.CO2 }}kg CO₂
+          | {{ vehicle.CO2 | number }}kg CO₂
+          
+  table.table.table-striped
+    thead
+       tr
+        th(translate) details
+        th(ng-repeat="vehicle in main.vehicles", style="width: 35%")        
+          i.fa.fa-car
+          span &nbsp;
+          span(ng-bind-html="'vehicle_name' | translate:main.getVehicleOpts(vehicle)")
+    tbody                  
       tr 
         td(translate) vehicle_basis_cost  
         td(ng-repeat="vehicle in main.vehicles")
-          | {{ vehicle.TCO.vehicle_basis_cost }}€
-
+          | {{ vehicle.TCO.vehicle_basis_cost | number }}€
       tr 
         td(translate) cash_bonus  
         td(ng-repeat="vehicle in main.vehicles")
-          | {{ vehicle.TCO.cash_bonus }}€
-      
+          | {{ vehicle.TCO.cash_bonus | number }}€
       tr 
         td(translate) charging_infrastructure  
         td(ng-repeat="vehicle in main.vehicles")
-          | {{ vehicle.TCO.charging_infrastructure }}€
+          | {{ vehicle.TCO.charging_infrastructure | number }}€
       tr 
         td(translate) energy_costs  
         td(ng-repeat="vehicle in main.vehicles")
-          | {{ vehicle.TCO.energy_costs }}€
+          | {{ vehicle.TCO.energy_costs | number }}€
       tr 
         td(translate) lubricant_costs  
         td(ng-repeat="vehicle in main.vehicles")
-          | {{ vehicle.TCO.variable_costs.lubricant_costs }}€
+          | {{ vehicle.TCO.variable_costs.lubricant_costs | number }}€
       tr 
         td(translate) maintenance_costs  
         td(ng-repeat="vehicle in main.vehicles")
-          | {{ vehicle.TCO.variable_costs.maintenance_costs }}€
+          | {{ vehicle.TCO.variable_costs.maintenance_costs | number }}€
       tr 
         td(translate) amortization  
         td(ng-repeat="vehicle in main.vehicles")
-          | {{ vehicle.TCO.variable_costs.amortization }}€
+          | {{ vehicle.TCO.variable_costs.amortization | number }}€
       tr 
         td(translate) check_up  
         td(ng-repeat="vehicle in main.vehicles")
-          | {{ vehicle.TCO.fixed_costs.check_up }}€
+          | {{ vehicle.TCO.fixed_costs.check_up | number }}€
       tr 
         td(translate) insurance  
         td(ng-repeat="vehicle in main.vehicles")
-          | {{ vehicle.TCO.fixed_costs.insurance }}€
+          | {{ vehicle.TCO.fixed_costs.insurance | number }}€
       tr 
         td(translate) car_tax  
         td(ng-repeat="vehicle in main.vehicles")
-          | {{ vehicle.TCO.fixed_costs.car_tax }}€
+          | {{ vehicle.TCO.fixed_costs.car_tax | number }}€
       tr 
         td(translate) amortization_vehicle  
         td(ng-repeat="vehicle in main.vehicles")
-          | {{ vehicle.TCO.amortization_vehicle }}€
+          | {{ vehicle.TCO.amortization_vehicle | number }}€
       tr 
         td(translate) residual_value  
         td(ng-repeat="vehicle in main.vehicles")
-          | {{ vehicle.TCO.residual_value }}€
+          | {{ vehicle.TCO.residual_value | number }}€

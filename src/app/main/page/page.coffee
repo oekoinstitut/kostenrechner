@@ -6,6 +6,9 @@ angular.module 'oekoKostenrechner'
         controller: 'MainPageController'
         controllerAs: 'page'
         url: 'page/:slug'
+        params:
+          language:
+            value: null
         resolve:
           content: ($stateParams, $http, $translate)->
             'ngInject'
@@ -15,7 +18,7 @@ angular.module 'oekoKostenrechner'
               # Look into the right directory
               $stateParams.slug,
               # Choose the right language
-              ( $translate.proposedLanguage() or $translate.use() ) + '.md'
+              ( $stateParams.language or $translate.proposedLanguage() or $translate.use() ) + '.md'
             ].join('/')
             # Return a promise
             $http.get(path).then (res)-> res.data

@@ -1,6 +1,8 @@
 angular.module 'oekoKostenrechner'
   .service 'Processor', (DynamicInput)->
     class Processor
+      # List of user's vehicles
+      vehicles: []
       constructor: (@settings, @display)->
         # The @settings object define every variables
         # The @display defines variables combinations that can be calculated

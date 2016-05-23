@@ -37,6 +37,14 @@
       pointer-events: none;
     }
 
+    // Ugly (but working ) way to reverse legen items
+    &--bar .c3 svg .c3-legend-item {
+      &:nth-child(1) { .translate(0,  1rem * 8); }
+      &:nth-child(2) { .translate(0,  1rem * 4); }
+      &:nth-child(4) { .translate(0, -1rem * 4); }
+      &:nth-child(5) { .translate(0, -1rem * 8); }
+    }
+
     &__workspace {
       background:@panel-bg;
       border-bottom: 2px solid @panel-default-border;

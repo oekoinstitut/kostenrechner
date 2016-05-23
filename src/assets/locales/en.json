@@ -193,5 +193,7 @@
     "€_per_kwh": "€ per kWh",
     "€_per_liter": "€ per liter",
     "Cash bonus amount": "Amount of the direct subsidy",
-    "cash_bonus": "Direct subsidy"
+    "cash_bonus": "Direct subsidy",
+    "totals": "Totals",
+    "details": "Details"
 }
