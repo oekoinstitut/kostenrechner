@@ -9,6 +9,7 @@
     "Amortization period": "Amortization period",
     "amortization_vehicle": "Amortization of the vehicle",
     "app_title": "Total cost of ownership calculator",
+    "Autonomy": "Autonomy",
     "benzin": "Gasoline",
     "BEV": "Battery electric (BEV)",
     "cancel_modal": "Cancel",
@@ -53,6 +54,7 @@
     "elec_unit": "kWh/100km",
     "Electrical details": "Electrical details",
     "Electricity consumption": "Electricity consumption",
+    "Energy costs": "Energy costs",
     "Energy source": "Energy source",
     "Energy type": "Energy type",
     "energy_costs": "Energy costs",
@@ -84,8 +86,8 @@
     "hydrocarbon_unit": "L/100 km",
     "Inflation rate": "Inflation rate",
     "Inpection costs": "Inpection costs",
-    "insurance": "Insurance costs",
     "Insurance": "Insurance",
+    "insurance": "Insurance costs",
     "Keine": "None",
     "keine Schulung": "No training",
     "kg_unit": "Kg of CO₂",
@@ -150,6 +152,7 @@
     "Training costs": "Training costs",
     "Training option": "Training option",
     "training_costs": "Training costs",
+    "Vehicle costs": "Vehicle costs",
     "Vehicle details": "Vehicle details",
     "Vehicle use": "Vehicle use",
     "vehicle_basis_cost": "Basis price of vehicle",
@@ -165,8 +168,5 @@
     "welcome_title": "Total cost of ownership calculator",
     "years": "years",
     "€_per_kwh": "€ per kWh",
-    "€_per_liter": "€ per liter",
-    "Vehicle costs": "Vehicle costs",
-    "Energy costs": "Energy costs",
-    "Autonomy": "Autonomy"
+    "€_per_liter": "€ per liter"
 }
