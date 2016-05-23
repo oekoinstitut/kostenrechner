@@ -2,7 +2,7 @@
   {
     "id": "1",
     "label": "Acquisition year",
-    "description": "desc1",
+    "description": null,
     "unit": null,
     "group": "Vehicle details",
     "values": "2016..2020",
@@ -24,7 +24,7 @@
   {
     "id": "2",
     "label": "Holding time",
-    "description": "desc2",
+    "description": null,
     "unit": "years",
     "group": "Vehicle use",
     "values": "1..12",
@@ -46,7 +46,7 @@
   {
     "id": "3",
     "label": "Mileage",
-    "description": "desc3",
+    "description": null,
     "unit": "km_per_year",
     "group": "Vehicle use",
     "values": "0..50000",
@@ -156,7 +156,7 @@
   {
     "id": "8",
     "label": "Corporate tax",
-    "description": "desc8",
+    "description": null,
     "unit": "%",
     "group": "Financials",
     "values": "0..100",
@@ -178,7 +178,7 @@
   {
     "id": "9",
     "label": "Amortization period",
-    "description": "desc9",
+    "description": null,
     "unit": "years",
     "group": "Financials",
     "values": "1..10",
@@ -209,7 +209,7 @@
     "interval": 0,
     "hasslider": false,
     "canbeonxaxis": false,
-    "shownonthelist": true,
+    "shownonthelist": false,
     "importancerank": 43,
     "specifictoenergytype": "BEV",
     "preliminary": false,
@@ -244,7 +244,7 @@
   {
     "id": "12",
     "label": "Repair costs",
-    "description": "desc12",
+    "description": null,
     "unit": "euro_per_year",
     "group": "Maintenance",
     "values": "0..100000",
@@ -266,7 +266,7 @@
   {
     "id": "13",
     "label": "Inpection costs",
-    "description": "desc13",
+    "description": null,
     "unit": "euro_per_year",
     "group": "Maintenance",
     "values": "0..100000",
@@ -288,7 +288,7 @@
   {
     "id": "14",
     "label": "Tires",
-    "description": "desc14",
+    "description": null,
     "unit": "euro_per_year",
     "group": "Maintenance",
     "values": "0..100000",
@@ -618,7 +618,7 @@
   {
     "id": "29",
     "label": "Car tax",
-    "description": "desc29",
+    "description": null,
     "unit": "euro_per_year",
     "group": "Fixed costs",
     "values": "0..10000",
@@ -640,7 +640,7 @@
   {
     "id": "30",
     "label": "Insurance",
-    "description": "desc30",
+    "description": null,
     "unit": "euro_per_year",
     "group": "Fixed costs",
     "values": "0..10000",
@@ -662,7 +662,7 @@
   {
     "id": "31",
     "label": "Check up",
-    "description": "desc31",
+    "description": null,
     "unit": "euro_per_year",
     "group": "Fixed costs",
     "values": "0..10000",
@@ -723,7 +723,7 @@
     "editable": true,
     "use": "TCO",
     "context": "vehicle",
-    "name": "bev_praemie"
+    "name": "praemie"
   },
   {
     "id": "34",
@@ -750,7 +750,7 @@
   {
     "id": "35",
     "label": "Inflation rate",
-    "description": null,
+    "description": "desc35",
     "unit": "pc_per_year",
     "group": "Financials",
     "values": "0..20",
@@ -772,7 +772,7 @@
   {
     "id": "36",
     "label": "2016 benzin price",
-    "description": null,
+    "description": "desc36",
     "unit": "€_per_liter",
     "group": "Energy costs",
     "values": "0..5",
@@ -794,7 +794,7 @@
   {
     "id": "37",
     "label": "2016 diesel price",
-    "description": null,
+    "description": "desc37",
     "unit": "€_per_liter",
     "group": "Energy costs",
     "values": "0..5",
@@ -816,7 +816,7 @@
   {
     "id": "38",
     "label": "2016 electricity price",
-    "description": null,
+    "description": "desc38",
     "unit": "€_per_kwh",
     "group": "Energy costs",
     "values": "0..5",
@@ -838,7 +838,7 @@
   {
     "id": "39",
     "label": "evolution petrol price",
-    "description": null,
+    "description": "desc39",
     "unit": "pc_per_year",
     "group": "Energy costs",
     "values": "-50..50",
@@ -860,7 +860,7 @@
   {
     "id": "40",
     "label": "evolution electricity 2010-2020",
-    "description": null,
+    "description": "desc40",
     "unit": "pc_per_year",
     "group": "Energy costs",
     "values": "-50..50",
@@ -882,7 +882,7 @@
   {
     "id": "41",
     "label": "evolution electricity 2020-2030",
-    "description": null,
+    "description": "desc41",
     "unit": "pc_per_year",
     "group": "Energy costs",
     "values": "-50..50",
@@ -904,7 +904,7 @@
   {
     "id": "42",
     "label": "evolution electricity 2030-2050",
-    "description": null,
+    "description": "desc42",
     "unit": "pc_per_year",
     "group": "Energy costs",
     "values": "-50..50",
@@ -948,7 +948,7 @@
   {
     "id": "44",
     "label": "Charging infrastructure cost",
-    "description": null,
+    "description": "desc44",
     "unit": "€",
     "group": "Charging option",
     "values": "0..30000",
@@ -988,5 +988,27 @@
     "use": "TCO",
     "context": "vehicle",
     "name": "cash_bonus_amount"
+  },
+  {
+    "id": "46",
+    "label": "Discount rate",
+    "description": null,
+    "unit": "%",
+    "group": "Financials",
+    "values": "0..10",
+    "default": null,
+    "hashelp": false,
+    "interval": 0.1,
+    "hasslider": false,
+    "canbeonxaxis": false,
+    "shownonthelist": true,
+    "importancerank": 44,
+    "specifictoenergytype": null,
+    "preliminary": false,
+    "parentid": null,
+    "editable": true,
+    "use": "both",
+    "context": "vehicle",
+    "name": "discount_rate"
   }
 ]
