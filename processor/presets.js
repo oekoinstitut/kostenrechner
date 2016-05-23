@@ -6,7 +6,9 @@ var discount_rate    = 0.05			// 5% per year
 var abschreibungszeitraum = 6  	    // amortization period
 var unternehmenssteuersatz = 30 	// corporate tax
 var sonder_afa = false				// special accounting rule to increase amortization for electro vehicles in the first year deactivated by default
-var bev_praemie = true 			// Cash bonus deactivated by default
+var praemie = true 			    // Cash bonus activated by default
+var praemie_bev = 4000
+var praemie_hybrid = 3000           
 
 // Energy prices in € per Liter and cents per kWh
 var energy_known_prices = {
@@ -329,7 +331,9 @@ exports.hybrid_minderverbrauch = hybrid_minderverbrauch
 exports.hybrid_minderverbrauch_schmierstoff = hybrid_minderverbrauch_schmierstoff
 exports.einsatztage_pro_jahr = einsatztage_pro_jahr
 exports.restwert_constants = restwert_constants
-exports.bev_praemie = bev_praemie
+exports.praemie = praemie
+exports.praemie_hybrid = praemie_hybrid
+exports.praemie_bev = praemie_bev
 exports.discount_rate = discount_rate
 exports.energy_prices_evolution = energy_prices_evolution
 exports.energy_known_prices = energy_known_prices

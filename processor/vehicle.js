@@ -147,8 +147,8 @@ var Vehicle = function(params) {
 	this.second_user_yearly_mileage = 10000
 	this.max_battery_charges = 2500
 	this.battery_price = 0
-	this.cash_bonus_amount = 4000
-	this.bev_praemie = presets.bev_praemie
+	this.cash_bonus_amount = presets.praemie_bev
+	this.praemie = presets.praemie
 	this.sonder_afa = presets.sonder_afa
 	this.unternehmenssteuersatz = presets.unternehmenssteuersatz
 	this.abschreibungszeitraum = presets.abschreibungszeitraum
@@ -168,13 +168,6 @@ var Vehicle = function(params) {
 	if (this.car_type.indexOf("LNF") >= 0 && this.energy_type == "BEV"){
 		this.reichweite = 130
 	}
-
-	// Cash bonus is less for hybrid vehicles
-	if (this.acquisition_year > 2019){
-		this.cash_bonus_amount = 0
-	}
-
-	// Cash bonus is nil after 2019
 
 	this.share_electric_temp = this.share_electric
 	this.charges_per_year = this.mileage / this.reichweite
@@ -517,25 +510,23 @@ var Vehicle = function(params) {
 				this.price.total[scenario] = this.price.basis_price + this.price.battery_price[scenario] + this.charging_option_cost
 			}
 
-			// Takes into accont the special cash reward of 3000€ that decreases by 500€ every year
-			if (this.bev_praemie == true) {
-				if (this.acquisition_year >= 2016) {
-					this.price.cash_bonus = this.cash_bonus_amount - 500 * (this.acquisition_year - 2016)
-					
-					if (this.price.cash_bonus < 0){
-						this.price.cash_bonus = 0
-					}
-					this.price.total[scenario] -= this.price.cash_bonus
-					
+			// Takes into accont the special cash reward
+			if (this.praemie == true) {
+				if (this.acquisition_year >= 2016 && this.acquisition_year < 2020 && this.acquisition_price < 60000) {
+						if (this.energy_type == "hybrid-benzin" || this.energy_type == "hybrid-diesel"){
+							this.cash_bonus_amount = presets.praemie_hybrid
+						}
+					    else if (this.energy_type == "BEV"){
+					    	this.cash_bonus_amount = presets.praemie_bev
+						}
+						else {
+							this.cash_bonus_amount = 0
+						}
+					this.price.total[scenario] -= this.cash_bonus_amount
+				} else {
+					this.cash_bonus_amount = 0
 				}
 			}
-		}
-	}
-
-	this.setAcquisitionPrice = function(price) {
-		for (var i in scenarios) {
-			var scenario = scenarios[i];
-			this.price.total[scenario] = price;
 		}
 	}
 
@@ -823,6 +814,8 @@ var Vehicle = function(params) {
 		// Removed training costs 13 Apr as per client request
 		//costs["training_costs"] = this.training_costs
 		costs["total_cost"] = Math.round(this.price.total[scenario]) //+ this.training_costs
+
+		costs["cash_bonus"] = Math.round(this.cash_bonus_amount)
 
 		costs["residual_value"] = - this.residual_value[scenario]
 		costs["residual_value"] = getInflatedPrice(costs["residual_value"], this.holding_time - 1, this.inflationsrate/100, false)

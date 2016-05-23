@@ -19,6 +19,12 @@
         td(translate) vehicle_basis_cost  
         td(ng-repeat="vehicle in main.vehicles")
           | {{ vehicle.TCO.vehicle_basis_cost }}€
+
+      tr 
+        td(translate) cash_bonus  
+        td(ng-repeat="vehicle in main.vehicles")
+          | {{ vehicle.TCO.cash_bonus }}€
+      
       tr 
         td(translate) charging_infrastructure  
         td(ng-repeat="vehicle in main.vehicles")
