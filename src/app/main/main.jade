@@ -36,7 +36,7 @@
             button.btn.btn-xs.btn-link(ng-click="main.removeVehicle($index)")
               i.fa.fa-trash
               span.sr-only {{ "remove_btn" | translate }}
-          span(ng-bind-html="'vehicle_name' | translate:{ energy_type:(vehicle.energy_type|translate), car_type:(vehicle.car_type|translate) }")
+          span(ng-bind-html="'vehicle_name' | translate:main.getVehicleOpts(vehicle)")
         table.table.table-condensed.table-striped.main__vehicles__wrapper__item__body
           tbody
             tr(ng-repeat="setting in main.listedSettings | orderBy:'importancerank' | filter:main.filterSetting(vehicle) | limitTo:5")

@@ -45,10 +45,22 @@
     }
   }
 
+  &__pages {
+    margin-right:10px;
+    border-right:1px solid @navbar-default-border;
+
+    @media (max-width: @screen-xs-max) {
+      margin-left:0px;
+      float:left;
+      border:0;
+    }
+  }
+
   &__languages {
 
     @media (max-width: @screen-xs-max) {
       display: flex;
+      float:right;
     }
 
     &.navbar-nav li {

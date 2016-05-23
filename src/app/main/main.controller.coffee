@@ -9,7 +9,7 @@ angular.module 'oekoKostenrechner'
         @vehicles = []
         # do @addDefaultVehicles
         # @openVehicle @vehicles[0], 0
-        # $state.go 'main.chart'
+        # $state.go 'main.chart.tco'
       # Get/Set current language
       use: $translate.use
       addDefaultVehicles: ->
@@ -49,6 +49,9 @@ angular.module 'oekoKostenrechner'
           vehicle[setting.name]? and @hasNoParent setting and setting.context is 'vehicle'
       removeVehicle: (index)=> @vehicles.splice index, 1
       getVehicleColor: (n)-> MAIN.COLORS[(n-1) % MAIN.COLORS.length]
+      getVehicleOpts: (vehicle)->
+        energy_type: $translate.instant vehicle.energy_type
+        car_type:  $translate.instant vehicle.car_type
       addVehicle: (params)=>
         vehicle = new Vehicle params
         # Create a uniq id for this vehiclle

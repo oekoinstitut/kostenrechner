@@ -37,6 +37,8 @@ angular.module 'oekoKostenrechner'
           @chart.axis.min y: @generateYAxis(cols).min
           # Groups are loaded separetaly
           @chart.groups( @generateGroups cols )
+          # Show or hide the legend
+          do @chart.legend[ if @hasLegend() then 'show' else 'hide' ]
 
         getMinBarY: (cols)->
           values = [0, 0]
@@ -74,7 +76,7 @@ angular.module 'oekoKostenrechner'
           c3.chart.internal.fn.getTooltipContent.apply(@chart.internal, arguments)
         getVehicleDisplay: (vehicle)->
           if scope.type is 'bar'
-            vehicle.TCO
+            vehicle.TCO_simplified
           else
             display = scope.processor.findDisplay xaxis: scope.x, yaxis: scope.y
             # Extract display for this vehicle
@@ -164,6 +166,11 @@ angular.module 'oekoKostenrechner'
                 fn display
             # Create a serie line for each value
             series = series.concat( _.concat [n], values[n] for n of values)
+            # Change series order
+            order = ['x', 'net_cost', 'charging_infrastructure', 'fixed_costs', 'variable_costs', 'energy_costs']
+            series = _.sortBy series, (s)-> order.indexOf(s[0])
+            # Translate series names
+            series = _.each series, (s)-> s[0] = $translate.instant(s[0])
           series
         formatTick: (d)=>
           # Format function according to the current chart type and x axis
@@ -224,6 +231,7 @@ angular.module 'oekoKostenrechner'
           else
             []
         generateTooltip: =>
+          show: do @hasTooltip
           format:
             # Translate labels
             name: (v)-> $translate.instant v
@@ -237,6 +245,21 @@ angular.module 'oekoKostenrechner'
           position: (data, width)=>
             maxLeft = element.width() - width
             top: 0, left: Math.min(@chart.internal.x(data[0].x), maxLeft)
+        getLabelsFormat: (v, id)->
+          # The id of the serie doesn't contain number
+          v if not /\d/.test(id) and v > 0
+        # Override the given function
+        getYForText: (fn)->
+          (points, d, textElement)->
+            # Special Y for bar chart
+            if scope.type is 'bar'
+              box  = textElement.getBoundingClientRect()
+              ypos = points[0][1] + (points[1][1] - points[0][1])/2
+              ypos += box.height * 0.3
+            # Call the original function
+            else fn.call this, points, d, textElement
+        hasLegend: -> scope.type is 'bar'
+        hasTooltip: -> scope.type isnt 'bar'
         generateChart: =>
           columns = do @generateColumns
           window.c = @chart = c3.generate
@@ -248,10 +271,10 @@ angular.module 'oekoKostenrechner'
             interaction:
               enabled: yes
             padding:
-              right: 20
               top: 20
             legend:
-              show: no
+              position: 'right'
+              show: @hasLegend()
             point:
               show: no
             line:
@@ -266,12 +289,19 @@ angular.module 'oekoKostenrechner'
                 show: yes
             tooltip: do @generateTooltip
             data:
+              labels:
+                format: @getLabelsFormat
+              selection:
+                enabled: no
               x: 'x'
               type: scope.type
               columns: columns
+              order: null
               # We generate those options according to the columns
               colors: @generateColors columns
               groups: @generateGroups columns
+          # Overide default text position (to center labels)
+          @chart.internal.getYForText = @getYForText @chart.internal.getYForText
         setupAreas: =>
           # First time we create areas
           if not @svg? or not @areasGroup?

@@ -8,20 +8,26 @@
         | {{ "tco_sharing_btn" | translate }}
     li(ui-sref-active="active")
       a(ui-sref="main.chart.co2" ng-bind-html="'co2_btn' | translate")
+    li(ui-sref-active="active")
+      a(ui-sref="main.chart.table" ng-bind-html="'table_btn' | translate")
+      
   h2.main__chart__heading {{ "tco_title" | translate }}    
-  .main__chart__view(ng-view)
-    .main__chart__view__workspace
-      chart(x="chart.xAxis", y="chart.yAxis", type="chart.type", 
-            vehicles="main.vehicles", 
-            processor="main.processor")
-    
-    .row.main__chart__view__options.slide(ng-hide="chart.type === 'bar'")
-      .col-xs-12
-        label {{ 'horizontal_axis' | translate }}
-        select.form-control(ng-options="opt.name as (opt.label | translate) for opt in chart.xAxisOptions", 
-                            ng-model="chart.xAxis", ng-disabled="chart.type === 'bar'")
-    .main__chart__view__explainer(translate="")
-      | {{ chart.getExplainer() }}
+  
+  .main__chart__view(class="main__chart__view--{{ chart.type }}")
+    div(ui-view)
+    div(ng-if="!('main.chart.table' | isState)")
+      .main__chart__view__workspace
+        chart(x="chart.xAxis", y="chart.yAxis", type="chart.type", 
+              vehicles="main.vehicles", 
+              processor="main.processor")
+      
+      .row.main__chart__view__options.slide(ng-hide="chart.type === 'bar'")
+        .col-xs-12
+          label {{ 'horizontal_axis' | translate }}
+          select.form-control(ng-options="opt.name as (opt.label | translate) for opt in chart.xAxisOptions", 
+                              ng-model="chart.xAxis", ng-disabled="chart.type === 'bar'")
+      .main__chart__view__explainer(translate="")
+        | {{ chart.getExplainer() }}
   
   a.main__chart__print(ng-click="chart.print()")
     i.fa.fa-print.fa-3x
