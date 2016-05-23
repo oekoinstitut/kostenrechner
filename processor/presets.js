@@ -70,14 +70,14 @@ var nettolistenpreise = {
 // Increase in acquisition prices
 var kostensteigerung20102030 = {
 	"benzin":{
-		"klein": 0.14,
-		"mittel": 0.07,
-		"groß": 0.04
+		"klein": 0.13769970166402,
+		"mittel": 0.06650397416879,
+		"groß": 0.03657428879589
 	},
 	"diesel":{
-		"klein": .09,
-		"mittel": .03,
-		"groß": .02,
+		"klein": 0.08550544026416,
+		"mittel": 0.03211188878158,
+		"groß": 0.02215547961983,
 		"LNF1": .01,
 		"LNF2": .01
 	}

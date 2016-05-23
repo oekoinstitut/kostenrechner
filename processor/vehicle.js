@@ -130,7 +130,7 @@ var Vehicle = function(params) {
 	this.car_type = "klein"
 	this.electricity_consumption = 0
 	this.mileage = 10000
-	this.acquisition_year = 2014
+	this.acquisition_year = 2016
 	this.holding_time = 4
 	this.reichweite = 150
 	this.energy_source = "strom_mix"
@@ -533,6 +533,9 @@ var Vehicle = function(params) {
 	}
 
 	this.getBatteryPrice = function(scenario) {
+		if (this.car_type == "klein" && this.energy_type=="BEV" && this.acquisition_year == 2016){
+			console.log(this.battery_size, getBatteryPricePerKWh(this.acquisition_year, scenario))
+		}
 		return this.battery_size * getBatteryPricePerKWh(this.acquisition_year, scenario);
 	}
 
@@ -1072,8 +1075,8 @@ module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
 
-//vehicle = new Vehicle({car_type:"klein", energy_type:"BEV", holding_time: 4, mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
-//console.log(vehicle.price)
+//vehicle = new Vehicle({car_type:"klein", energy_type:"BEV", praemie: "False", holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
+//console.log(vehicle.price.total, vehicle.price.basis_price, vehicle.price.basis_price - bensine, vehicle.price.battery_price, vehicle.charging_option_cost)
 //console.log(vehicle.CO2)
 //console.log(vehicle.TCO_by_acquisition_year)
 // console.log(vehicle.residual_value["mittel"])
