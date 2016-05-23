@@ -5,6 +5,6 @@ angular.module 'oekoKostenrechner'
       constructor: ->
         @content = content
         # Language change
-        $rootScope.$on '$translateChangeSuccess', ->
+        $rootScope.$on '$translateChangeSuccess', (ev, use)->
           # Reload the state to update content
-          $state.go $state.current, {}, reload: yes
+          $state.go 'main.page', use, reload: no if $state.current.name is 'main.page'
