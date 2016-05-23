@@ -286,7 +286,7 @@ var Vehicle = function(params) {
 			if (this.energy_type == "diesel" || this.energy_type == "benzin"){
 				this.residual_value[scenario] = Math.exp(presets.restwert_constants["a"]) 										  // Constant
 				this.residual_value[scenario] *= Math.exp(12 * presets.restwert_constants["b1"] * (this.holding_time)) 			  // Age
-				this.residual_value[scenario] *= Math.exp(presets.restwert_constants["b2"] /12 * this.mileage)					 // Yearly mileage
+				this.residual_value[scenario] *= Math.exp(presets.restwert_constants["b2"] / 12 * this.mileage)					 // Yearly mileage
 				this.residual_value[scenario] *= Math.pow(this.price.total[scenario] - this.charging_option_cost, presets.restwert_constants["b3"])				  // Initial price
 			} else if (method == "Methode 1" && this.energy_type == "BEV"){ 
 				temp_vehicle = new Vehicle({energy_type: "diesel",
@@ -438,6 +438,8 @@ var Vehicle = function(params) {
 	this.getMaintenanceCosts = function(){
 		if (this.energy_type =="BEV" || this.energy_type.indexOf("hybrid") > -1) {
 			this.maintenance_costs_charger = presets.lademöglichkeiten[this.charging_option]["maintenance"] / this.fleet_size;
+		} else {
+			this.maintenance_costs_charger = 0
 		}
 		if (this.energy_type == "BEV" && this.car_type.indexOf("LNF") == -1) {
 			this.maintenance_costs_tires = presets.reperaturkosten["benzin"][this.car_type]["reifen"] ;
