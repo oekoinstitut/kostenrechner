@@ -164,7 +164,7 @@
     "step_position": "Step {{ current }} of {{ total }}",
     "strom_erneubar": "Renewable energy sources",
     "strom_mix": "Normal electricity mix",
-    "table_btn": "See table",
+    "table_btn": "Table",
     "tco_sharing_btn": "Cost breakdown",
     "tco_title": "Results",
     "tco_trend_btn": "See the evolution",
