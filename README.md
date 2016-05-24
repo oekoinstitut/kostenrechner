@@ -68,6 +68,43 @@ Once everything runs well locally, publish the changes with
 
 `make deploy`
 
+## Install and run on Windows
+
+Install a version of [node.js](https://nodejs.org/en/download/current/) above 5 using the Windows Installer. Install [Git](https://git-scm.com/download/win). Make sure that the SSH key associated with your Github account is on your computer ([here's how](https://help.github.com/articles/generating-an-ssh-key/)).
+
+Open Git Bash and run the following commands.
+
+Clone the repository with
+
+`git clone git@github.com:jplusplus/oeko-kostenrechner.git`
+
+Go in the directory
+
+`cd oeko-kostenrechner`
+
+Install the needed programs globally.
+
+`npm install -g bower`
+`npm install -g gulp`
+
+Install the dependancies.
+
+`npm install`
+`bower install`
+
+If needed, manually install node-sass
+
+`npm install node-sass@2.0.1`
+
+Test that it works by running the app on your computer. Internet Explorer will open.
+
+`gulp vehicle`
+`gulp serve`
+
+Deploy your changes to Github pages.
+
+`gulp deploy`
+
 ## License
 
 The code is property of Öko Institut e.V. and under an LGPL v3 license.
