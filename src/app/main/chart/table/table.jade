@@ -9,7 +9,7 @@
           span(ng-bind-html="'vehicle_name' | translate:main.getVehicleOpts(vehicle)")
     tbody
       tr
-        td(translate) tco_title
+        td(translate) tco_table
         td(ng-repeat="vehicle in main.vehicles")
           | {{ vehicle.TCO.total_cost | number }}€
       tr
