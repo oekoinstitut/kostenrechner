@@ -114,7 +114,7 @@ function getCO2FromElectricityMix(estimation_year) {
 	} else {
 		for (var year = 2012; year<=2050; year++){
 			 if (year < 2020) {
-			    estimates[year] = estimates["2012"] + ((estimates["2020"] - estimates["2012"]) / 8) * (estimation_year - 2012)
+			    estimates[year] = estimates["2012"] + (estimates["2020"] - estimates["2012"]) / 8 * (year - 2012)
 			} else {
 				var decade_start = Math.floor(year / 10) * 10
 				var decade_end = Math.ceil(year / 10) * 10
@@ -533,9 +533,7 @@ var Vehicle = function(params) {
 	}
 
 	this.getBatteryPrice = function(scenario) {
-		if (this.car_type == "klein" && this.energy_type=="BEV" && this.acquisition_year == 2016){
-			console.log(this.battery_size, getBatteryPricePerKWh(this.acquisition_year, scenario))
-		}
+		
 		return this.battery_size * getBatteryPricePerKWh(this.acquisition_year, scenario);
 	}
 
@@ -1075,7 +1073,7 @@ module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
 
-//vehicle = new Vehicle({car_type:"klein", energy_type:"BEV", praemie: "False", holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
+vehicle = new Vehicle({car_type:"klein", energy_type:"BEV", praemie: "False", holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
 //console.log(vehicle.price.total, vehicle.price.basis_price, vehicle.price.basis_price - bensine, vehicle.price.battery_price, vehicle.charging_option_cost)
 //console.log(vehicle.CO2)
 //console.log(vehicle.TCO_by_acquisition_year)
