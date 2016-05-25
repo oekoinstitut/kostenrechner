@@ -52,7 +52,7 @@
     "values": "0..50000",
     "default": "10000",
     "hashelp": false,
-    "interval": 5000,
+    "interval": 1000,
     "hasslider": true,
     "canbeonxaxis": true,
     "shownonthelist": true,
