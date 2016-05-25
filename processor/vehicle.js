@@ -286,7 +286,7 @@ var Vehicle = function(params) {
 			if (this.energy_type == "diesel" || this.energy_type == "benzin"){
 				this.residual_value[scenario] = Math.exp(presets.restwert_constants["a"]) 										  // Constant
 				this.residual_value[scenario] *= Math.exp(12 * presets.restwert_constants["b1"] * (this.holding_time)) 			  // Age
-				this.residual_value[scenario] *= Math.exp(presets.restwert_constants["b2"] / 12 * this.mileage)					 // Yearly mileage
+				this.residual_value[scenario] *= Math.exp(presets.restwert_constants["b2"] * this.mileage / 12)					 // Yearly mileage
 				this.residual_value[scenario] *= Math.pow(this.price.total[scenario] - this.charging_option_cost, presets.restwert_constants["b3"])				  // Initial price
 			} else if (method == "Methode 1" && this.energy_type == "BEV"){ 
 				temp_vehicle = new Vehicle({energy_type: "diesel",
@@ -478,7 +478,7 @@ var Vehicle = function(params) {
 			this.maintenance_costs_charger = this.fixed_vars["maintenance_costs_charger"]
 		}
 
-		this.maintenance_costs_total = this.maintenance_costs_tires + this.maintenance_costs_inspection + this.maintenance_costs_repairs + this.maintenance_costs_charger;
+		this.maintenance_costs_total = this.maintenance_costs_tires + this.maintenance_costs_inspection + this.maintenance_costs_repairs;
 
 	}
 
@@ -760,9 +760,11 @@ var Vehicle = function(params) {
 		costs["variable_costs"] = {
 			"lubricant_costs": getInflatedPrice(this.lubricant_costs, year - this.acquisition_year, this.inflationsrate/100, true),
 			"maintenance_costs": getInflatedPrice(this.maintenance_costs_total, year - this.acquisition_year, this.inflationsrate/100, true),
-			"amortization": - getInflatedPrice((this.maintenance_costs_total - this.maintenance_costs_charger + this.lubricant_costs) * (this.unternehmenssteuersatz / 100), year - this.acquisition_year, this.inflationsrate/100, true)
+			"amortization": - getInflatedPrice((this.maintenance_costs_total + this.lubricant_costs) * (this.unternehmenssteuersatz / 100), year - this.acquisition_year, this.inflationsrate/100, true)
 		}
 		
+		costs["maintenance_charger"] =  getInflatedPrice(this.maintenance_costs_charger, this.inflationsrate/100, true)
+
 		costs["amortization_vehicle"] = Math.round(- this.amortization[scenario][year])
 		
 		// Special case for BEV vehicles older than 6 years
@@ -772,7 +774,7 @@ var Vehicle = function(params) {
 			costs["fixed_costs"]["car_tax"] = 0
 		}
 
-		costs["total_cost"] = Math.round(costs["fixed_costs"]["check_up"] + costs["fixed_costs"]["insurance"] + costs["fixed_costs"]["car_tax"] + costs["energy_costs"] + costs["variable_costs"]["lubricant_costs"] + costs["variable_costs"]["maintenance_costs"] + costs["variable_costs"]["amortization"] - this.amortization[scenario][year])
+		costs["total_cost"] = Math.round(costs["fixed_costs"]["check_up"] + costs["maintenance_charger"] + costs["fixed_costs"]["insurance"] + costs["fixed_costs"]["car_tax"] + costs["energy_costs"] + costs["variable_costs"]["lubricant_costs"] + costs["variable_costs"]["maintenance_costs"] + costs["variable_costs"]["amortization"] - this.amortization[scenario][year])
 
 		costs = this.discountCosts(costs, year - this.acquisition_year)
 
@@ -838,9 +840,6 @@ var Vehicle = function(params) {
 		costs["fixed_costs"]["insurance"] = 0
 		costs["fixed_costs"]["car_tax"] = 0
 
-		// Costs are in € of the year of acquisition
-		//costs = this.discountCosts(costs, this.acquisition_year - 2014)
-
 		return costs
 	}
 
@@ -854,6 +853,7 @@ var Vehicle = function(params) {
 		costs["fixed_costs"]["check_up"] += yearly_costs["fixed_costs"]["check_up"]
 		costs["fixed_costs"]["insurance"] += yearly_costs["fixed_costs"]["insurance"]
 		costs["fixed_costs"]["car_tax"] += yearly_costs["fixed_costs"]["car_tax"]
+		costs["charging_infrastructure"] += yearly_costs["maintenance_charger"]
 
 		return costs
 	}
@@ -968,7 +968,7 @@ var Vehicle = function(params) {
 
 			var mileage_temp = this.mileage
 
-			for (var mileage = 0; mileage <= 50000; mileage+=5000){
+			for (var mileage = 0; mileage <= 50000; mileage+=1000){
 
 				this.mileage = mileage
 
