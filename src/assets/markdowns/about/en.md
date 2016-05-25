@@ -12,9 +12,15 @@ Oeko-Institut e.V. developed the online TCO calculator’s methodology and calcu
 ### Contact:
 
 [Moritz Mottschall](http://www.oeko.de/das-institut/team/bereich/Ressourcen%20und%20Mobilit%C3%A4t/moritz-mottschall/)
+
 Senior Researcher
+
 [Ressourcen & Mobilität](http://www.oeko.de/das-institut/institutsbereiche/ressourcen-mobilitaet/)
+
 Öko-Institut e.V. 
+
 Büro Berlin
+
 Schicklerstr. 5-7
+
 D-10179 Berlin
