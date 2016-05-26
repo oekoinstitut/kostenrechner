@@ -190,7 +190,8 @@ angular.module 'oekoKostenrechner'
           tick:
             outer: false
             centered: yes
-            culling: no
+            culling:
+              max: 10
             multiline: no
         generateYAxis: (cols)=>
           # Return a configuration objects

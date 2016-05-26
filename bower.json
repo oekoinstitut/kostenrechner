@@ -16,7 +16,7 @@
     "angular": "~1.5.*",
     "lodash": "~4.3.0",
     "angularjs-slider": "~2.8.0",
-    "c3": "0.4.11-rc4",
+    "c3": "0.4.11",
     "d3-format": "https://d3js.org/d3-format.v0.5.min.js",
     "angular-translate": "2.11.0",
     "angular-translate-loader-static-files": "2.11.0",
