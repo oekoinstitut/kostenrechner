@@ -11,7 +11,7 @@ form.main__vehicle(ng-submit="modal.saveVehicle()", name="vehicleForm", novalida
         tr(ng-repeat="setting in group.settings | orderBy:'importancerank' | filter:modal.isSettingVisible", ng-class="{ warning: setting.context === 'presets' }")
           td(style="width: 60%")
             | {{ setting.label | translate }}
-            span.small.main__vehicle__group__table__info(uib-tooltip="{{ setting.description | translate }}", ng-show="setting.description")
+            span.small.main__vehicle__group__table__info(uib-tooltip-html="setting.description | translate", ng-show="setting.description")
               i.fa.fa-info
           td(style="width: 40%")
             div(ng-repeat="context in modal.contexts")
