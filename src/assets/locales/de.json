@@ -168,6 +168,7 @@
     "strom_mix": "Strommix Deutschland",
     "table_btn": "Tabelle",
     "tco_sharing_btn": "Kostenbestandteile",
+    "tco_table": "Gesamtkosten",
     "tco_title": "Ergebnisdarstellung",
     "tco_trend_btn": "Kostenverläufe",
     "Tires": "Reifenkosten",
@@ -193,6 +194,5 @@
     "welcome_title": "Kostenrechner für gewerblich genutzte Elektrofahrzeuge",
     "years": "Jahre",
     "€_per_kwh": "€ pro kWh",
-    "€_per_liter": "€ pro Liter",
-    "tco_table": "Gesamtkosten"
+    "€_per_liter": "€ pro Liter"
 }

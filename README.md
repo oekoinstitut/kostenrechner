@@ -8,31 +8,53 @@ But what are the total costs of a commercial electric vehicle compared to a dies
 
 These and other questions are answered by this online calculator by the Öko-Institut. It analyzes the overall cost of commercial electric and plug-in hybrid vehicles - i.e costs for the purchase of vehicles and charging infrastructure, gasoline and electricity, workshop visits, tax, insurance, amortization and vehicle residual value.
 
-Users can rely on plausible presets or adjust the individual variables manually to fit their own scenarios. 
+Users can rely on plausible presets or adjust the individual variables manually to fit their own scenarios.
 
 ## Install
 
-In order to set up the app locally, open the terminal. 
+In order to set up the app locally, open the terminal.
 
-Clone the repository with
+Clone the repository with:
 
-`git clone git@github.com:jplusplus/oeko-kostenrechner.git`
+```
+git clone git@github.com:oekoinstitut/kostenrechner.git
+```
 
-Go in the directory
+Go in the directory:
 
-`cd oeko-kostenrechner`
+```
+cd oeko-kostenrechner
+```
+
+You might need to install node and npm:
+
+```
+sudo apt-get install nodejs npm
+```
+
+Or on MacOS:
+
+```
+brew install npm
+```
+
+And some command line tools:
+
+```
+sudo npm -g install gulp bower
+```
 
 Install the dependencies
 
-`make install`
-
-You might need to install npm and gulp with
-
-`sudo apt-get install npm && apt-get install gulp` or `brew install npm && brew install gulp` on MacOS
+```
+make install
+```
 
 Launch the app with
 
-`make run`
+```
+make run
+```
 
 ## Install and run on Windows
 
@@ -42,57 +64,81 @@ Open Git Bash and run the following commands.
 
 Clone the repository with
 
-`git clone git@github.com:jplusplus/oeko-kostenrechner.git`
+```
+git clone git@github.com:oekoinstitut/kostenrechner.git
+```
 
 Go in the directory
 
-`cd oeko-kostenrechner`
+```
+cd oeko-kostenrechner
+```
 
 Install the needed programs globally.
 
-`npm install -g bower`
-
-`npm install -g gulp`
+```
+npm install -g bower
+npm install -g gulp
+```
 
 Install the dependancies.
 
-`npm install`
-
-`bower install`
+```
+npm install
+bower install
+```
 
 If needed, manually install node-sass
 
-`npm install node-sass@2.0.1`
+```
+npm install node-sass@2.0.1
+```
 
 Test that it works by running the app on your computer. Internet Explorer will open.
 
-`gulp vehicle`
+```
+gulp vehicle
+```
 
-`gulp serve`
+```
+gulp serve
+```
 
 Deploy your changes to Github pages.
 
-`gulp deploy`
+```
+gulp deploy
+```
 
 ## Change the variables in the processor
 
 Variables are in the presets.js file. Open it with
 
-`gedit processor/presets.js`
+```
+gedit processor/presets.js
+```
 
 make the changes needed and save the file.
 
 Update the app with
 
-`gulp vehicle`
+```
+gulp vehicle
+```
 
 It's recommended to push your changes to the git repository by doing
 
-`git add processor/presets.js`
+```
+git add processor/presets.js
+```
 
-`git commit -m "changed preset variables"`
+```
+git commit -m "changed preset variables"
+```
 
-`git push origin master`
+```
+git push origin master
+```
 
 ## Change the variables in the interface
 
@@ -100,7 +146,9 @@ Variables for the interface are in the following Google Spreadsheet: [https://do
 
 Once the changes in the spreadsheet are made, update the app with
 
-`gulp gss`
+```
+gulp gss
+```
 
 ## Change the static texts
 
@@ -110,15 +158,17 @@ The texts are written in Markdown format and can be changed manually in the `src
 
 Once everything runs well locally, publish the changes with
 
-`make deploy`
+```
+make deploy
+```
 
 And make sure to commit the changes to Github as well:
 
-`git add .`
-
-`git commit -m "description of the changes"`
-
-`git push origin master`
+```
+git add .
+git commit -m "description of the changes"
+git push origin master
+```
 
 ## License
 

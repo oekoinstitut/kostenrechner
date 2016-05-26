@@ -170,6 +170,7 @@
     "strom_mix": "Normal electricity mix",
     "table_btn": "Table",
     "tco_sharing_btn": "Cost breakdown",
+    "tco_table": "Total cost",
     "tco_title": "Results",
     "tco_trend_btn": "See the evolution",
     "Tires": "Tires",
@@ -196,6 +197,5 @@
     "welcome_title": "Total cost of ownership calculator",
     "years": "years",
     "€_per_kwh": "€ per kWh",
-    "€_per_liter": "€ per liter",
-    "tco_table": "Total cost"
+    "€_per_liter": "€ per liter"
 }
