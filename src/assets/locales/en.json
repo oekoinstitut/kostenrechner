@@ -143,7 +143,7 @@
     "mittel": "Medium",
     "mittel-desc": "Medium-sized car (Compact, minivan)",
     "mittel-tooltip": "e.g VW Golf, Mercedes Class A",
-    "net_cost": "Acquisition costs - amortisation - residual value",
+    "net_cost": "Acquisition costs - amortisation - residual value - subsidy",
     "next_step": "Continue",
     "normaler Verkehr": "normal traffic",
     "Number of electrical vehicles in fleet": "Number of electrical vehicles in fleet",

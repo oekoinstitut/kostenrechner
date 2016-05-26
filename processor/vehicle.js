@@ -876,7 +876,7 @@ var Vehicle = function(params) {
 		this.TCO = this.TCO_by_mileage["mittel"][this.mileage]
 		this.CO2 = this.CO2_by_mileage[this.mileage]
 
-		this.TCO_simplified["net_cost"] = this.TCO.vehicle_basis_cost + this.TCO.residual_value + this.TCO.amortization_vehicle
+		this.TCO_simplified["net_cost"] = this.TCO.vehicle_basis_cost + this.TCO.residual_value + this.TCO.amortization_vehicle - this.cash_bonus_amount
 		this.TCO_simplified["charging_infrastructure"] = this.TCO.charging_infrastructure
 		this.TCO_simplified["fixed_costs"] = this.TCO.fixed_costs.check_up + this.TCO.fixed_costs.insurance + this.TCO.fixed_costs.car_tax
 		this.TCO_simplified["variable_costs"] = this.TCO.variable_costs.lubricant_costs + this.TCO.variable_costs.maintenance_costs + this.TCO.variable_costs.amortization
