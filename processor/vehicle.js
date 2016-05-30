@@ -314,16 +314,13 @@ var Vehicle = function(params) {
 				
 				// Computes the advantage of the 2d user
 				var my_consumption = fuel_consumption = advantage_2d_user = 0
-				
-				if (this.energy_type != "hybrid-benzin" && this.energy_type != "hybrid-diesel"){
-					this.getConsumption("diesel")
-				}
 
 				for (var year2 = this.acquisition_year + this.holding_time; year2 < this.acquisition_year + this.holding_time + this.second_user_holding_time; year2++) {
 					
 					// Hybrid vehicles
 					if (this.energy_type == "hybrid-benzin" || this.energy_type == "hybrid-diesel"){
 						var energy_type = this.energy_type.split("-")[1]
+						this.getConsumption(this.energy_type)
 						my_consumption += (this.second_user_yearly_mileage / 100) * this.share_electric / 100 * this.electricity_consumption * this.energy_prices["BEV"][year2]["mittel"];
 						my_consumption += (this.second_user_yearly_mileage / 100) * (1 - this.share_electric / 100) * this.fuel_consumption * this.energy_prices[energy_type][year2]["mittel"];
 						
@@ -332,22 +329,26 @@ var Vehicle = function(params) {
 						my_consumption += this.second_user_yearly_mileage * (this.electricity_consumption/100) * this.energy_prices["BEV"][year2][scenario]
 					}
 					//computes consumption of equivalent diesel vehicle
+					this.getConsumption("diesel")
 					fuel_consumption += this.second_user_yearly_mileage * (this.fuel_consumption/100) * this.energy_prices["diesel"][year2][scenario]	
 				}
 
 				// Not for LNF
 				if (this.car_type.indexOf("LNF") < 0){
 					
-					if (this.energy_type != "hybrid-benzin" && this.energy_type != "hybrid-diesel"){
-						this.getConsumption("benzin")
-					}
+					this.getConsumption("benzin")
 					
 					for (var year2 = this.acquisition_year + this.holding_time; year2 < this.acquisition_year + this.holding_time + this.second_user_holding_time; year2++) {
-						//computes consumption of equivalent diesel vehicle
+						//computes consumption of equivalent benzin vehicle
 						fuel_consumption += this.second_user_yearly_mileage * (this.fuel_consumption/100) * this.energy_prices["benzin"][year2][scenario]	
 					}
 
 					fuel_consumption = fuel_consumption/2
+				}
+
+				// Resets consumption for PHEV
+				if (this.energy_type == "hybrid-benzin" || this.energy_type == "hybrid-diesel"){
+					this.getConsumption(this.energy_type)
 				}
 
 				//computes difference
@@ -1075,9 +1076,9 @@ module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
 
-vehicle1 = new Vehicle({car_type:"klein", energy_type:"hybrid-diesel", praemie: true, holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
-//vehicle2 = new Vehicle({car_type:"klein", energy_type:"hybrid-benzin", praemie: false, holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
+// vehicle1 = new Vehicle({car_type:"klein", energy_type:"hybrid-diesel", praemie: true, holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
+// vehicle2 = new Vehicle({car_type:"klein", energy_type:"hybrid-benzin", praemie: false, holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
 
- console.log(vehicle1.TCO)
-// console.log(vehicle2.TCO)
+//  console.log(vehicle1.TCO)
+//  console.log(vehicle2.TCO)
 // console.log(vehicle.residual_value["mittel"])
