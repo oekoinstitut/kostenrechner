@@ -528,6 +528,8 @@ var Vehicle = function(params) {
 				} else {
 					this.cash_bonus_amount = 0
 				}
+			} else {
+				this.cash_bonus_amount = 0
 			}
 		}
 	}
@@ -1073,8 +1075,9 @@ module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
 
-vehicle = new Vehicle({car_type:"klein", energy_type:"BEV", praemie: "False", holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
-//console.log(vehicle.price.total, vehicle.price.basis_price, vehicle.price.basis_price - bensine, vehicle.price.battery_price, vehicle.charging_option_cost)
-//console.log(vehicle.CO2)
-//console.log(vehicle.TCO_by_acquisition_year)
+vehicle1 = new Vehicle({car_type:"klein", energy_type:"hybrid-diesel", praemie: true, holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
+//vehicle2 = new Vehicle({car_type:"klein", energy_type:"hybrid-benzin", praemie: false, holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
+
+ console.log(vehicle1.TCO)
+// console.log(vehicle2.TCO)
 // console.log(vehicle.residual_value["mittel"])
