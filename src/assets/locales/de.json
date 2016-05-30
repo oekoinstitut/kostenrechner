@@ -2,7 +2,7 @@
     "2016 benzin price": "Benzinpreis 2016",
     "2016 diesel price": "Dieselpreis 2016",
     "2016 electricity price": "Strompreis 2016",
-    "About": "About",
+    "About": "Über den Rechner",
     "Acquisition price": "Anschaffungskosten",
     "Acquisition year": "Anschaffungsjahr",
     "add_vehicle_btn": "Fahrzeug hinzufügen",
@@ -68,6 +68,7 @@
     "desc9": "On how many years the car can be amortized in the books.",
     "details": "Kostenbestandteile",
     "diesel": "Diesel",
+    "Disclaimer": "Impressum",
     "Discount rate": "Kalkulationszinssatz",
     "elec_unit": "kWh/100km",
     "Electrical details": "Elektrofahrzeug",
@@ -87,7 +88,7 @@
     "expl2": "Dieses Diagramm verdeutlicht, wie die Gesamtkosten eines Fahrzeuges von der durchschnittlichen jährlichen Fahrleistung abhängen. Dabei werden bis auf die Fahrleistung die gewählten Eingangsgrößen zugrunde gelegt. Als Bandbreite werden Variationen der Szenario-Annahmen für Kraftstoffpreise, Strompreise und Batteriepreise dargestellt (jeweils ±10%).<br>*) Abgezinst auf das Jahr der Anschaffung.",
     "expl3": "Dieses Diagramm zeigt die Treibhausgasemissionen abhängig von der Haltedauer. Die Emissionen von Treibhausgasen werden entsprechend ihrer Klimawirksamkeit bewertet und als CO₂-Äquivalente dargestellt.",
     "expl4": "Dieses Diagramm zeigt die Treibhausgasemissionen abhängig von der jährlichen Fahrleistung. Die Emissionen von Treibhausgasen werden entsprechend ihrer Klimawirksamkeit bewertet und als CO₂-Äquivalente dargestellt.",
-    "expl5": "Dieses Balkendiagramm zeigt die verschiedenen Bestandteile der Gesamtkosten unter Berücksichtigung der getroffenen Szenario-Annahmen.<br>*) Abgezinst auf das Jahr der Anschaffung.",
+    "expl5": "Dieses Balkendiagramm zeigt die verschiedenen Bestandteile der Gesamtkosten unter Berücksichtigung der getroffenen Szenario-Annahmen.<br>*) Abgezinst auf das Jahr der Anschaffung.<br>**) Fahrzeuganschaffung - AfA der Anschaffung - Restwert - Prämie",
     "expl6": "Dieses Diagramm verdeutlicht, wie die Gesamtkosten eines Fahrzeuges von der Haltedauer abhängen. Dabei werden bis auf die Haltedauer die gewählten Eingangsgrößen zugrunde gelegt. Als Bandbreite werden Variationen der Szenario-Annahmen für Kraftstoffpreise, Strompreise und Batteriepreise dargestellt (jeweils ±10%).<br>*) Abgezinst auf das Jahr der Anschaffung.",
     "expl7": "Dieses Diagramm zeigt die Treibhausgasemissionen abhängig vom Jahr der Fahrzeuganschaffung. Die Emissionen von Treibhausgasen werden entsprechend ihrer Klimawirksamkeit bewertet und als CO₂-Äquivalente dargestellt. ",
     "Financials": "Rahmendaten",
@@ -143,7 +144,7 @@
     "mittel": "Mittel",
     "mittel-desc": "Pkw – mittel (Kompaktklasse, Mini-Van)",
     "mittel-tooltip": "z.B. VW Golf, Mercedes A-Klasse",
-    "net_cost": "Fahrzeuganschaffung - AfA der Anschaffung - Restwert - Prämie",
+    "net_cost": "Fahrzeuganschaffung **",
     "next_step": "Weiter",
     "normaler Verkehr": "normaler Verkehr",
     "Number of electrical vehicles in fleet": "Angenommene Flottengröße",
@@ -194,7 +195,5 @@
     "welcome_title": "Kostenrechner für gewerblich genutzte Elektrofahrzeuge",
     "years": "Jahre",
     "€_per_kwh": "€ pro kWh",
-    "€_per_liter": "€ pro Liter",
-    "Disclaimer": "Impressum",
-    "About": "Über den Rechner"
+    "€_per_liter": "€ pro Liter"
 }
