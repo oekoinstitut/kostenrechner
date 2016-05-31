@@ -321,8 +321,8 @@ var Vehicle = function(params) {
 					if (this.energy_type == "hybrid-benzin" || this.energy_type == "hybrid-diesel"){
 						var energy_type = this.energy_type.split("-")[1]
 						this.getConsumption(this.energy_type)
-						my_consumption += (this.second_user_yearly_mileage / 100) * this.share_electric / 100 * this.electricity_consumption * this.energy_prices["BEV"][year2]["mittel"];
-						my_consumption += (this.second_user_yearly_mileage / 100) * (1 - this.share_electric / 100) * this.fuel_consumption * this.energy_prices[energy_type][year2]["mittel"];
+						my_consumption += (this.second_user_yearly_mileage / 100) * .55 * this.electricity_consumption * this.energy_prices["BEV"][year2]["mittel"];
+						my_consumption += (this.second_user_yearly_mileage / 100) * .45 * this.fuel_consumption * this.energy_prices[energy_type][year2]["mittel"];
 						
 					} else {
 						//computes consumption
@@ -1081,6 +1081,7 @@ module.exports = Vehicle
 module.exports.presets = presets
 
 //vehicle1 = new Vehicle({car_type:"klein", energy_type:"hybrid-diesel", share_electric:10, praemie: true, holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
+
 // vehicle2 = new Vehicle({car_type:"klein", energy_type:"hybrid-benzin", praemie: false, holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
 
 //  console.log(vehicle1.TCO)
