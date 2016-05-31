@@ -351,6 +351,10 @@ var Vehicle = function(params) {
 					this.getConsumption(this.energy_type)
 				}
 
+				// if (this.energy_type == "hybrid-diesel" && this.mileage == 10000 && this.acquisition_year == 2016 && scenario == "mittel" && this.holding_time == 4){
+				// 	console.log (this.energy_type, this.share_electric, my_consumption, fuel_consumption)
+				// }
+
 				//computes difference
 				advantage_2d_user = fuel_consumption - my_consumption
 				
@@ -1076,7 +1080,7 @@ module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
 
-// vehicle1 = new Vehicle({car_type:"klein", energy_type:"hybrid-diesel", praemie: true, holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
+//vehicle1 = new Vehicle({car_type:"klein", energy_type:"hybrid-diesel", share_electric:10, praemie: true, holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
 // vehicle2 = new Vehicle({car_type:"klein", energy_type:"hybrid-benzin", praemie: false, holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
 
 //  console.log(vehicle1.TCO)
