@@ -760,6 +760,8 @@ var Vehicle = function(params) {
 			"car_tax" : getInflatedPrice(this.fixed_costs.car_tax, year - this.acquisition_year, this.inflationsrate/100, true)
 		}
 
+
+
 		costs["energy_costs"] = getInflatedPrice(this.energy_costs[year][scenario], year - this.acquisition_year, this.inflationsrate/100, true)
 
 		costs["variable_costs"] = {
@@ -776,6 +778,11 @@ var Vehicle = function(params) {
 		if (this.energy_type == "BEV" && (year - 2014) >= 6) {
 			costs["fixed_costs"]["car_tax"] = getInflatedPrice(presets.kfzsteuer[this.energy_type][this.car_type], year - this.acquisition_year, this.inflationsrate/100, true)
 		} else if (this.energy_type == "BEV" && (year - 2014) < 6) {
+			costs["fixed_costs"]["car_tax"] = 0
+		}
+
+		// No car tax for the first 10 years for a BEV vehicle
+		if (year - this.acquisition_year < 10 && this.energy_type == "BEV") {
 			costs["fixed_costs"]["car_tax"] = 0
 		}
 
@@ -1080,10 +1087,10 @@ module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
 
-//vehicle1 = new Vehicle({car_type:"klein", energy_type:"hybrid-diesel", share_electric:10, praemie: true, holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
+//vehicle1 = new Vehicle({car_type:"klein", energy_type:"BEV", share_electric:10, praemie: true, holding_time: 12, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
 
 // vehicle2 = new Vehicle({car_type:"klein", energy_type:"hybrid-benzin", praemie: false, holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
 
-//  console.log(vehicle1.TCO)
+//console.log(vehicle1.TCO)
 //  console.log(vehicle2.TCO)
 // console.log(vehicle.residual_value["mittel"])
