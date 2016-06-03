@@ -2,7 +2,7 @@
 
 As a part of the Parallel Impact Research in the Showcase Programme, the VDE Association for Electrical, Electronic & Information Technologies commissioned Oeko-Institut e.V. to develop the online TCO calculator in 2015. Background information on the calculator’s methodology and assumptions can be found in the documentation file (available in German language only). 
 
-**Download the documentation file for the online TCO calculator (May 2016)**
+**Download the documentation file for the online TCO calculator (coming soon)**
 
 Oeko-Institut e.V. developed the online TCO calculator’s methodology and calculation reasoning to accompany research within the ICT for Electric Mobility II programme, which was funded by the Federal Ministry for Economic Affairs and Energy. The methodology and results for additional vehicle categories can be found in the final report (in German). 
 [Download the final report (April 2015)](http://ikt-em.de/_media-/Gesamtbericht_Wirtschaftlichkeit_von_Elektromobilitaet.pdf)

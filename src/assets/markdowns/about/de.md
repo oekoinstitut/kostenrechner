@@ -2,7 +2,7 @@
 
 Das Öko-Institut e.V. wurde im Rahmen der Begleit- und Wirkungsforschung der Schaufenster Elektromobilität im Jahr 2015 durch den Verband der Elektrotechnik Elektronik Informationstechnik e.V. (VDE) mit der Erstellung des Online-Kostenrechners beauftragt. Hintergrundinformationen zur Methodik und zu getroffenen Annahmen sind in der Dokumentation festgehalten. 
 
-**Dokumentation zum Online-Kostenrechner hier herunterladen (Stand Mai 2016)**
+**Dokumentation zum Online-Kostenrechner demnächst hier herunterladen.**
 
 Die Methodik und Berechnungsgrundlage des Online-Kostenrechners wurde durch das Öko-Institut e.V. im Rahmen der vom Bundesministerium für Wirtschaft und Energie geförderten Begleitforschung zum Programms „IKT Für Elektromobilität II“ entwickelt. Das methodische Vorgehen und Ergebnisse für weitere Fahrzeugkategorien können dem [Abschlussbericht](http://ikt-em.de/_media-/Gesamtbericht_Wirtschaftlichkeit_von_Elektromobilitaet.pdf) entnommen werden.
 
