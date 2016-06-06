@@ -1100,7 +1100,7 @@ module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
 
-vehicle1 = new Vehicle({car_type:"klein", energy_type:"BEV", share_electric:10, praemie: true, holding_time: 12, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
+//vehicle1 = new Vehicle({car_type:"klein", energy_type:"BEV", share_electric:10, praemie: true, holding_time: 12, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
 
 // vehicle2 = new Vehicle({car_type:"klein", energy_type:"hybrid-benzin", praemie: false, holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
 
