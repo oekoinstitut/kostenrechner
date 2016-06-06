@@ -873,6 +873,19 @@ var Vehicle = function(params) {
 	this.discountCosts = function(costs, period) {
 		// discounts all positions
 		for (var i in costs) {
+			if (!Object.keys) {
+			  Object.keys = function(obj) {
+			    var keys = [];
+
+			    for (var i in obj) {
+			      if (obj.hasOwnProperty(i)) {
+			        keys.push(i);
+			      }
+			    }
+
+			    return keys;
+			  };
+			}
 			if (Object.keys(costs[i]).length > 0){
 
 				for (var j in costs[i]) {
@@ -1087,10 +1100,10 @@ module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
 
-//vehicle1 = new Vehicle({car_type:"klein", energy_type:"BEV", share_electric:10, praemie: true, holding_time: 12, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
+vehicle1 = new Vehicle({car_type:"klein", energy_type:"BEV", share_electric:10, praemie: true, holding_time: 12, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
 
 // vehicle2 = new Vehicle({car_type:"klein", energy_type:"hybrid-benzin", praemie: false, holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
 
-//console.log(vehicle1.TCO)
+console.log(vehicle1.TCO)
 //  console.log(vehicle2.TCO)
 // console.log(vehicle.residual_value["mittel"])
