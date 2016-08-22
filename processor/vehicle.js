@@ -1065,19 +1065,19 @@ var Vehicle = function(params) {
 		//Rounds all visible values to 2 decimal places
 		this.fuel_consumption = this.fuel_consumption
 		this.electricity_consumption = Math.round(this.electricity_consumption * 100)/100
-		this.maintenance_costs_total = Math.round(this.maintenance_costs_total * 100)/100
+		this.maintenance_costs_total = Math.round(this.maintenance_costs_total)
 		this.maintenance_costs_repairs = Math.round(this.maintenance_costs_repairs * 100)/100
 		this.maintenance_costs_inspection = Math.round(this.maintenance_costs_inspection * 100)/100
 		this.maintenance_costs_tires = Math.round(this.maintenance_costs_tires * 100)/100
-		this.maintenance_costs_charger = Math.round(this.maintenance_costs_charger * 100)/100
+		this.maintenance_costs_charger = Math.round(this.maintenance_costs_charger)
 		this.lubricant_costs = Math.round(this.lubricant_costs * 100)/100
 		this._2016_elec_price = Math.round(this._2016_elec_price * 100)/100
 		this._2016_diesel_price = Math.round(this._2016_diesel_price * 100)/100
 		this._2016_benzin_price = Math.round(this._2016_benzin_price * 100)/100
 		this.residual_value_fixed = Math.round(this.residual_value_fixed * 100)/100
 		this.fuel_consumption = Math.round(this.fuel_consumption * 100)/100
-		this.acquisition_price = Math.round(this.acquisition_price * 100)/100
-		this.charging_option_cost = Math.round(this.charging_option_cost * 100)/100
+		this.acquisition_price = Math.round(this.acquisition_price)
+		this.charging_option_cost = Math.round(this.charging_option_cost) 	
 
 	}
 
