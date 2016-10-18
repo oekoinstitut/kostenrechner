@@ -173,7 +173,6 @@ var Vehicle = function(params) {
 	this.charges_per_year = this.mileage / this.reichweite
 	this.battery_duration = this.max_battery_charges / this.charges_per_year
 	this.fixed_vars = {}
-	//this.fixed_vars = {acquisition_price:25000}
 	this.residual_value = {}
 	this.price = {}
 	this.maintenance_costs_total = this.maintenance_costs_repairs = this.maintenance_costs_tires = this.maintenance_costs_inspection = 0
