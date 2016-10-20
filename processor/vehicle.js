@@ -158,10 +158,13 @@ var Vehicle = function(params) {
 	this.energy_prices_evolution = presets.energy_prices_evolution
 	this.limited = false
 	this.residual_value_fixed = 0 // the residual value to be displayed and input by the user
+	this.fixed_vars = {}
 
 	for(var prop in params) {
-    if( params.hasOwnProperty(prop) && this.hasOwnProperty(prop) ) {
+	    if( params.hasOwnProperty(prop) && this.hasOwnProperty(prop) ) {
 			this[prop] = params[prop]
+		} else {
+			this.fixed_vars[prop] = params[prop]
 		}
 	}
 
@@ -172,7 +175,6 @@ var Vehicle = function(params) {
 	this.share_electric_temp = this.share_electric
 	this.charges_per_year = this.mileage / this.reichweite
 	this.battery_duration = this.max_battery_charges / this.charges_per_year
-	this.fixed_vars = {}
 	this.residual_value = {}
 	this.price = {}
 	this.maintenance_costs_total = this.maintenance_costs_repairs = this.maintenance_costs_tires = this.maintenance_costs_inspection = 0
@@ -349,10 +351,6 @@ var Vehicle = function(params) {
 				if (this.energy_type == "hybrid-benzin" || this.energy_type == "hybrid-diesel"){
 					this.getConsumption(this.energy_type)
 				}
-
-				// if (this.energy_type == "hybrid-diesel" && this.mileage == 10000 && this.acquisition_year == 2016 && scenario == "mittel" && this.holding_time == 4){
-				// 	console.log (this.energy_type, this.share_electric, my_consumption, fuel_consumption)
-				// }
 
 				//computes difference
 				advantage_2d_user = fuel_consumption - my_consumption
@@ -1098,11 +1096,3 @@ var Vehicle = function(params) {
 module.exports = Vehicle
 // Static object within the Vehicle class containing all presets
 module.exports.presets = presets
-
-//vehicle1 = new Vehicle({car_type:"klein", energy_type:"BEV", share_electric:10, praemie: true, holding_time: 12, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
-
-// vehicle2 = new Vehicle({car_type:"klein", energy_type:"hybrid-benzin", praemie: false, holding_time: 4, charging_option:"Keine", mileage:10000, second_user_yearly_mileage:10000, residual_value_method: "Methode 2"})
-
-// console.log(vehicle1.TCO)
-//  console.log(vehicle2.TCO)
-// console.log(vehicle.residual_value["mittel"])
