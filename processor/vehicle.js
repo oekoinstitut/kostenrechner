@@ -526,6 +526,11 @@ var Vehicle = function(params) {
 						else {
 							this.cash_bonus_amount = 0
 						}
+					
+					if (this.fixed_vars.hasOwnProperty("cash_bonus_amount")) {
+						this.cash_bonus_amount = this.fixed_vars["cash_bonus_amount"]
+					}
+					
 					this.price.total[scenario] -= this.cash_bonus_amount
 				} else {
 					this.cash_bonus_amount = 0
