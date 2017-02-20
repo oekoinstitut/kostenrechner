@@ -1,1 +1,3 @@
-[https://github.com/oekoinstitut/kostenrechner/issues/65](https://github.com/oekoinstitut/kostenrechner/issues/65)
+## Beispiele
+
+Es gibt zurzeit keine Beispiele vorhanden.
