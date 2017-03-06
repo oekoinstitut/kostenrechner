@@ -86,6 +86,7 @@
     "evolution electricity 2020-2030": "Evolution of the price of electricity (2020-2030)",
     "evolution electricity 2030-2050": "Evolution of the price of electricity (2030-2050)",
     "evolution petrol price": "Evolution of the price of a barrel of oil",
+    "examples": "Examples",
     "expl1": "This diagram shows the total cost of vehicle depending on the the time the company holds it for. The bands on each side of the line represent variations of the scenario assumptions for fuel prices, electricity prices and battery prices (in each case ± 10%).<br>* Discounted to the year of acquisition.",
     "expl2": "This diagram shows the total costs of the vehicles depending on the annual mileage driven. The bands on each side of the line represent variations of the scenario assumptions for fuel prices, electricity prices and battery prices (in each case ± 10%)..<br>* Discounted to the year of acquisition.",
     "expl3": "This diagram shows the total vehicle cost depending on how long the company owns it. Greenhouse gas emissions are measured according to their climate impact and shown as CO₂ equivalents.",
@@ -110,8 +111,8 @@
     "hydrocarbon_unit": "L/100 km",
     "Inflation rate": "Inflation rate",
     "Inpection costs": "Inpection costs",
-    "insurance": "Insurance",
     "Insurance": "Insurance",
+    "insurance": "Insurance",
     "Is the vehicle charged a second time during the day?": "Will there be interim charging to expand the daily electric driving range?",
     "Keine": "None",
     "keine Schulung": "No training",
@@ -199,6 +200,5 @@
     "welcome_title": "Total cost of ownership calculator",
     "years": "years",
     "€_per_kwh": "€ per kWh",
-    "€_per_liter": "€ per liter",
-    "examples": "Examples"
+    "€_per_liter": "€ per liter"
 }

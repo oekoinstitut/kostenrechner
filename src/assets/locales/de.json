@@ -84,6 +84,7 @@
     "evolution electricity 2020-2030": "Strompreisentwicklung 2020-2030",
     "evolution electricity 2030-2050": "Strompreisentwicklung 2030-2050",
     "evolution petrol price": "Kraftstoffpreisentwicklung",
+    "examples": "Examples",
     "expl1": "Dieses Diagramm verdeutlicht, wie die Gesamtkosten eines Fahrzeuges von der Haltedauer abhängen. Dabei werden bis auf die Haltedauer die gewählten Eingangsgrößen zugrunde gelegt. Als Bandbreite werden Variationen der Szenario-Annahmen für Kraftstoffpreise, Strompreise und Batteriepreise dargestellt (jeweils ±10%).<br>*) Abgezinst auf das Jahr der Anschaffung.",
     "expl2": "Dieses Diagramm verdeutlicht, wie die Gesamtkosten eines Fahrzeuges von der durchschnittlichen jährlichen Fahrleistung abhängen. Dabei werden bis auf die Fahrleistung die gewählten Eingangsgrößen zugrunde gelegt. Als Bandbreite werden Variationen der Szenario-Annahmen für Kraftstoffpreise, Strompreise und Batteriepreise dargestellt (jeweils ±10%).<br>*) Abgezinst auf das Jahr der Anschaffung.",
     "expl3": "Dieses Diagramm zeigt die Treibhausgasemissionen abhängig von der Haltedauer. Die Emissionen von Treibhausgasen werden entsprechend ihrer Klimawirksamkeit bewertet und als CO₂-Äquivalente dargestellt.",
@@ -196,6 +197,5 @@
     "welcome_title": "Kostenrechner für gewerblich genutzte Elektrofahrzeuge",
     "years": "Jahre",
     "€_per_kwh": "€ pro kWh",
-    "€_per_liter": "€ pro Liter",
-    "examples": "Examples"
+    "€_per_liter": "€ pro Liter"
 }
