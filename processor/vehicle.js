@@ -699,12 +699,12 @@ var Vehicle = function(params) {
 				// Computes the amortization of the vehicle
 				if (year < this.acquisition_year + this.abschreibungszeitraum){
 					if (year == this.acquisition_year && this.sonder_afa == true && this.energy_type=="BEV"){
-						this.amortization[scenario][year] = (this.price.basis_price + this.price.battery_price[scenario]) * .5 * (this.unternehmenssteuersatz / 100)
+						this.amortization[scenario][year] = (this.price.basis_price + this.price.battery_price[scenario] - this.cash_bonus_amount) * .5 * (this.unternehmenssteuersatz / 100)
 					} else if (this.sonder_afa == true && this.energy_type=="BEV") {
-						this.amortization[scenario][year] = (1 / this.abschreibungszeitraum) * (this.unternehmenssteuersatz / 100) * (this.price.basis_price + this.price.battery_price[scenario]) * .5
+						this.amortization[scenario][year] = (1 / this.abschreibungszeitraum) * (this.unternehmenssteuersatz / 100) * (this.price.basis_price + this.price.battery_price[scenario] - this.cash_bonus_amount) * .5
 					} else {
 						//Normal amortization
-						this.amortization[scenario][year] = (1 / this.abschreibungszeitraum) * (this.unternehmenssteuersatz / 100) * (this.price.basis_price + this.price.battery_price[scenario])
+						this.amortization[scenario][year] = (1 / this.abschreibungszeitraum) * (this.unternehmenssteuersatz / 100) * (this.price.basis_price + this.price.battery_price[scenario] - this.cash_bonus_amount)
 					}
 				} else {
 					this.amortization[scenario][year] = 0
