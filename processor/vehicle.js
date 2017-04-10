@@ -130,7 +130,7 @@ var Vehicle = function(params) {
 	this.car_type = "klein"
 	this.electricity_consumption = 0
 	this.mileage = 10000
-	this.acquisition_year = 2016
+	this.acquisition_year = 2017
 	this.holding_time = 4
 	this.reichweite = 150
 	this.energy_source = "strom_mix"
@@ -225,17 +225,17 @@ var Vehicle = function(params) {
 			this.evolution_hydrocarbon_price_until_2050 = this.fixed_vars["evolution_hydrocarbon_price_until_2050"]
 			this.energy_prices_evolution["hydrocarbon"][0]["rate"] = this.fixed_vars["evolution_hydrocarbon_price_until_2050"] / 100.0
 		}
-		if (this.fixed_vars.hasOwnProperty("_2016_elec_price")) {
-			this._2016_elec_price = this.fixed_vars["_2016_elec_price"]
-			this.energy_known_prices["BEV"][2016] = this.fixed_vars["_2016_elec_price"]
+		if (this.fixed_vars.hasOwnProperty("_2017_elec_price")) {
+			this._2017_elec_price = this.fixed_vars["_2017_elec_price"]
+			this.energy_known_prices["BEV"][2017] = this.fixed_vars["_2017_elec_price"]
 		}
-		if (this.fixed_vars.hasOwnProperty("_2016_diesel_price")) {
-			this._2016_diesel_price = this.fixed_vars["_2016_diesel_price"]
-			this.energy_known_prices["diesel"][2016] = this.fixed_vars["_2016_diesel_price"]
+		if (this.fixed_vars.hasOwnProperty("_2017_diesel_price")) {
+			this._2017_diesel_price = this.fixed_vars["_2017_diesel_price"]
+			this.energy_known_prices["diesel"][2017] = this.fixed_vars["_2017_diesel_price"]
 		}
-		if (this.fixed_vars.hasOwnProperty("_2016_benzin_price")) {
-			this._2016_benzin_price = this.fixed_vars["_2016_benzin_price"]
-			this.energy_known_prices["benzin"][2016] = this.fixed_vars["_2016_benzin_price"]
+		if (this.fixed_vars.hasOwnProperty("_2017_benzin_price")) {
+			this._2017_benzin_price = this.fixed_vars["_2017_benzin_price"]
+			this.energy_known_prices["benzin"][2017] = this.fixed_vars["_2017_benzin_price"]
 		}
 
 
@@ -274,9 +274,9 @@ var Vehicle = function(params) {
 		}
 
 		this.energy_prices = estimates
-		this._2016_elec_price = this.energy_prices["BEV"][2016]["mittel"]
-		this._2016_diesel_price = this.energy_prices["diesel"][2016]["mittel"]
-		this._2016_benzin_price = this.energy_prices["benzin"][2016]["mittel"]
+		this._2017_elec_price = this.energy_prices["BEV"][2017]["mittel"]
+		this._2017_diesel_price = this.energy_prices["diesel"][2017]["mittel"]
+		this._2017_benzin_price = this.energy_prices["benzin"][2017]["mittel"]
 
 	}
 
@@ -836,7 +836,7 @@ var Vehicle = function(params) {
 		//costs["training_costs"] = this.training_costs
 		costs["total_cost"] = Math.round(this.price.total[scenario]) //+ this.training_costs
 
-		costs["cash_bonus"] = Math.round(this.cash_bonus_amount)
+		costs["cash_bonus"] = - Math.round(this.cash_bonus_amount)
 
 		costs["residual_value"] = - this.residual_value[scenario]
 		costs["residual_value"] = getInflatedPrice(costs["residual_value"], this.holding_time - 1, this.inflationsrate/100, false)
