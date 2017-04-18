@@ -6,12 +6,11 @@
       .main__welcome-screen
         h2.main__welcome-screen__heading {{ "welcome_title" | translate }}
         .main__welcome-screen__body
-          p.lead(ng-bind-html="'welcome_description' | translate")
-          // p.lead {{ "lorem" | translate }}
+          p.lead(ng-bind-html="'welcome_description_1' | translate")
         p.main__welcome-screen__footer(ng-show="main.vehicles.length < 2")
           button.btn.btn-default.btn-md(ui-sref="main.form", type="button")
             i.fa.fa-car.fa-fw
-            | &nbsp{{ "start_btn" | translate }}        
+            | &nbsp{{ "start_btn_gewerb" | translate }}        
           =" "
           a(ui-sref="main.chart", ng-click="main.addDefaultVehicles()")
             | {{ "look_default_visualisation" | translate }}
@@ -19,8 +18,17 @@
           a.btn.btn-default.btn-md(ui-sref="main.chart")
             i.fa.fa-line-chart.fa-fw
             | &nbsp{{ "see_visulization" | translate }}
-        p.main__welcome-screen__foot-notes
-          | {{ "welcome_description_sub" | translate }}
+        .main__welcome-screen__body
+          p.lead(ng-bind-html="'welcome_description_2' | translate")
+        p.main__welcome-screen__footer
+          a.btn.btn-default.btn-md(href="http://emob-kostenrechner.oeko.de/#/add")
+            i.fa.fa-car.fa-fw
+            | &nbsp{{ "start_btn_privat" | translate }}
+          =" "
+          a(href="https://goo.gl/3w1zvF")
+            | {{ "look_default_visualisation" | translate }}
+        .main__welcome-screen__body
+          p.lead(ng-bind-html="'welcome_description_3' | translate")
         
   
   .main__vehicles(ng-show="('main.form.*' | includedByState) && main.vehicles.length || ('main.chart.*' | includedByState)")
