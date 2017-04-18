@@ -428,12 +428,12 @@ var Vehicle = function(params) {
 			}
 		}
 
-		this.residual_value_fixed = this.residual_value["mittel"]
-		if (this.fixed_vars.hasOwnProperty("residual_value_fixed")) {
-			this.residual_value_fixed = this.fixed_vars["residual_value_fixed"]
-			this.residual_value["mittel"] = this.fixed_vars["residual_value_fixed"]
-			this.residual_value["pro"] = this.fixed_vars["residual_value_fixed"]
-			this.residual_value["contra"] = this.fixed_vars["residual_value_fixed"]
+		if (this.residual_value_fixed != 0) {
+			this.residual_value["mittel"] = this.residual_value_fixed
+			this.residual_value["pro"] = this.residual_value_fixed
+			this.residual_value["contra"] = this.residual_value_fixed
+		} else {
+			this.residual_value_fixed = this.residual_value["mittel"]
 		}
 	}
 
