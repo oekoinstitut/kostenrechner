@@ -17,12 +17,15 @@ angular.module 'oekoKostenrechner'
         # Dummy vehicles
         @addVehicle
           "acquisition_year": (new Date).getFullYear()
-          "car_type": "klein"
+          "car_type": "mittel"
           "energy_type": "diesel"
+          "mileage": 18000
         @addVehicle
           "acquisition_year": (new Date).getFullYear()
-          "car_type": "klein"
+          "car_type": "mittel"
           "energy_type": "BEV"
+          "mileage": 18000
+          "reichweite": 170
       updateComputedCosts: =>
         vehicle.computeCosts() for vehicle in @vehicles
       openVehicle: (vehicle, index)->

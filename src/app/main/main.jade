@@ -16,8 +16,8 @@
             | {{ "look_default_visualisation" | translate }}
         p.main__welcome-screen__footer(ng-hide="main.vehicles.length < 2")
           a.btn.btn-default.btn-md(ui-sref="main.chart")
-            i.fa.fa-line-chart.fa-fw
-            | &nbsp{{ "see_visulization" | translate }}
+            i.fa.fa-car.fa-fw
+            | &nbsp{{ "start_btn_gewerb" | translate }}
         .main__welcome-screen__body
           p.lead(ng-bind-html="'welcome_description_2' | translate")
         p.main__welcome-screen__footer
@@ -25,7 +25,7 @@
             i.fa.fa-car.fa-fw
             | &nbsp{{ "start_btn_privat" | translate }}
           =" "
-          a(href="https://goo.gl/3w1zvF")
+          a(href="http://emob-kostenrechner.oeko.de/#/page/examples")
             | {{ "look_default_visualisation" | translate }}
         .main__welcome-screen__body
           p.lead(ng-bind-html="'welcome_description_3' | translate")

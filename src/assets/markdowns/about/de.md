@@ -1,22 +1,26 @@
 ## Über den Rechner
 
-Das Öko-Institut e.V. wurde im Rahmen der Begleit- und Wirkungsforschung der Schaufenster Elektromobilität im Jahr 2015 durch den Verband der Elektrotechnik Elektronik Informationstechnik e.V. (VDE) mit der Erstellung des Online-Kostenrechners beauftragt. Hintergrundinformationen zur Methodik und zu getroffenen Annahmen sind in der Dokumentation festgehalten. 
+Das Öko-Institut e.V. wurde im Rahmen der Begleit- und Wirkungsforschung der Schaufenster Elektromobilität im Jahr 2015 durch den Verband der Elektrotechnik Elektronik Informationstechnik e.V. (VDE) mit der Erstellung des Online-Kostenrechners für gewerblich genutzte Fahrzeuge beauftragt.
 
-<a href="https://shop.vde.com/de/wirtschaftlichkeit-von-elektromobilit%C3%A4t-in-gewerblichen-anwendungen" target="_blank"><b>Anleitung und Hintergrundinformationen zum Online-TCO-Rechner herunterladen.</b></a>
+Im Frühjahr 2017 wurde der Online-Kostenrechner um eine Version für private Pkw-Nutzer erweitert, welche auf dem gleichen methodischen Vorgehen beruht, jedoch die abweichenden Rahmenbedingungen bei der Beschaffung und dem Betrieb von privat zugelassenen Pkw berücksichtigt.
 
-Die Methodik und Berechnungsgrundlage des Online-Kostenrechners wurde durch das Öko-Institut e.V. im Rahmen der vom Bundesministerium für Wirtschaft und Energie geförderten Begleitforschung zum Programms „IKT Für Elektromobilität II“ entwickelt. Das methodische Vorgehen und Ergebnisse für weitere Fahrzeugkategorien können dem [Abschlussbericht](http://ikt-em.de/_media-/Gesamtbericht_Wirtschaftlichkeit_von_Elektromobilitaet.pdf) entnommen werden.
+Hintergrundinformationen zur Methodik und zu getroffenen Annahmen sind in der Dokumentation festgehalten. 
 
-Die Konzeption und Entwicklung der Web-App erfolgte durch [Journalism++](http://www.jplusplus.org/de/).
+<a href="http://schaufenster-elektromobilitaet.org/media/media/documents/dokumente_der_begleit__und_wirkungsforschung/EP29_Online-Vergleichskostenrechner%7E1.pdf" target="_blank"><b>Anleitung und Hintergrundinformationen zum Online-TCO-Rechner herunterladen.</b></a>
+
+Die Methodik und Berechnungsgrundlage des Online-Kostenrechners wurde durch das Öko-Institut e.V. im Rahmen der vom Bundesministerium für Wirtschaft und Energie geförderten Begleitforschung zum Programms „IKT Für Elektromobilität II“ entwickelt. Das methodische Vorgehen und Ergebnisse für weitere Fahrzeugkategorien können dem [Abschlussbericht](https://www.oeko.de/fileadmin/oekodoc/Gesamtbericht-Wirtschaftlichkeit-von-Elektromobilitaet.pdf) entnommen werden.
+
+Die Konzeption und Entwicklung des Online-Rechners erfolgte durch [Journalism++](http://www.jplusplus.org/de/).
 
 ### Erforderliche Mindestkonfiguration
 
 Der Online-Rechner wird von der jeweils aktuellen und der Vorgängerversion der Browser Chrome, Mozilla Firefox und Internet Explorer unterstützt. Diese sind auf alle Betriebssysteme mit aktivem Support verfügbar (d.h. Windows 8+, MacOS 10.9+, Ubuntu 12.04+). Der Rechner funktioniert auf moderne mobile Geräte (z.B. iPad 3).
 
-Bei technischen Schwierigkeiten können sie sich an m.mottschall(at)oeko.de wenden.
+Bei technischen Schwierigkeiten können sie sich an [s.kuehnel(at)oeko.de](mailto:s.kuehnel@oeko.de) wenden.
 
 ### Ansprechpartner:
 
-[Moritz Mottschall](http://www.oeko.de/das-institut/team/bereich/Ressourcen%20und%20Mobilit%C3%A4t/moritz-mottschall/)
+[Sven Kühnel](https://www.oeko.de/das-institut/team/sven-kuehnel/)
 
 Senior Researcher
 

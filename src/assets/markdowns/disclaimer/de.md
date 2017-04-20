@@ -20,7 +20,7 @@ Michael Sailer, Sprecher der Geschäftsführung
 
 ### Webadministration
 
-Moritz Mottschall 
+Sven Kühnel 
 
 ### Programmierung
 

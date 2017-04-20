@@ -20,7 +20,7 @@ Michael Sailer, CEO
 
 ### Webadministration
 
-Moritz Mottschall 
+Sven Kühnel 
 
 ### Programming
 
