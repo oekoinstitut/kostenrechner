@@ -88,7 +88,22 @@ angular.module 'oekoKostenrechner'
         getXValues: =>
           if scope.type is 'bar'
             # One tick translated by vehicle
-            @getVehicleTranslation vehicle for vehicle in scope.vehicles
+            values = for vehicle in scope.vehicles
+              @getVehicleTranslation vehicle
+            # Copy the value to be able to edit it
+            valuesWithId = angular.copy values
+            # Add an number to duplicated names
+            angular.forEach values, (value, i)=>
+              # Count similar value
+              count = _.filter(values, (v)=> v is value).length
+              # If there is more than one element with the same value
+              if count > 1
+                # Count previous element
+                previous = _.filter(values.slice(0, i), (v)=> v is value).length
+                # Add the number of previous element to the value
+                valuesWithId[i] = String.concat(value, ' (', previous, ')')
+            # Return the value with an id
+            valuesWithId
           # Unkown range, we get it from the input value
           else
             setting = scope.processor.getSettingsBy(name: scope.x)[0]
@@ -228,7 +243,7 @@ angular.module 'oekoKostenrechner'
             cols = do @generateColumns unless cols?
             cols = angular.copy cols
             # Every dataset but 'x'
-            [ _.map(cols.splice(1), 0) ]
+            gs = [ _.map(cols.splice(1), 0) ]
           else
             []
         generateTooltip: =>
