@@ -428,7 +428,7 @@ var Vehicle = function(params) {
 			}
 		}
 
-		if (this.residual_value_fixed != 0) {
+		if (this.residual_value_fixed != 0 && params.hasOwnProperty("residual_value_fixed")) {
 			this.residual_value["mittel"] = this.residual_value_fixed
 			this.residual_value["pro"] = this.residual_value_fixed
 			this.residual_value["contra"] = this.residual_value_fixed
