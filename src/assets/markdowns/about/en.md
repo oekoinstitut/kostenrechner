@@ -13,7 +13,7 @@ Oeko-Institut e.V. developed the online TCO calculator’s methodology and calcu
 
 [Sven Kühnel](https://www.oeko.de/das-institut/team/sven-kuehnel/)
 
-Senior Researcher
+Researcher
 
 [Ressourcen & Mobilität](http://www.oeko.de/das-institut/institutsbereiche/ressourcen-mobilitaet/)
 

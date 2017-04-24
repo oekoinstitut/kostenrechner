@@ -22,7 +22,7 @@ Bei technischen Schwierigkeiten können sie sich an [s.kuehnel(at)oeko.de](mailt
 
 [Sven Kühnel](https://www.oeko.de/das-institut/team/sven-kuehnel/)
 
-Senior Researcher
+Researcher
 
 [Ressourcen & Mobilität](http://www.oeko.de/das-institut/institutsbereiche/ressourcen-mobilitaet/)
 
