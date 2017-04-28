@@ -896,7 +896,7 @@
     "values": "0..5",
     "default": null,
     "hashelp": false,
-    "interval": 0.01,
+    "interval": 0.001,
     "hasslider": false,
     "canbeonxaxis": false,
     "shownonthelist": true,
