@@ -822,7 +822,8 @@ var Vehicle = function(params) {
 			co2 = (this.mileage / 100) * this.fuel_consumption * presets.co2_emissions[this.energy_type]
 		}
 
-		return Math.round(co2)
+		// Converts to tons
+		return Math.round(co2) / 1000
 	}
 
 	this.initCosts = function(scenario){
