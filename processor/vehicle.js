@@ -445,11 +445,11 @@ var Vehicle = function(params) {
 		}
 		if (this.energy_type == "BEV" && this.car_type.indexOf("LNF") == -1) {
 			this.maintenance_costs_tires = presets.reperaturkosten["benzin"][this.car_type]["reifen"] ;
-			this.maintenance_costs_inspection = presets.reperaturkosten["benzin"][this.car_type]["inspektion"];
+			this.maintenance_costs_inspection = presets.reperaturkosten["benzin"][this.car_type]["inspektion"] * presets.faktor_BEV;
 			this.maintenance_costs_repairs = presets.reperaturkosten["benzin"][this.car_type]["reparatur"] * presets.faktor_BEV;
 		} else if (this.energy_type == "BEV" && this.car_type.indexOf("LNF") >= 0) {
 			this.maintenance_costs_tires = presets.reperaturkosten["diesel"][this.car_type]["reifen"];
-			this.maintenance_costs_inspection = presets.reperaturkosten["diesel"][this.car_type]["inspektion"];
+			this.maintenance_costs_inspection = presets.reperaturkosten["diesel"][this.car_type]["inspektion"] * presets.faktor_BEV;
 			this.maintenance_costs_repairs = presets.reperaturkosten["diesel"][this.car_type]["reparatur"] * presets.faktor_BEV;
 		} else if (this.energy_type.indexOf("hybrid") > -1) { // Takes the same value of the non-hybrid of same type
 			this.maintenance_costs_tires = presets.reperaturkosten[this.energy_type.split("-")[1]][this.car_type]["reifen"];
