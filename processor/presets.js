@@ -111,7 +111,13 @@ var aufpreis = {
 
 // Variables for the battery
 var entladetiefe = 0.8
-var reichweite = 150 			// km
+var reichweite = {
+	"klein": 150.0,
+	"mittel": 200.0,
+	"groß": 350.0,
+	"LNF1": 130.0,
+	"LNF2": 130.0
+} 			
 var batteriepreise = {			// in € per kWh
 	"2014": 400.0,	
 	"2015": 380.0,
@@ -151,7 +157,7 @@ var hubraum = {
 var verbrauch = {
 	"benzin": {"klein": 6.94, "mittel": 8.08,"groß": 8.86},
 	"diesel": {"klein": 4.99, "mittel": 6,"groß": 6.39, "LNF1": 8.4, "LNF2": 9.8},
-	"BEV":    {"klein": .15, "mittel": .19,"groß": .21, "LNF1": .25, "LNF2": .30},
+	"BEV":    {"klein": .15, "mittel": .19,"groß": .236, "LNF1": .25, "LNF2": .30},
 	"hybrid": {"klein": 5.21, "mittel": 6.06,"groß": 6.64}
 				}
 

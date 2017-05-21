@@ -132,12 +132,12 @@ var Vehicle = function(params) {
 	this.mileage = 10000
 	this.acquisition_year = 2017
 	this.holding_time = 4
-	this.reichweite = 150
 	this.energy_source = "strom_mix"
 	this.charging_option = "Wallbox bis 22kW"
 	this.charging_option_cost = 0
 	this.maintenance_costs_charger = 0
 	this.fleet_size = 1
+	this.reichweite = 150
 	this.traffic = "normaler Verkehr"
 	this.training_option = "keine Schulung"
 	this.share_electric = 55
@@ -168,8 +168,8 @@ var Vehicle = function(params) {
 		}
 	}
 
-	if (this.car_type.indexOf("LNF") >= 0 && this.energy_type == "BEV"){
-		this.reichweite = 130
+	if (!params.hasOwnProperty("reichweite")) {
+		this.reichweite = presets.reichweite[this.car_type]
 	}
 
 	this.share_electric_temp = this.share_electric
