@@ -4,12 +4,7 @@
   "dependencies": {
     "google-spreadsheet": "^1.1.4",
     "gulp-gh-pages": "^0.5.4",
-    "gulp-wait": "0.0.2"
-  },
-  "scripts": {
-    "test": "gulp test"
-  },
-  "devDependencies": {
+    "gulp-wait": "0.0.2",
     "browser-sync": "~2.9.11",
     "browser-sync-spa": "~1.0.3",
     "chalk": "~1.1.1",
@@ -59,6 +54,9 @@
     "wiredep": "~2.2.2",
     "wrench": "~1.5.8",
     "express": "~4.16.2"
+  },
+  "scripts": {
+    "test": "gulp test"
   },
   "engines": {
     "node": ">=5.4.0"
