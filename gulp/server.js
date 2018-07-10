@@ -4,15 +4,20 @@ var path = require('path');
 var gulp = require('gulp');
 var conf = require('./conf');
 
+var express = require('express', '4');
+
 var browserSync = require('browser-sync');
 var browserSyncSpa = require('browser-sync-spa');
 
 var util = require('util');
 
 var proxyMiddleware = require('http-proxy-middleware');
+//var express = require('express');
 
 function browserSyncInit(baseDir, browser) {
   browser = browser === undefined ? 'default' : browser;
+  
+  
 
   var routes = null;
   if(baseDir === conf.paths.src || (util.isArray(baseDir) && baseDir.indexOf(conf.paths.src) !== -1)) {
@@ -33,31 +38,60 @@ function browserSyncInit(baseDir, browser) {
    *
    * For more details and option, https://github.com/chimurai/http-proxy-middleware/blob/v0.9.0/README.md
    */
-  // server.middleware = proxyMiddleware('/users', {target: 'http://jsonplaceholder.typicode.com', changeOrigin: true});
-
+  
+  //server.middleware = proxyMiddleware('/', {target: 'https://emob-kostenrechner.oeko.de', changeOrigin: true});
+  
   browserSync.instance = browserSync.init({
     startPath: '/',
     server: server,
-    browser: browser
-  });
+    browser: browser,
+    port: process.env.EMOB_RECHNER_PORT,
+    /*
+	ui: {
+     port: 30002
+    },
+	*/
+	ui: false,
+	logLevel: "DEBUG",
+	notify: false, // do not show notification
+	open: false,
+	codeSync: false,
+	socket: {
+		clients: {
+			heartbeatTimeout: 3600000 // 1h in ms
+		},
+	},
+   });
 }
+
+function expressInit(baseDir) {
+	var app = express();
+	app.use(express.static(baseDir));
+	app.listen(process.env.EMOB_RECHNER_PORT, () => console.error('Start Server.'));
+}
+
+
 
 browserSync.use(browserSyncSpa({
   selector: '[ng-app]'// Only needed for angular apps
 }));
 
 gulp.task('serve', ['watch'], function () {
-  browserSyncInit([path.join(conf.paths.tmp, '/serve'), conf.paths.src]);
+  //browserSyncInit([path.join(conf.paths.tmp, '/serve'), conf.paths.src]);
+  expressInit(path.join(conf.paths.tmp, '/serve'));
 });
 
 gulp.task('serve:dist', ['build'], function () {
-  browserSyncInit(conf.paths.dist);
+  //browserSyncInit(conf.paths.dist);
+  expressInit(conf.paths.dist);
 });
 
 gulp.task('serve:e2e', ['inject'], function () {
-  browserSyncInit([conf.paths.tmp + '/serve', conf.paths.src], []);
+  //browserSyncInit([conf.paths.tmp + '/serve', conf.paths.src], []);
+  expressInit([conf.paths.tmp + '/serve', conf.paths.src]);  
 });
 
 gulp.task('serve:e2e-dist', ['build'], function () {
-  browserSyncInit(conf.paths.dist, []);
+  //browserSyncInit(conf.paths.dist, []);
+  expressInit(conf.paths.dist);
 });
