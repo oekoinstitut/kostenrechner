@@ -57,7 +57,8 @@
     "phantomjs": "~1.9.18",
     "uglify-save-license": "~0.4.1",
     "wiredep": "~2.2.2",
-    "wrench": "~1.5.8"
+    "wrench": "~1.5.8",
+    "express": "~4.16.2"
   },
   "engines": {
     "node": ">=5.4.0"
