@@ -6,7 +6,7 @@ Im Frühjahr 2017 wurde der Online-Kostenrechner um eine Version für private Pk
 
 Hintergrundinformationen zur Methodik und zu getroffenen Annahmen sind in der Dokumentation festgehalten. 
 
-<a href="http://schaufenster-elektromobilitaet.org/media/media/documents/dokumente_der_begleit__und_wirkungsforschung/EP29_Online-Vergleichskostenrechner%7E1.pdf" target="_blank"><b>Anleitung und Hintergrundinformationen zum Online-TCO-Rechner herunterladen.</b></a>
+<a href="http://schaufenster-elektromobilitaet.org/media/media/documents/dokumente_der_begleit__und_wirkungsforschung/EP29_Online-Vergleichskostenrechner.pdf" target="_blank"><b>Anleitung und Hintergrundinformationen zum Online-TCO-Rechner herunterladen.</b></a>
 
 Die Methodik und Berechnungsgrundlage des Online-Kostenrechners wurde durch das Öko-Institut e.V. im Rahmen der vom Bundesministerium für Wirtschaft und Energie geförderten Begleitforschung zum Programms „IKT Für Elektromobilität II“ entwickelt. Das methodische Vorgehen und Ergebnisse für weitere Fahrzeugkategorien können dem [Abschlussbericht](https://www.oeko.de/fileadmin/oekodoc/Gesamtbericht-Wirtschaftlichkeit-von-Elektromobilitaet.pdf) entnommen werden.
 
@@ -20,16 +20,10 @@ Bei technischen Schwierigkeiten können sie sich an [s.kuehnel(at)oeko.de](mailt
 
 ### Ansprechpartner:
 
-[Sven Kühnel](https://www.oeko.de/das-institut/team/sven-kuehnel/)
-
-Researcher
-
-[Ressourcen & Mobilität](http://www.oeko.de/das-institut/institutsbereiche/ressourcen-mobilitaet/)
-
-Öko-Institut e.V. 
-
-Büro Berlin
-
-Schicklerstr. 5-7
-
+[Sven Kühnel](https://www.oeko.de/das-institut/team/sven-kuehnel/)  
+Researcher  
+[Ressourcen & Mobilität](http://www.oeko.de/das-institut/institutsbereiche/ressourcen-mobilitaet/)  
+Öko-Institut e.V.   
+Büro Berlin  
+Schicklerstr. 5-7  
 D-10179 Berlin

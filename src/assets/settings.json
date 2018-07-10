@@ -533,7 +533,7 @@
     "description": "desc23",
     "unit": "km",
     "group": "Vehicle details",
-    "values": "50..250",
+    "values": "50..500",
     "default": null,
     "hashelp": false,
     "interval": 1,

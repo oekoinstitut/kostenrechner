@@ -1,4 +1,3 @@
-
 // Financial variables
 var inflationsrate   = 0.015		// That's 1.5% per year
 var exchange_rate    = 1.25 		// How many $ for 1 €

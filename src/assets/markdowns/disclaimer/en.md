@@ -2,16 +2,11 @@
 
 Address:
 
-Oeko-Institut e.V.
-
-PO Box 17 71
-
-D-79017 Freiburg, Germany
-
-Phone +49 761 45295-0
-
-Fax +49 761 45295-288 
-
+Oeko-Institut e.V.  
+PO Box 17 71  
+D-79017 Freiburg, Germany  
+Phone +49 761 45295-0  
+Fax +49 761 45295-288  
 VAT ID-Number: DE 142 117 254 
 
 ### Person Responsible

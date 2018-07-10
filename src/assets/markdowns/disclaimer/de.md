@@ -1,21 +1,13 @@
 ## Impressum
 
-Öko-Institut e.V.
-
-Geschäftsstelle Freiburg
-
-Postfach 17 71
-
-D-79017 Freiburg
-
-Tel. +49 761 45295-0
-
-Fax +49 761 45295-288
-
-UID-Nummer: DE 142 117 254
-
-V.i.S.d.P.
-
+Öko-Institut e.V.  
+Geschäftsstelle Freiburg  
+Postfach 17 71  
+D-79017 Freiburg  
+Tel. +49 761 45295-0  
+Fax +49 761 45295-288  
+UID-Nummer: DE 142 117 254  
+V.i.S.d.P.  
 Michael Sailer, Sprecher der Geschäftsführung
 
 ### Webadministration
