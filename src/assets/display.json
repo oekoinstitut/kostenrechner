@@ -1,1 +1,56 @@
-[]
+[
+  {
+    "id": "1",
+    "xaxis": "holding_time",
+    "yaxis": "TCO",
+    "context": "Vehicle",
+    "name": "TCO_by_holding_time",
+    "relative": false,
+    "explainer": "expl1"
+  },
+  {
+    "id": "2",
+    "xaxis": "mileage",
+    "yaxis": "TCO",
+    "context": "Vehicle",
+    "name": "TCO_by_mileage",
+    "relative": true,
+    "explainer": "expl2"
+  },
+  {
+    "id": "5",
+    "xaxis": "acquisition_year",
+    "yaxis": "TCO",
+    "context": "Vehicle",
+    "name": "TCO_by_acquisition_year",
+    "relative": false,
+    "explainer": "expl6"
+  },
+  {
+    "id": "3",
+    "xaxis": "holding_time",
+    "yaxis": "CO2",
+    "context": "Vehicle",
+    "name": "CO2_by_holding_time",
+    "relative": false,
+    "explainer": "expl3"
+  },
+  {
+    "id": "4",
+    "xaxis": "mileage",
+    "yaxis": "CO2",
+    "context": "Vehicle",
+    "name": "CO2_by_mileage",
+    "relative": true,
+    "explainer": "expl4"
+  },
+  {
+    "id": "6",
+    "xaxis": "acquisition_year",
+    "yaxis": "CO2",
+    "context": "Vehicle",
+    "name": "CO2_by_acquisition_year",
+    "relative": false,
+    "explainer": "expl7"
+  }
+]
