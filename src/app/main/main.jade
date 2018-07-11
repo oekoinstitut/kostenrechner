@@ -5,19 +5,29 @@
     .container
       .main__welcome-screen
         h2.main__welcome-screen__heading {{ "welcome_title" | translate }}
+        
         .main__welcome-screen__body
           p.lead(ng-bind-html="'welcome_description_1' | translate")
+          
         p.main__welcome-screen__footer(ng-show="main.vehicles.length < 2")
+        
           button.btn.btn-default.btn-md(ui-sref="main.form", type="button")
             i.fa.fa-car.fa-fw
             | &nbsp{{ "start_btn_gewerb" | translate }}        
           =" "
           a(ui-sref="main.chart", ng-click="main.addDefaultVehicles()")
             | {{ "look_default_visualisation" | translate }}
-        p.main__welcome-screen__footer(ng-hide="main.vehicles.length < 2")
-          a.btn.btn-default.btn-md(ui-sref="main.chart")
+                        
+        .main__welcome-screen__body
+          p.lead(ng-bind-html="'welcome_description_2' | translate")    
+        
+        p.main__welcome-screen__footer(ng-show="main.vehicles.length < 2")
+        
+          a.btn.btn-default.btn-md(href="https://emob-kostenrechner-privat.oeko.de")
             i.fa.fa-car.fa-fw
-            | &nbsp{{ "start_btn_gewerb" | translate }}        
+            | &nbsp{{ "start_btn_privat" | translate }}
+            =" "          
+       
         .main__welcome-screen__body
           p.lead(ng-bind-html="'welcome_description_3' | translate")
         
