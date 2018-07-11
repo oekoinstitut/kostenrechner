@@ -30,6 +30,7 @@
     "co2_title": "CO₂-Emissionen (Nutzungsphase)<br><br><small>Die CO₂-Werte beziehen auf den heutigen Strommix in Deutschland.</small>",
     "Corporate tax": "Unternehmenssteuersatz",
     "cost_unit": "in Euro*",
+    "data_protection": "Datenschutz",
     "desc1": "Anschaffungsjahr auswählen.",
     "desc10": "A German law proposes to change accounting rules for electrical vehicles.",
     "desc11": "Bruttokosten.<br>Grundlage der Berechnung ist die ADAC-Autokostendatenbank. <br>Details können der Dokumentation zum Online-TCO-Rechner entnommen werden. ",
@@ -200,6 +201,5 @@
     "welcome_title": "Kostenrechner für Elektrofahrzeuge",
     "years": "Jahre",
     "€_per_kwh": "€ pro kWh",
-    "€_per_liter": "€ pro Liter",
-    "data_protection": "Datenschutz"
+    "€_per_liter": "€ pro Liter"
 }
