@@ -30,6 +30,7 @@
     "co2_title": "CO₂ emissions (use phase)<br><br><small>The CO₂ values refer to the current electricity mix in Germany.</small>",
     "Corporate tax": "Corporate tax",
     "cost_unit": "In euros*",
+    "data_protection": "Data protection",
     "desc1": "Select which year the vehicle was purchased.",
     "desc10": "A German law proposes to change accounting rules for electrical vehicles.",
     "desc11": "Gross costs. For details see the online calculator documentation (available only in German). ",
@@ -203,6 +204,5 @@
     "welcome_title": "TCO calculator for Electric Vehicles",
     "years": "years",
     "€_per_kwh": "€ per kWh",
-    "€_per_liter": "€ per liter",
-    "data_protection": "Data protection"
+    "€_per_liter": "€ per liter"
 }
