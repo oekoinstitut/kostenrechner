@@ -179,11 +179,5 @@ gulp.task('clean', function () {
   return $.del([path.join(conf.paths.dist, '/'), path.join(conf.paths.tmp, '/')]);
 });
 
-gulp.task('deploy', ['build'], function() {
-  return gulp.src("./dist/**/*").pipe($.ghPages({
-    remoteUrl: "git@github.com:oekoinstitut/kostenrechner.git"
-  }));
-});
-
 
 gulp.task('build', ['html', 'fonts', 'other', 'vehicle', 'locales']);

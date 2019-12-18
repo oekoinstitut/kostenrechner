@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "dependencies": {
     "google-spreadsheet": "^1.1.4",
-    "gulp-gh-pages": "^0.5.4",
     "gulp-wait": "0.0.2",
     "browser-sync": "~2.9.11",
     "browser-sync-spa": "~1.0.3",

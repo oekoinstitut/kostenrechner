@@ -104,10 +104,10 @@ gulp vehicle
 gulp serve
 ```
 
-Deploy your changes to Github pages.
+Build current version
 
 ```
-gulp deploy
+gulp build
 ```
 
 ## Change the variables in the processor
