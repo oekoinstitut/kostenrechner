@@ -7,52 +7,7 @@
         h2.main__welcome-screen__heading {{ "welcome_title" | translate }}
         
         .main__welcome-screen__body
-          p.lead(ng-bind-html="'under_construction' | translate")
+          p.lead(ng-bind-html="'under_construction_description' | translate")
           
         p.main__welcome-screen__footer
         
-          button.btn.btn-default.btn-md(ui-sref="main.form", type="button")
-            i.fa.fa-car.fa-fw
-            | &nbsp{{ "start_btn_gewerb" | translate }}        
-          =" "
-          a(ui-sref="main.chart", ng-click="main.addDefaultVehicles()")
-            | {{ "look_default_visualisation" | translate }}
-                        
-        .main__welcome-screen__body
-          p.lead(ng-bind-html="'welcome_description_2' | translate")    
-        
-        p.main__welcome-screen__footer
-        
-          a.btn.btn-default.btn-md(href="https://emob-kostenrechner-privat.oeko.de#/add")
-            i.fa.fa-car.fa-fw
-            | &nbsp{{ "start_btn_privat" | translate }}
-            =" "          
-       
-        .main__welcome-screen__body
-          p.lead(ng-bind-html="'welcome_description_3' | translate")
-        
-  
-  .main__vehicles(ng-show="('main.form.*' | includedByState) && main.vehicles.length || ('main.chart.*' | includedByState)")
-    .main__vehicles__wrapper
-      .main__vehicles__wrapper__item(ng-repeat="vehicle in main.vehicles | limitTo:2", 
-                            ng-click="main.openVehicle(vehicle, $index)", 
-                            ng-attr-style="background: {{ vehicle.color }}")
-        .main__vehicles__wrapper__item__overlay
-          i.fa.fa-eye
-        .main__vehicles__wrapper__item__heading
-          .main__vehicles__wrapper__item__heading__printable-color(ng-attr-style="border-color:  {{ vehicle.color }}")          
-          .main__vehicles__wrapper__item__heading__actions
-            button.btn.btn-xs.btn-link(ng-click="main.removeVehicle($index)")
-              i.fa.fa-trash
-              span.sr-only {{ "remove_btn" | translate }}
-          span(ng-bind-html="'vehicle_name' | translate:main.getVehicleOpts(vehicle)")
-        table.table.table-condensed.table-striped.main__vehicles__wrapper__item__body
-          tbody
-            tr(ng-repeat="setting in main.listedSettings | orderBy:'importancerank' | filter:main.filterSetting(vehicle) | limitTo:5")
-              td {{ setting.label | translate }}
-              td 
-                strong {{ vehicle[setting.name] | translate }}
-                span &nbsp;{{ setting.unit | translate }}
-      a.main__vehicles__wrapper__add-item(ng-show="('main.chart.*' | includedByState) && main.vehicles.length < 2", ui-sref="main.form")
-        i.fa.fa-plus
-        span <br class="hidden-xs" /> {{ "add_vehicle_btn" | translate }}
