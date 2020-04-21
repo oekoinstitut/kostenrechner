@@ -14,15 +14,15 @@ The cost calculator was developed and implemented by [Journalism++](http://www.j
 
 You can use the TCO calculator with the browsers Google Chrome, Mozilla Firefox and Microsoft Internet Explorer. Please install the recent or at least the last previous version of your browser. The browsers are available for all popular operating systems (Windows 8 and higher, Mac OS 10.9 and higher, Ubuntu 12.04 and higher). You can use the TCO calculator also on modern mobile devices (e.g. iPad 3).
 
-If you experience technical issues, please contact [s.kuehnel(at)oeko.de](mailto:s.kuehnel@oeko.de).
+If you experience technical issues, please contact [m.mottschall(at)oeko.de](mailto:m.mottschall@oeko.de).
 
 
 ### Contact:
 
-[Sven Kühnel](https://www.oeko.de/das-institut/team/sven-kuehnel/)  
+[Moritz Mottschall](https://www.oeko.de/das-institut/team/moritz-mottschall/)  
 Researcher  
 [Ressourcen & Mobilität](http://www.oeko.de/das-institut/institutsbereiche/ressourcen-mobilitaet/)  
 Oeko-Institute e.V.  
 Office Berlin  
-Schicklerstr. 5-7  
-D-10179 Berlin
+Borkumstraße 2  
+D-13189 Berlin
