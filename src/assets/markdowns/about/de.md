@@ -16,14 +16,14 @@ Die Konzeption und Entwicklung des Online-Rechners erfolgte durch [Journalism++]
 
 Der Online-Rechner wird von der jeweils aktuellen und der Vorgängerversion der Browser Chrome, Mozilla Firefox und Internet Explorer unterstützt. Diese sind auf alle Betriebssysteme mit aktivem Support verfügbar (d.h. Windows 8+, MacOS 10.9+, Ubuntu 12.04+). Der Rechner funktioniert auf moderne mobile Geräte (z.B. iPad 3).
 
-Bei technischen Schwierigkeiten können sie sich an [s.kuehnel(at)oeko.de](mailto:s.kuehnel@oeko.de) wenden.
+Bei technischen Schwierigkeiten können sie sich an [m.mottschall(at)oeko.de](mailto:m.mottschall@oeko.de) wenden.
 
 ### Ansprechpartner:
 
-[Sven Kühnel](https://www.oeko.de/das-institut/team/sven-kuehnel/)  
+[Moritz Mottschall](https://www.oeko.de/das-institut/team/moritz-mottschall/)  
 Researcher  
 [Ressourcen & Mobilität](http://www.oeko.de/das-institut/institutsbereiche/ressourcen-mobilitaet/)  
 Öko-Institut e.V.   
 Büro Berlin  
-Schicklerstr. 5-7  
-D-10179 Berlin
+Borkumstraße 2  
+D-13189 Berlin
