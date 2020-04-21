@@ -11,11 +11,11 @@ VAT ID-Number: DE 142 117 254
 
 ### Person Responsible
 
-Michael Sailer, CEO 
+Jan Peter Schemmel, CEO 
 
 ### Webadministration
 
-Sven Kühnel 
+Moritz Mottschall
 
 ### Programming
 
