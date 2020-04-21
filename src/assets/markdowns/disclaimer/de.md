@@ -8,11 +8,11 @@ Tel. +49 761 45295-0
 Fax +49 761 45295-288  
 UID-Nummer: DE 142 117 254  
 V.i.S.d.P.  
-Michael Sailer, Sprecher der Geschäftsführung
+Jan Peter Schemmel, Sprecher der Geschäftsführung
 
 ### Webadministration
 
-Sven Kühnel 
+Moritz Mottschall 
 
 ### Programmierung
 
